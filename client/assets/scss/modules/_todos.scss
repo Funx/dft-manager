@@ -1,0 +1,54 @@
+$row-height : 3rem;
+
+.grid-block{
+  overflow: visible;
+}
+
+.items {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.items .item{
+  &:first-child{
+    @extend .cut-top;
+  }
+  &:last-child{
+    @extend .cut-bottom;
+  }
+}
+
+.item{
+  @extend .panel;
+  position: relative;
+  padding: 2rem;
+  text-transform: capitalize;
+  display: block;
+  border: 1px solid #eee;
+}
+
+.item--alone {
+  margin-bottom: 2rem;
+}
+
+.item-button{
+  float: right;
+  margin: 0;
+  width:$row-height;
+}
+
+.items-form{
+  position:relative;
+}
+
+input[type=text].item-form-text{
+  display:block;
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  font-size:1rem;
+  height:auto;
+  padding:1rem;
+  padding-right:$row-height+1rem;
+}

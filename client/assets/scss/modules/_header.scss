@@ -1,0 +1,9 @@
+.header{
+  @extend .low;
+
+  background:$secondary-color;
+}
+
+.header-title{
+  color: #fff;
+}

@@ -1,0 +1,40 @@
+*{
+  transition:all 0.3s ease-in-out;
+}
+
+.panel{
+  @extend .low;
+
+  &:hover,&:active{@extend .high;}
+}
+input{
+}
+input[type=text]{
+}
+
+.todo.ng-enter,.todo.ng-enter.ng-enter-active,.todo.ng-leave,.todo.ng-leave.ng-leave-active{
+  transition : all 1s ease-in-out-bounce;
+}
+
+.todo.ng-enter{
+    opacity:0;
+    margin-top:-4rem;
+    @include setZ(20);
+}
+.todo.ng-enter.ng-enter-active {
+  opacity:1;
+  margin-top:0;
+  @include setZ(1);
+
+}
+.todo.ng-leave{
+ opacity:1;
+ margin-top:0rem;
+// @include setZ(10);
+
+}
+.todo.ng-leave.ng-leave-active {
+opacity:0;
+margin-top:4rem;
+// @include setZ(0);
+}

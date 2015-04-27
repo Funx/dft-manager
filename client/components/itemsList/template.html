@@ -1,0 +1,22 @@
+<div
+  ng-controller="itemsListCtrl"
+  class="grid-block vertical">
+
+  <h3 class="">Liste des trophées</h3>
+
+  <ul
+    class="grid-block list list--items vertical neutralized-list">
+    <li
+      class="item grid-content shrink"
+      ng-show="!main.items.length">
+      <h4>Aucun item</h4>
+    </li>
+    <li
+      class="grid-content shrink panel item"
+      ng-repeat="item in items track by item._id">
+
+        <item model="item"></item>
+
+    </li>
+  </ul>
+</div>

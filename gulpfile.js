@@ -26,7 +26,8 @@ var paths = {
   assets: [
     './client/**/*.*',
     '!./client/templates/**/*.*',
-    '!./client/assets/{scss,js}/**/*.*'
+    '!./client/assets/{scss,js}/**/*.*',
+    './client/components/**/*.html'
   ],
   // Sass will check these folders for files when you use @import.
   sass: [
@@ -40,6 +41,7 @@ var paths = {
     'bower_components/tether/tether.js',
     'bower_components/hammerjs/hammer.js',
     'bower_components/angular/angular.js',
+    'bower_components/angular-route/angular-route.js',
     'bower_components/angular-animate/angular-animate.js',
     'bower_components/angular-ui-router/release/angular-ui-router.js',
     'bower_components/foundation-apps/js/vendor/**/*.js',
@@ -48,7 +50,8 @@ var paths = {
   ],
   // These files are for your app's JavaScript
   appJS: [
-    'client/assets/js/app.js'
+    'client/assets/scripts/app.js',
+    'client/components/**/*.js'
   ]
 }
 
@@ -188,10 +191,10 @@ gulp.task('default', ['server'], function () {
   gulp.watch(['./client/assets/scss/**/*', './scss/**/*'], ['sass']);
 
   // Watch JavaScript
-  gulp.watch(['./client/assets/js/**/*', './js/**/*'], ['watch:js']);
+  gulp.watch(['./client/assets/scripts/**/*', './clients/components/**/*.js'], ['watch:js']);
 
   // Watch static files
-  gulp.watch(['./client/**/*.*', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*'], ['watch:static']);
+  gulp.watch(['./client/**/*.*', '!./client/components/**/*.js', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*'], ['watch:static']);
 
   // Watch app templates
   gulp.watch(['./client/templates/**/*.html'], ['watch:templates']);

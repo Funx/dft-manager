@@ -1,17 +1,16 @@
-<div class="item">
+<div class="item panel">
   <h4 class="item__name">
-    {{item.name}}
-    <small class="item__type">{{item.type}}</small>
+    {{model.name}}
+    <small class="item__type">{{model.type}}</small>
   </h4>
-  <a href="#/category" class="item__category">{{item.category}}</a>
-
+  <a href="#/category" class="item__category">{{model.category}}</a>
   <ul
     class="list list--ingredients">
     <li
       class="ingredient"
-      ng-repeat="dosage in item.recipe">
+      ng-repeat="dosage in model.recipe">
       <span class="ingredient__name columns small-8">
-        {{dosage.name}}
+        {{dosage._ingredient.name}}
       </span>
       <span class="multiplicator">x</span>
       <span class="ingredient__quantity columns small-4">
@@ -20,7 +19,23 @@
     </li>
   </ul>
 
-  <button class="button right item-button" ng-click="main.deleteItem(item._id,$index)">DEL</button>
-  <button class="button right item-button" ng-click="main.editItem(item._id,$index)">EDIT</button>
+  <button
+    ng-show="status != 'readonly'"
+    class="item__button alert"
+    ng-click="item.delete()">
+    DEL
+  </button>
+  <button
+    ng-show="status != 'readonly' && status != 'editing'"
+    class="item__button info"
+    ng-click="item.edit()">
+    EDIT
+  </button>
+  <button
+    ng-show="status == 'editing'"
+    class="item__button success"
+    ng-click="item.create()">
+    VALID
+  </button>
 
 </div>

@@ -50,8 +50,8 @@ var paths = {
   ],
   // These files are for your app's JavaScript
   appJS: [
-    'client/assets/scripts/app.js',
-    'client/components/**/*.js'
+    'client/components/**/*.js',
+    'client/assets/scripts/app.js'
   ]
 }
 
@@ -191,10 +191,10 @@ gulp.task('default', ['server'], function () {
   gulp.watch(['./client/assets/scss/**/*', './scss/**/*'], ['sass']);
 
   // Watch JavaScript
-  gulp.watch(['./client/assets/scripts/**/*', './clients/components/**/*.js'], ['watch:js']);
+  gulp.watch(['./client/assets/scripts/**/*', './client/components/**/*.js'], ['watch:js']);
 
   // Watch static files
-  gulp.watch(['./client/**/*.*', '!./client/components/**/*.js', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*'], ['watch:static']);
+  gulp.watch(['./client/**/*.*', './client/components/**/*.html', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*'], ['watch:static']);
 
   // Watch app templates
   gulp.watch(['./client/templates/**/*.html'], ['watch:templates']);

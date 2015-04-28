@@ -1,0 +1,37 @@
+<div class="grid-block vertical" ng-controller="ItemEditorCtrl">
+  <h3 class="">Trophée en cours d'édition</h3>
+
+  <item model="formData" status="editing"></item>
+
+  <div class="grid-block">
+    <div class="form form--edit">
+      <ng-form="item">
+        <input type="text" class="input input--text" ng-model="formData.name" placeholder="{{placeHolder.name}}" required>
+        <input type="text" class="input input--text" ng-model="formData.type" placeholder="{{placeHolder.type}}">
+        <input type="text" class="input input--text" ng-model="formData.category" placeholder="{{placeHolder.category}}">
+      </ng-form>
+      <ul class="list list--ingredients">
+        <li class="ingredient grid-block" ng-form="newIngredient">
+          <div class="ingredient__name grid-block small-6">
+            <input required
+              type="text"
+              class="input input--text"
+              ng-model="formData.newIngredient.name"
+              placeholder="{{placeHolder.ingredient.name}}">
+          </div>
+          <div class="ingredient__quantity grid-block small-4">
+            <input
+              type="number"
+              class="input input--text"
+              ng-model="formData.newIngredient.quantity"
+              placeholder="1">
+          </div>
+          <div class="grid-block small-2">
+            <button class="button--add" ng-click="addIngredient()">ADD</button>
+          </div>
+        </li>
+      </ul>
+      <input type="submit" class="form__submit success button" ng-click="createItem()">
+    </div>
+  </div>
+</div>

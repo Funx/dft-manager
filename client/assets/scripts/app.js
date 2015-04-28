@@ -1,7 +1,8 @@
 // js/core.js
 
 angular.module('app', [
-  'itemsList.ctrl',
+  'itemsList.component',
+  'itemEditor.component',
   'ngAnimate',
   'ngRoute'
 ])
@@ -10,12 +11,8 @@ angular.module('app', [
   $routeProvider.
     when('/items', {
       templateUrl: 'views/items.html',
-    }).
-    // when('/items/:itemId', {
-    //   templateUrl: 'partials/phone-detail.html',
-    //   controller: 'PhoneDetailCtrl'
-    // }).
-    otherwise({
+    })
+    .otherwise({
       redirectTo: '/items'
     });
 

@@ -4,18 +4,24 @@ $row-height : 3rem;
   overflow: visible;
 }
 
-.items {
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.items .item{
+.list--items .item{
   &:first-child{
     @extend .cut-top;
   }
   &:last-child{
     @extend .cut-bottom;
   }
+}
+
+.list{
+  transition: all 0.5s ease-in-out;
+}
+
+.list__block{
+  position: absolute;
+  width: 100%;
+
+  transition: all 0.5s ease-in-out;
 }
 
 .item{
@@ -31,24 +37,8 @@ $row-height : 3rem;
   margin-bottom: 2rem;
 }
 
-.item-button{
+.item__button{
+  @extend .button;
   float: right;
   margin: 0;
-  width:$row-height;
-}
-
-.items-form{
-  position:relative;
-}
-
-input[type=text].item-form-text{
-  display:block;
-  position:absolute;
-  left:0;
-  top:0;
-  bottom:0;
-  font-size:1rem;
-  height:auto;
-  padding:1rem;
-  padding-right:$row-height+1rem;
 }

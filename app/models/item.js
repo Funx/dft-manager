@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
-var dosageSchema = new Schema({
+var dosageSchema = new Schema()
+dosageSchema.add({
   _ingredient: {type: ObjectId, ref: 'Item' },
   quantity: Number
 });

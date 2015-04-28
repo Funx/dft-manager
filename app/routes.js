@@ -9,9 +9,12 @@ module.exports = function(app) {
   app.get('/api/items', function(req, res) {
     console.log("get");
 
-    Item.find(function(err, items) {
+    Item
+    .find({})
+    .populate('recipe._ingredient')
+    .exec(function(err, items) {
       if (err) return handleError(err)
-
+      console.log(items)
       res.json(items); // return all Items in JSON format
     });
   });

@@ -1,22 +1,27 @@
 <div
-  ng-controller="itemsListCtrl"
-  class="grid-block vertical">
+  class="grid-block vertical"
+  ng-controller="ItemsListCtrl">
 
-  <h3 class="">Liste des trophées</h3>
-
-  <ul
-    class="grid-block list list--items vertical neutralized-list">
-    <li
-      class="item grid-content shrink"
-      ng-show="!main.items.length">
+  <h3 class="grid-content shrink">Liste des trophées</h3>
+  {{ctrl}}
+  <div
+    class="grid-block list list--items vertical"
+    style="
+      position: relative;
+      height: {{items.length * itemHeight}}px;">
+    <item
+      model="blankItem"
+      status="readonly"
+      ng-show="!items.length">
       <h4>Aucun item</h4>
-    </li>
-    <li
-      class="grid-content shrink panel item"
-      ng-repeat="item in items track by item._id">
-
-        <item model="item"></item>
-
-    </li>
-  </ul>
+    </item>
+    <item
+      model="item"
+      status="pending"
+      ng-repeat="item in items track by item._id"
+      class="list__block"
+      style="
+        bottom: {{($index) * itemHeight}}px;">
+    </item>
+  </div>
 </div>

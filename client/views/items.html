@@ -1,66 +1,10 @@
 <div class="grid-content shrink">
-  <h2>Editer les trophées</h2>
+  <h2>Editer les cacas</h2>
 </div>
-<div
-  class="grid-block small-up-1 medium-up-2 large-up-3">
+<div class="grid-block small-up-1 medium-up-2 large-up-3">
 
+  <div ng-include="'components/itemsList/template.html'" class="grid-block small-12 medium-6 large-4 vertical"></div>
 
-  <ng-include src="components/itemsList/template.html"></ng-include>
+  <div ng-include="'components/itemEditor/template.html'" class="grid-block small-12 medium-6 large-4 vertical"></div>
 
-
-  <div class="grid-block vertical">
-    <h3 class="">Trophée en cours d'édition</h3>
-
-    <div class="item item--alone grid-block shrink" >
-      <h4 class="item__name">{{main.formData.name || "_________"}}<small class="item__type">{{main.formData.type || "_________"}}</small></h4>
-      <a href="#/category" class="item__category">{{main.formData.category || "_________"}}</a>
-
-      <ul class="grid-block list list--ingredients">
-        <li
-          class="ingredient"
-          ng-show="main.formData.recipe.length"
-          ng-repeat="dosage in main.formData.recipe">
-          <span class="ingredient__name columns small-8">
-            {{dosage.name || "_________"}}
-          </span>
-          <span class="multiplicator">x</span>
-          <span class="ingredient__quantity columns small-4">
-            {{dosage.quantity || "___"}}
-          </span>
-        </li>
-      </ul>
-    </div>
-
-    <div class="grid-block">
-      <div class="form form--edit">
-        <ng-form="item">
-          <input type="text" class="input input--text" ng-model="main.formData.name" placeholder="{{main.placeHolder.name}}" required>
-          <input type="text" class="input input--text" ng-model="main.formData.type" placeholder="{{main.placeHolder.type}}">
-          <input type="text" class="input input--text" ng-model="main.formData.category" placeholder="{{main.placeHolder.category}}">
-        </ng-form>
-        <ul class="list list--ingredients">
-          <li class="ingredient grid-block" ng-form="newIngredient">
-            <div class="ingredient__name grid-block small-6">
-              <input required
-                type="text"
-                class="input input--text"
-                ng-model="main.formData.newIngredient.name"
-                placeholder="{{main.placeHolder.ingredient.name}}">
-            </div>
-            <div class="ingredient__quantity grid-block small-4">
-              <input
-                type="number"
-                class="input input--text"
-                ng-model="main.formData.newIngredient.quantity"
-                placeholder="1">
-            </div>
-            <div class="grid-block small-2">
-              <button class="button--add" ng-click="main.addIngredient()">ADD</button>
-            </div>
-          </li>
-        </ul>
-        <input type="submit" class="form__submit button right" ng-click="main.createItem()">
-      </div>
-    </div>
-  </div>
 </div>

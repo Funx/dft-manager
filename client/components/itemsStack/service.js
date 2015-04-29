@@ -17,7 +17,6 @@ angular.module('itemsList.service', [])
       .success(function(data){
         $this.list = data;
         $rootScope.$broadcast('itemsListUpdated');
-        return data;
       })
 
       .error(function(data) {

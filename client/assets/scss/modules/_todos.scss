@@ -13,15 +13,45 @@ $row-height : 3rem;
   }
 }
 
-.list{
-  transition: all 0.5s ease-in-out;
+.stack{
+  flex-direction: column-reverse;
+
+  position: relative;
+  transition: all .5s ease-in-out;
 }
 
-.list__block{
-  position: absolute;
-  width: 100%;
+.stack__element{
+  opacity: 1;
+  max-height: 160px;
+  transition:
+    opacity .2s 0s ease-in,
+    transform .2s 0s ease-in,
+    max-height .2s 0s ease-in-out;
 
-  transition: all 0.5s ease-in-out;
+  &.ng-enter, &.ng-hide-remove{
+    max-height: 1px;
+    transform: translate(0, -160px) scale(5/4);
+    opacity: 0;
+    z-index: 999;
+  }
+
+  &:hover{
+    // margin-bottom: -160px;
+    // transform: translateX(-200%);
+    // opacity: 0;
+  }
+
+  &.ng-leave-active, &.ng-hide-add{
+    max-height: 1px;
+    transform: translate(100%, 0) scale(4/5);
+    opacity: 0;
+    transition:
+      opacity .2s 0s ease-in,
+      transform .2s 0s ease-in,
+      max-height .5s 0s ease-in-out;
+    z-index: 0;
+
+  }
 }
 
 .item{

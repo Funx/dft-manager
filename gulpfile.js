@@ -32,7 +32,8 @@ var paths = {
   // Sass will check these folders for files when you use @import.
   sass: [
     'client/assets/scss',
-    'bower_components/foundation-apps/scss'
+    'bower_components/foundation-apps/scss',
+    'bower_components/animate.css/'
   ],
   // These files include Foundation for Apps and its dependencies
   foundationJS: [
@@ -152,28 +153,16 @@ gulp.task('uglify:app', function() {
 // Starts a test server, which you can view at http://localhost:3000
 gulp.task('server', ['build'], function() {
   nodemon({
-    script: 'server.js'
+    script: 'bootstrap.js'
   , ext: 'js html'
   , env: { 'NODE_ENV': 'development' }
   })
 
   browserSync({
-    proxy: "localhost:8080"
-    /*server: {
-      baseDir: "./build",
-      notify: false
-    }*/
+    proxy: "localhost:8080",
+    notify: false
   });
   browserSync.reload();
-  /*gulp.src('./build')
-    .pipe($.webserver({
-      port: 8080,
-      host: 'localhost',
-      fallback: 'index.html',
-      livereload: true,
-      open: true
-    }))
-  ;*/
 });
 
 // Builds your entire app once, without starting a server

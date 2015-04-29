@@ -5,23 +5,21 @@
   <h3 class="grid-content shrink">Liste des trophées</h3>
   {{ctrl}}
   <div
-    class="grid-block list list--items vertical"
+    class="grid-block stack list--items vertical"
     style="
-      position: relative;
-      height: {{items.length * itemHeight}}px;">
+      position: relative;">
     <item
       model="blankItem"
       status="readonly"
-      ng-show="!items.length">
+      ng-show="!items.length"
+      class="stack__element">
       <h4>Aucun item</h4>
     </item>
     <item
       model="item"
       status="pending"
       ng-repeat="item in items track by item._id"
-      class="list__block"
-      style="
-        bottom: {{($index) * itemHeight}}px;">
+      class="stack__element">
     </item>
   </div>
 </div>

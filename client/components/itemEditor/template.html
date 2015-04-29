@@ -13,12 +13,14 @@
       <ul class="list list--ingredients">
         <li class="ingredient grid-block" ng-form="newIngredient">
           <div class="ingredient__name grid-block small-6">
-            <input required
-              type="text"
-              class="input input--text"
-              ng-model="formData.newIngredient.name"
-              placeholder="{{placeHolder.ingredient.name}}">
+            <auto-complete
+              class="input input--text input--autocomplete"
+              url="/api/search/items" model="formData.newIngredient.name">
+            </auto-complete>
           </div>
+
+
+
           <div class="ingredient__quantity grid-block small-4">
             <input
               type="number"

@@ -42,6 +42,8 @@ var paths = {
     'bower_components/tether/tether.js',
     'bower_components/hammerjs/hammer.js',
     'bower_components/angular/angular.js',
+    'bower_components/rsvp/rsvp.js',
+    'bower_components/async/lib/async.js',
     'bower_components/angular-route/angular-route.js',
     'bower_components/angular-animate/angular-animate.js',
     'bower_components/angular-ui-router/release/angular-ui-router.js',

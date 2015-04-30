@@ -11,21 +11,24 @@ angular.module('itemsList.service', [])
       return $http.get('/api/items');
     },
 
-    create: function(todoData) {
+    create: function(todoData, done) {
       $this = this;
       $http.post('/api/items', todoData)
       .success(function(data){
-        $this.list = data;
+        $this.list = data.list;
+        $this.lastEdit = data.lastEdit;
         $rootScope.$broadcast('itemsListUpdated');
+        if(done) return done(data);
       })
 
       .error(function(data) {
         console.log('Error: ' + data);
+        if(done) return done(data);
       });
 
     },
 
-    delete: function(id) {
+    delete: function(id, done) {
       $this = this;
 
       $http.delete('/api/items/' + id)
@@ -42,7 +45,7 @@ angular.module('itemsList.service', [])
 
     },
 
-    init: function(){
+    init: function(done){
       $this = this;
 
       $this.get()
@@ -50,6 +53,8 @@ angular.module('itemsList.service', [])
       .success(function(data) {
         $this.list = data;
         $rootScope.$broadcast('itemsListUpdated');
+        console.log(data);
+
         return data;
       })
 
@@ -58,6 +63,7 @@ angular.module('itemsList.service', [])
       });
 
     },
-    list: []
+    list: [],
+    lastEdit: {}
   }
 }]);

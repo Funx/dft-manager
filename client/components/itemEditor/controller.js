@@ -42,9 +42,10 @@ angular.module('itemEditor.component', [
     if($scope.formData.name && !saveInProgress){
       console.log('save')
       saveInProgress = true;
-      list = Items.create($scope.formData);
-      $scope.formData._id = Ilist[list.length - 1]._id;
-      saveInProgress = false;
+      Items.create($scope.formData, function(data){
+        saveInProgress = false;
+        $scope.formData._id = data.lastEdit._id;
+      });
     }
   }
 

@@ -9,30 +9,37 @@ module.exports = function(app) {
 
   app.get('/api/items', function(req,res){
     console.log('get');
-    get(req, res)
-  });
-  var get = function(req, res){
-    Item
-    .find({})
-    .populate('recipe._ingredient')
-    .exec(function(err, items) {
-      if (err) throw (err)
-      console.log(items);
-      res.json(items); // return all Items in JSON format
+    getItems.exec(function(err,items){
+      res.json(items);
     });
-  }
+  });
+
+  var getItems = Item.find({}).populate('recipe._ingredient');
 
   // create Item and send back all Items after creation
   app.post('/api/items', function(req, res) {
     // create a Item, information comes from AJAX request from Angular
+    var data = {}
     console.log("post");
     if(!req.body._id){
       var item = new Item(req.body);
-      item.save(function(err,item){promise(err,item,req,res)});
+      item.save(function(err,item){
+        if (err) throw (err)
+        data.lastEdit = item;
+        getItems.exec(function(err,items){
+          data.list = items;
+          res.json(data);
+        });
+      });
       console.log('new item');
     }else{
       Item.update({_id: req.body._id}, req.body, {overwrite: true}, function(err,item){
-        promise(err,item,req,res)
+        if (err) throw (err)
+        data.lastEdit = item;
+        getItems.exec(function(err,items){
+          data.list = items;
+          res.json(data);
+        });
       });
       console.log('updated item');
     }
@@ -42,7 +49,12 @@ module.exports = function(app) {
   app.delete('/api/items/:item_id', function(req, res) {
     Item.remove({
       _id: req.params.item_id
-    }, function(err,item){promise(err,item,req,res)});
+    }, function(err,item){
+      if (err) throw (err)
+      getItems.exec(function(err,items){
+        res.json(items);
+      });
+    });
   });
 
   // search an item
@@ -73,7 +85,9 @@ module.exports = function(app) {
 
   var promise = function(err, item, req, res) {
     if (err) throw (err)
-    get(req, res);
+    getItems.exec(function(err,items){
+      res.json(items);
+    });
   }
 
 };

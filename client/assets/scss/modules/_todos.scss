@@ -14,7 +14,8 @@ $row-height : 3rem;
 }
 
 .stack{
-  flex-direction: column-reverse;
+  display: flex;
+  flex-flow: column-reverse nowrap;
 
   position: relative;
   transition: all .5s ease-in-out;

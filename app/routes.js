@@ -34,7 +34,7 @@ module.exports = function(app) {
       console.log('new item');
     }else{
       Item.update({_id: req.body._id}, req.body, {overwrite: true}, function(err,item){
-        if (err) throw (err)
+        if (err) throw (err);
         data.lastEdit = item;
         getItems.exec(function(err,items){
           data.list = items;
@@ -50,9 +50,11 @@ module.exports = function(app) {
     Item.remove({
       _id: req.params.item_id
     }, function(err,item){
-      if (err) throw (err)
+      if (err) throw (err);
       getItems.exec(function(err,items){
-        res.json(items);
+        if (err) throw (err);
+        console.log(items);
+        return res.json(items);
       });
     });
   });

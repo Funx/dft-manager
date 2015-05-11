@@ -1,19 +1,44 @@
 <div class="item">
-  <h4 class="item__name">
+  <h4
+    class="item__name"
+    editable-text="model.name"
+    onaftersave="item.save(true)"
+    blur="submit">
     {{model.name}}
-    <small class="item__type">{{model.type}}</small>
+    <small
+      class="item__type"
+      editable-text="model.type"
+      onaftersave="item.save()"
+      blur="submit">
+      {{model.type}}
+    </small>
   </h4>
-  <a href="#/category" class="item__category">{{model.category}}</a>
+  <a
+    href="#/category"
+    class="item__category"
+    editable-text="model.category"
+    onaftersave="item.save()"
+    blur="submit">
+    {{model.category}}
+  </a>
   <ul
     class="list list--ingredients">
     <li
       class="ingredient"
       ng-repeat="dosage in model.recipe">
-      <span class="ingredient__name columns small-8">
+      <span
+        class="ingredient__name [ columns small-8 ]"
+        editable-search="dosage._ingredient.name"
+        onaftersave="item.save()"
+        blur="submit">
         {{dosage._ingredient.name}}
       </span>
       <span class="multiplicator">x</span>
-      <span class="ingredient__quantity columns small-4">
+      <span
+        class="ingredient__quantity columns small-4"
+        editable-number="dosage.quantity"
+        onaftersave="item.save()"
+        blur="submit">
         {{dosage.quantity}}
       </span>
     </li>
@@ -24,18 +49,6 @@
     class="item__button alert"
     ng-click="item.delete()">
     DEL
-  </button>
-  <button
-    ng-show="status != 'readonly' && status != 'editing'"
-    class="item__button info"
-    ng-click="item.edit()">
-    EDIT
-  </button>
-  <button
-    ng-show="status == 'editing'"
-    class="item__button success"
-    ng-click="item.create()">
-    VALID
   </button>
 
 </div>

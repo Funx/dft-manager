@@ -11,6 +11,7 @@ var gulp     = require('gulp');
 var rimraf   = require('rimraf');
 var router   = require('front-router');
 var sequence = require('run-sequence');
+var compass  = require('gulp-compass');
 
 var nodemon = require('gulp-nodemon');
 var browserSync = require('browser-sync');
@@ -33,7 +34,8 @@ var paths = {
   sass: [
     'client/assets/scss',
     'bower_components/foundation-apps/scss',
-    'bower_components/animate.css/'
+    'bower_components/animate.css/',
+    'bower_components/angular-xeditable/dist/css/'
   ],
   // These files include Foundation for Apps and its dependencies
   foundationJS: [
@@ -44,6 +46,7 @@ var paths = {
     'bower_components/angular/angular.js',
     'bower_components/rsvp/rsvp.js',
     'bower_components/async/lib/async.js',
+    'bower_components/angular-xeditable/dist/js/xeditable.js',
     'bower_components/angular-route/angular-route.js',
     'bower_components/angular-animate/angular-animate.js',
     'bower_components/angular-ui-router/release/angular-ui-router.js',
@@ -110,6 +113,14 @@ gulp.task('copy:foundation', function(cb) {
 // Compiles Sass
 gulp.task('sass', function () {
   return gulp.src('client/assets/scss/app.scss')
+    // .pipe(compass({
+    //   sass: 'client/assets/scss/',
+    //   import_path: paths.sass,
+    //   sourcemap: true,
+    //   style: (isProduction ? 'compressed' : 'nested'),
+    //   debug: true,
+    //   require: ['sass-css-importer']
+    // }))
     .pipe($.sass({
       includePaths: paths.sass,
       outputStyle: (isProduction ? 'compressed' : 'nested'),

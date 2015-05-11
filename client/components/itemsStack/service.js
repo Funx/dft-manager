@@ -31,14 +31,20 @@ angular.module('itemsList.service', [])
     delete: function(id, done) {
       $this = this;
 
-      $http.get('/api/items/')
+      $http.delete('/api/items/' + id)
 
       .success(function(data){
-        return data;
+        $this.list = data;
+        $rootScope.$broadcast('itemsListUpdated');
+        console.log(data);
+        if(!done) done = function(){}
+        return done(data);
       })
 
       .error(function(data) {
         console.log('Error: ' + data);
+        if(!done) done = function(){}
+        return done(data);
       });
 
     },

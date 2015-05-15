@@ -1,48 +1,38 @@
 <div class="item">
-  <h4
-    class="item__name"
-    editable-text="model.name"
-    onaftersave="item.save(true)"
-    blur="submit">
-    {{model.name}}
+  <p>
+    <h4
+      class="item__name"
+      editable-text="model.name"
+      buttons="no"
+      onaftersave="item.save(true)"
+      e-placeholder="nom"
+      blur="submit">
+      {{model.name || 'nom'}}
+    </h4>
     <small
       class="item__type"
       editable-text="model.type"
+      buttons="no"
       onaftersave="item.save()"
+      e-placeholder="type"
       blur="submit">
-      {{model.type}}
+      {{model.type || 'type'}}
     </small>
-  </h4>
+  </p>
   <a
     href="#/category"
     class="item__category"
     editable-text="model.category"
+    buttons="no"
     onaftersave="item.save()"
+    e-placeholder="catégorie"
     blur="submit">
-    {{model.category}}
+    {{model.category || 'catégorie'}}
   </a>
-  <ul
-    class="list list--ingredients">
-    <li
-      class="ingredient"
-      ng-repeat="dosage in model.recipe">
-      <span
-        class="ingredient__name [ columns small-8 ]"
-        editable-search="dosage._ingredient.name"
-        onaftersave="item.save()"
-        blur="submit">
-        {{dosage._ingredient.name}}
-      </span>
-      <span class="multiplicator">x</span>
-      <span
-        class="ingredient__quantity columns small-4"
-        editable-number="dosage.quantity"
-        onaftersave="item.save()"
-        blur="submit">
-        {{dosage.quantity}}
-      </span>
-    </li>
-  </ul>
+  <div
+    class="list list--recipe">
+    <div recipe="model.recipe"></div>
+  </div>
 
   <button
     ng-show="status != 'readonly'"

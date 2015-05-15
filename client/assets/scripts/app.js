@@ -1,10 +1,12 @@
 // js/core.js
 
 angular.module('app', [
+  'utils.service',
   'itemsList.component',
   'itemEditor.component',
   'ngAnimate',
-  'ngRoute'
+  'ngRoute',
+  'ui.bootstrap'
 ])
 
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){

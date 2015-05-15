@@ -1,6 +1,8 @@
 angular.module('item.directive', [
   'item.service',
   'itemsList.service',
+  'ingredient.directive',
+  'recipe.directive',
   'xeditable'
 ])
 
@@ -14,6 +16,9 @@ angular.module('item.directive', [
     },
     templateUrl: '/components/item/template.html',
     link: function($scope, $element, $attributes, $ctrls){
+      $scope.model= $scope.model || {};
+      // $scope.model.recipe = $scope.model.recipe || [];
+
       $scope.item = {
         delete: function(){
           Items.delete($scope.model._id);
@@ -34,8 +39,6 @@ angular.module('item.directive', [
           }
         }
       }
-
-
 
       $scope.$on('editNewItem', function(){
         if(Edit.currentItem != $scope.model){

@@ -1,22 +1,22 @@
 angular.module('autocomplete.directive', [])
 
-.directive('autoComplete', ['$http', function($http) {
+.directive('autoComplete', ['$http', 'Utils', function($http, Utils) {
   return {
     restrict: 'AE',
     $scope: {
-      selectedTags: '=model',
+      ngModel: '=',
       suggestions: '='
     },
     templateUrl: '/components/autocomplete/template.html',
     link: function($scope, elem, attrs) {
       $scope.suggestions = [];
-      $scope.selectedTags = [];
       $scope.selectedIndex = -1;
+      $scope.placeHolder = attrs.placeholder || 'Start typing';
 
       $scope.search = function() {
         $http.get(attrs.url + '/' + $scope.searchText).success(function(data) {
-          if (data.indexOf($scope.searchText) === -1) {
-            data.unshift($scope.searchText);
+          if (Utils.arrayObjectIndexOf(data, $scope.searchText, 'name') === -1) {
+            data.unshift({name: $scope.searchText});
           }
           $scope.suggestions = data;
           $scope.selectedIndex = -1;
@@ -35,13 +35,13 @@ angular.module('autocomplete.directive', [])
             $scope.selectedIndex--;
           }
         } else if (event.keyCode === 13) { //enter pressed
-          $scope.addToSelectedTags($scope.selectedIndex);
+          $scope.addTomodel($scope.selectedIndex);
         }
       }
 
-      $scope.addToSelectedTags=function(index){
-        if($scope.selectedTags.indexOf($scope.suggestions[index])===-1){
-          $scope.selectedTags.push($scope.suggestions[index]);
+      $scope.addTomodel=function(index){
+        if($scope.ingredients.indexOf($scope.suggestions[index])===-1){
+          $scope.ingredients.push($scope.suggestions[index]);
           $scope.searchText='';
           $scope.suggestions=[];
         }
@@ -54,7 +54,7 @@ angular.module('autocomplete.directive', [])
       });
 
       $scope.removeTag=function(index){
-        $scope.selectedTags.splice(index,1);
+        $scope.ingredients.splice(index,1);
       }
 
     }

@@ -10,12 +10,12 @@
         <input type="text" class="input input--text" ng-model="formData.type" placeholder="{{placeHolder.type}}">
         <input type="text" class="input input--text" ng-model="formData.category" placeholder="{{placeHolder.category}}">
       </ng-form>
-      <ul class="list list--ingredients">
+      <ul class="list list--recipe">
         <li class="ingredient grid-block" ng-form="newIngredient">
           <div class="ingredient__name grid-block small-6">
             <auto-complete
               class="input input--text input--autocomplete"
-              url="/api/search/items" model="formData.newIngredient.name">
+              url="/api/search/items" model="formData.newIngredient">
             </auto-complete>
           </div>
 

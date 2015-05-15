@@ -5,7 +5,7 @@
   // - processing
   // - selling
   // - ignoring
-  // - ingredients
+  // - recipe
 
   //window.history = [];
 
@@ -88,14 +88,14 @@
       return;
     },
     items : function(){
-      //gives every item with a recipe and not flagged as basic -> != get.ingredients()
+      //gives every item with a recipe and not flagged as basic -> != get.recipe()
       return;
     },
-    ingredients : function(){
+    recipe : function(){
       //gives every item without a recipe and/or flagged as basic -> != get.items()
       return;
     },
-    ingredientsOf : function(itemOrArray){
+    recipeOf : function(itemOrArray){
       //gives every child item without a recipe and/or flagged as basic and how many
       // #recursivity
       return;

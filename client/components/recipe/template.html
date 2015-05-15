@@ -1,0 +1,23 @@
+<div
+  class="recipe">
+  <div ng-repeat="dosage in recipe" class="tag">
+    <span class="tagName">{{dosage._ingredient.name}}</span>
+    *
+    <span
+      editable-number="dosage.quantity"
+      class="input input--text"
+      placeholder="1">
+      {{dosage.quantity}}
+    </span>
+    <span>&nbsp;<b ng-click="removeTag($index)" class="fa fa-times cross">DELETE</b></span>
+  </div>
+  <div class="ingredient__name grid-block small-6">
+    <auto-complete
+      class="input input--text input--autocomplete"
+      url="/api/search/items"
+      placeholder="Ingrédient"
+      ng-model="ingredients">
+    </auto-complete>
+    {{ingredients}}
+  </div>
+</div>

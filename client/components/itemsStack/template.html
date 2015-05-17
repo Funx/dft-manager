@@ -1,25 +1,19 @@
 <div
-  class="grid-block shrink vertical"
+  class=""
   ng-controller="ItemsListCtrl">
 
   <h3 class="grid-content shrink">Liste des trophées</h3>
   {{ctrl}}
   <div
-    class="grid-block stack list--items vertical"
-    style="
-      position: relative;">
-    <item
-      model="blankItem"
-      status="readonly"
-      ng-show="!items.length"
-      class="stack__element">
-      <h4>Aucun item</h4>
-    </item>
+    class="stack">
     <item
       model="item"
-      status="pending"
       ng-repeat="item in items track by item._id"
       class="stack__element">
     </item>
+    <!-- <item
+      model="blankItem"
+      class="stack__element stack__element--full-width">
+    </item> -->
   </div>
 </div>

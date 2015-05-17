@@ -5,13 +5,14 @@ angular.module('itemsList.component', [
   'item.directive'
 ])
 
-.controller('ItemsListCtrl', ['$scope', 'Items', function($scope, Items) {
+.controller('ItemsListCtrl', ['$scope', '$timeout', 'Items', function($scope, $timeout, Items) {
   $scope.items = Items.list;
   $scope.itemHeight = 160;
-  $scope.$on('itemsListUpdated', function(){
-    $scope.items = Items.list;
-    console.log('itemsListUpdated');
-    console.log(Items.list);
+
+  $scope.$watch(function(){return Items.list.length}, function(){
+    $timeout(function(){
+      $scope.items = Items.list;
+    },500);
   });
 
   // when landing on the page, get all Items and show them

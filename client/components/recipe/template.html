@@ -1,6 +1,6 @@
 <div
   class="recipe">
-  <div ng-repeat="dosage in recipe" class="tag">
+  <div ng-repeat="dosage in model" class="tag">
     <span class="tagName">{{dosage._ingredient.name}}</span>
     *
     <span
@@ -9,7 +9,7 @@
       placeholder="1">
       {{dosage.quantity}}
     </span>
-    <span>&nbsp;<b ng-click="removeTag($index)" class="fa fa-times cross">DELETE</b></span>
+    <span>&nbsp;<b ng-click="removeIngredient($index)" class="fa fa-times cross">X</b></span>
   </div>
   <div class="ingredient__name grid-block small-6">
     <auto-complete
@@ -18,6 +18,5 @@
       placeholder="Ingrédient"
       ng-model="ingredients">
     </auto-complete>
-    {{ingredients}}
   </div>
 </div>

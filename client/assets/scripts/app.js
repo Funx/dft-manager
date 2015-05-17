@@ -2,11 +2,12 @@
 
 angular.module('app', [
   'utils.service',
+  'utils.directive',
   'itemsList.component',
   'itemEditor.component',
+  'actionBubble.component',
   'ngAnimate',
-  'ngRoute',
-  'ui.bootstrap'
+  'ngRoute'
 ])
 
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){

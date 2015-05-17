@@ -4,7 +4,7 @@
       class="item__name"
       editable-text="model.name"
       buttons="no"
-      onaftersave="item.save(true)"
+      onaftersave="item.save()"
       e-placeholder="nom"
       blur="submit">
       {{model.name || 'nom'}}
@@ -31,7 +31,7 @@
   </a>
   <div
     class="list list--recipe">
-    <div recipe="model.recipe"></div>
+    <recipe model="model.recipe"></recipe>
   </div>
 
   <button

@@ -17,7 +17,6 @@ angular.module('item.directive', [
     templateUrl: '/components/item/template.html',
     link: function($scope, $element, $attributes, $ctrls){
       $scope.model= $scope.model || {};
-      // $scope.model.recipe = $scope.model.recipe || [];
 
       $scope.item = {
         delete: function(){
@@ -30,24 +29,15 @@ angular.module('item.directive', [
           console.log('lol');
 
         },
-        save: function(required){
+        save: function(){
           if($scope.model.name){
             console.log('save')
             Items.create($scope.model, function(data){
-              $scope.model._id = data.lastEdit._id;
+              $scope.model._id = data._id;
             });
           }
         }
       }
-
-      $scope.$on('editNewItem', function(){
-        if(Edit.currentItem != $scope.model){
-          $scope.status = 'pending';
-        }else{
-          $scope.status = 'editing';
-        }
-      });
-
     }
   }
 }])

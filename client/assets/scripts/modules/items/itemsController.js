@@ -34,7 +34,6 @@ angular.module('itemsController', [])
       // if successful creation, call our get function to get all the new Items
       .success(function(data) {
         //$scope.Items[ItemIndex - 1]._id = data._id;
-        $scope.items = data;
       })
       .error(function(data) {
         console.log('Error: ' + data);

@@ -13,12 +13,17 @@ angular.module('itemsList.service', [])
 
     create: function(todoData, done) {
       $this = this;
+      todoData.recipe = todoData.recipe || [];
+      // todoData.recipe.map(function(dosage){
+      //   dosage._ingredient = dosage._ingredient._id;
+      //   console.log(dosage);
+      // });
+      console.log(todoData.recipe);
       $http.post('/api/items', todoData)
       .success(function(data){
         $this.list = data.list;
         $this.lastEdit = data.lastEdit;
-        $rootScope.$broadcast('itemsListUpdated');
-        if(done) return done(data);
+        if(done) return done(data.lastEdit);
       })
 
       .error(function(data) {
@@ -35,7 +40,6 @@ angular.module('itemsList.service', [])
 
       .success(function(data){
         $this.list = data;
-        $rootScope.$broadcast('itemsListUpdated');
         console.log(data);
         if(!done) done = function(){}
         return done(data);
@@ -56,15 +60,18 @@ angular.module('itemsList.service', [])
 
       .success(function(data) {
         $this.list = data;
-        $rootScope.$broadcast('itemsListUpdated');
         console.log(data);
-
+        // $this.list.map(function(item){
+        //   $this.delete(item._id);
+        // });
         return data;
       })
 
       .error(function(data) {
         console.log('Error: ' + data);
       });
+
+
 
     },
     list: [],

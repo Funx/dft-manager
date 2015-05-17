@@ -1,6 +1,6 @@
 angular.module('autocomplete.directive', [])
 
-.directive('autoComplete', ['$http', 'Utils', function($http, Utils) {
+.directive('autoComplete', ['$http', '$timeout', 'Utils', function($http, $timeout, Utils) {
   return {
     restrict: 'AE',
     $scope: {
@@ -14,13 +14,19 @@ angular.module('autocomplete.directive', [])
       $scope.placeHolder = attrs.placeholder || 'Start typing';
 
       $scope.search = function() {
-        $http.get(attrs.url + '/' + $scope.searchText).success(function(data) {
-          if (Utils.arrayObjectIndexOf(data, $scope.searchText, 'name') === -1) {
-            data.unshift({name: $scope.searchText});
-          }
-          $scope.suggestions = data;
+        if($scope.searchText){
+          $http.get(attrs.url + '/' + $scope.searchText)
+          .success(function(data) {
+            if (Utils.arrayObjectIndexOf(data, $scope.searchText, 'name') === -1) {
+              data.unshift({name: $scope.searchText});
+            }
+            $scope.suggestions = data || [];
+            $scope.selectedIndex = -1;
+          });
+        } else {
           $scope.selectedIndex = -1;
-        });
+          $scope.suggestions = [];
+        }
       }
 
       $scope.checkKeyDown = function(event) {
@@ -35,22 +41,39 @@ angular.module('autocomplete.directive', [])
             $scope.selectedIndex--;
           }
         } else if (event.keyCode === 13) { //enter pressed
-          $scope.addTomodel($scope.selectedIndex);
+          if($scope.searchText){
+            event.preventDefault();
+          }
+          $scope.addToModel($scope.selectedIndex);
         }
       }
 
-      $scope.addTomodel=function(index){
+      $scope.addToModel=function(index){
+        console.log(index);
         if($scope.ingredients.indexOf($scope.suggestions[index])===-1){
+          if(index === -1) index = 0;
           $scope.ingredients.push($scope.suggestions[index]);
+          console.log('ici',$scope.suggestions, index);
           $scope.searchText='';
           $scope.suggestions=[];
         }
+      }
+
+      $scope.print = function(variable){
+        console.log("hého", variable);
       }
 
       $scope.$watch('selectedIndex',function(val){
         if(val > -1 && val < $scope.suggestions.length) {
           $scope.searchText = $scope.suggestions[$scope.selectedIndex].name;
         }
+      });
+
+      elem.find('input').bind('blur', function() {
+        $timeout(function(){
+          $scope.suggestions = [];
+          $scope.searchText = '';
+        }, 200);
       });
 
       $scope.removeTag=function(index){

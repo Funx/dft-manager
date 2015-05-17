@@ -1,0 +1,17 @@
+<div
+  ng-if="actionView"
+  ng-switch="actionView"
+  ng-click="hide()"
+  class="action-layer">
+  <div class="centered modal" stop-event>
+    <div
+      ng-switch-when="create"
+      class="">
+      <ng-include src="'/components/itemEditor/template.html'"></ng-include>
+    </div>
+  </div>
+</div>
+<div
+  ng-click="displayEditor()"
+  class="action-bubble">
+</div>

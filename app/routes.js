@@ -21,6 +21,18 @@ module.exports = function(app) {
     // create a Item, information comes from AJAX request from Angular
     var data = {}
     console.log("post");
+    req.body.recipe.map(function(dosage){
+      if(!dosage._ingredient._id){
+        var ingredient = new Item(dosage._ingredient);
+        ingredient.save(function(err,item){
+          if (err) throw (err)
+          dosage._ingredient = item._id
+        });
+      }else{
+        dosage._ingredient = dosage._ingredient._id
+      }
+    });
+
     if(!req.body._id){
       var item = new Item(req.body);
       item.save(function(err,item){

@@ -13,21 +13,26 @@ $row-height : 3rem;
   }
 }
 
-.stack{
+.stack {
   display: flex;
-  flex-flow: column-reverse nowrap;
-
+  flex-flow: row wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
   position: relative;
   transition: all .5s ease-in-out;
 }
 
-.stack__element{
+.stack__element {
+  min-width: 250px;
+  flex: 1;
+  overflow: visible;
   opacity: 1;
   // max-height: 160px;
   transition:
     opacity .2s 0s ease-in,
     transform .2s 0s ease-in,
     max-height .2s 0s ease-in-out;
+  margin: 1rem;
 
   &.ng-enter, &.ng-hide-remove{
     max-height: 1px;
@@ -44,15 +49,19 @@ $row-height : 3rem;
 
   &.ng-leave-active, &.ng-hide-add{
     max-height: 1px;
-    transform: translate(100%, 0) scale(4/5);
+    width: 0;
+    transform: rotate(20deg) scale(0);
     opacity: 0;
     transition:
-      opacity .2s 0s ease-in,
-      transform .2s 0s ease-in,
-      max-height .5s 0s ease-in-out;
+      all .2s 0s ease-in,
+      width .5s 0s ease-in-out;
     z-index: 0;
 
   }
+}
+
+.stack__element--full-width {
+  flex-basis: 100%;
 }
 
 .item{

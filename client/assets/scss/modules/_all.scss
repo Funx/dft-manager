@@ -1,8 +1,8 @@
 .panel{
   @extend .low;
 
-  &:hover,{@extend .high;}
+  &:hover,{@extend .medium;}
 }
  body{
-   background: #f00;
+   background: #eee;
  }

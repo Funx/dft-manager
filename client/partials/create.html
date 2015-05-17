@@ -1,16 +1,14 @@
-<form
-  ng-controller="ItemEditorCtrl"
-  class="create-item-view"
+<ng-form
+  class="create-item-view modal"
   name="createItemForm"
-  ng-submit="createItem()"
-  editable-form>
+  ng-submit="createItem">
 
   <input
     class="modal__input"
     type="text"
     placeholder="Nom de l'ingrédient"
     ng-model="newItem.name"
-    focus-me="focus == 'name'">
+    focus-me="actionView">
 
   <input
     class="modal__input"
@@ -28,8 +26,8 @@
 
   <button
     type="submit"
-    class="button submit success">
+    class="submit success">
     Create
   </button>
 
-</form>
+</ng-form>

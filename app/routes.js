@@ -1,15 +1,18 @@
 // app/routes.js
 
+async = require("async");
+
 // load the Item model
 var Item = require('./models/Item');
 
 // expose the routes to our app with module.exports
 module.exports = function(app) {
 
-
   app.get('/api/items', function(req,res){
     console.log('get');
     getItems.exec(function(err,items){
+      console.log(items);
+
       res.json(items);
     });
   });
@@ -21,40 +24,49 @@ module.exports = function(app) {
     // create a Item, information comes from AJAX request from Angular
     var data = {}
     console.log("post");
-    req.body.recipe.map(function(dosage){
-      if(!dosage._ingredient._id){
-        var ingredient = new Item(dosage._ingredient);
-        ingredient.save(function(err,item){
-          if (err) throw (err)
-          dosage._ingredient = item._id
-        });
-      }else{
-        dosage._ingredient = dosage._ingredient._id
-      }
-    });
+    async.each(req.body.recipe,
+      function(dosage, callback){
+        if(!dosage._ingredient._id){ // create the ingredient if not in database
+          var ingredient = new Item(dosage._ingredient);
+          ingredient.save(function(err,item){
+            if (err) throw (err);
+            dosage._ingredient = item._id;
+            callback();
+          });
+        }else{ // else just replace the ingredient by its ref
+          dosage._ingredient = dosage._ingredient._id;
+          callback();
+        }
+      }, function(err){ //save the item
+        // create a new one if not in database
+        if(!req.body._id){
+          var item = new Item(req.body);
+          item.save(function(err,item){
+            if (err) throw (err)
+            data.lastEdit = item;
+            getItems.exec(function(err,items){
+              if (err) throw (err)
+              data.list = items;
+              res.json(data);
+            });
+          });
+          console.log('new item');
+        }else{ // else we just update it
+          Item.update({_id: req.body._id}, req.body, {overwrite: true}, function(err,item){
+            if (err) throw err;
+            console.log(data.lastEdit = item);
+            getItems.exec(function(err,items){
+              if (err) throw err;
+              data.list = items;
+              console.log(data);
 
-    if(!req.body._id){
-      var item = new Item(req.body);
-      item.save(function(err,item){
-        if (err) throw (err)
-        data.lastEdit = item;
-        getItems.exec(function(err,items){
-          data.list = items;
-          res.json(data);
-        });
-      });
-      console.log('new item');
-    }else{
-      Item.update({_id: req.body._id}, req.body, {overwrite: true}, function(err,item){
-        if (err) throw (err);
-        data.lastEdit = item;
-        getItems.exec(function(err,items){
-          data.list = items;
-          res.json(data);
-        });
-      });
-      console.log('updated item');
-    }
+              res.json(data);
+              console.log('updated item');
+            });
+          });
+        }
+      }
+    )
   });
 
   // delete a Item

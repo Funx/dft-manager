@@ -18,10 +18,16 @@ angular.module('item.directive', [
     link: function($scope, $element, $attributes, $ctrls){
       $scope.model= $scope.model || {};
 
+      $scope.$watch(
+        function(){return $scope.model.recipe.length},
+        function(){$scope.item.save()}
+      )
+
       $scope.item = {
         delete: function(){
+          console.log($scope.model);
+
           Items.delete($scope.model._id);
-          console.log($scope.model._id);
         },
         edit: function(){
           Edit.setCurrentItem($scope.model);

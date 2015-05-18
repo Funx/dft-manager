@@ -14,10 +14,6 @@ angular.module('itemsList.service', [])
     create: function(todoData, done) {
       $this = this;
       todoData.recipe = todoData.recipe || [];
-      // todoData.recipe.map(function(dosage){
-      //   dosage._ingredient = dosage._ingredient._id;
-      //   console.log(dosage);
-      // });
       console.log(todoData.recipe);
       $http.post('/api/items', todoData)
       .success(function(data){

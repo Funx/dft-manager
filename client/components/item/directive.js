@@ -38,8 +38,9 @@ angular.module('item.directive', [
         save: function(){
           if($scope.model.name){
             console.log('save')
+            console.log($scope.model);
             Items.create($scope.model, function(data){
-              $scope.model._id = data._id;
+              // $scope.model._id = data._id;
             });
           }
         }

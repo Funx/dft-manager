@@ -3,9 +3,16 @@
 .form--edit {
 
 }
+#{$text-input-selectors}{
+  &.input {}
+  &.input--text {}
+  &.input--quantity {
+    width: 4rem;
+    display: inline-block;
+  }
+}
 
 .list {}
-
 
 .list--recipe {
   padding: 0;

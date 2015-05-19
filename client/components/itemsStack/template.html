@@ -8,7 +8,7 @@
     class="stack">
     <item
       model="item"
-      ng-repeat="item in items track by item._id"
+      ng-repeat="item in items track by item._id | orderBy:modified"
       class="stack__element">
     </item>
     <!-- <item

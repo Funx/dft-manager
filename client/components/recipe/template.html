@@ -3,12 +3,7 @@
   <div ng-repeat="dosage in model" class="tag">
     <span class="tagName">{{dosage._ingredient.name}}</span>
     *
-    <span
-      editable-number="dosage.quantity"
-      class="input input--text"
-      placeholder="1">
-      {{dosage.quantity}}
-    </span>
+      <input type="number" ng-model="dosage.quantity" class="input input--quantity">
     <span>&nbsp;<b ng-click="removeIngredient($index)" class="fa fa-times cross">X</b></span>
   </div>
   <div class="ingredient__name grid-block small-6">

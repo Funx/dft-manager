@@ -19,6 +19,7 @@ angular.module('itemsList.service', [])
       .success(function(data){
         $this.list = data.list;
         $this.lastEdit = data.lastEdit;
+        console.log(data);
         if(done) return done(data.lastEdit);
       })
 
@@ -52,7 +53,7 @@ angular.module('itemsList.service', [])
     init: function(done){
       $this = this;
 
-      $this.get()
+      $http.get('/api/items')
 
       .success(function(data) {
         $this.list = data;

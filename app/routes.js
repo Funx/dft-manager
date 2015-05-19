@@ -11,6 +11,8 @@ module.exports = function(app) {
   app.get('/api/items', function(req,res){
     console.log('get');
     getItems.exec(function(err,items){
+      console.log('========');
+      console.log('get item');
       console.log(items);
 
       res.json(items);
@@ -24,8 +26,10 @@ module.exports = function(app) {
     // create a Item, information comes from AJAX request from Angular
     var data = {}
     console.log("post");
+
     async.each(req.body.recipe,
       function(dosage, callback){
+        console.log(dosage);
         if(!dosage._ingredient._id){ // create the ingredient if not in database
           var ingredient = new Item(dosage._ingredient);
           ingredient.save(function(err,item){
@@ -39,32 +43,36 @@ module.exports = function(app) {
         }
       }, function(err){ //save the item
         // create a new one if not in database
+        if (err) throw (err)
         if(!req.body._id){
-          var item = new Item(req.body);
-          item.save(function(err,item){
-            if (err) throw (err)
-            data.lastEdit = item;
-            getItems.exec(function(err,items){
+            var item = new Item(req.body);
+            item.save(function(err,item){
               if (err) throw (err)
-              data.list = items;
-              res.json(data);
+              data.lastEdit = item;
+              getItems.exec(function(err,items){
+                if (err) throw (err)
+                data.list = items;
+                console.log('========');
+                console.log('created item');
+                res.json(data);
+                console.log(data);
+              });
             });
-          });
-          console.log('new item');
-        }else{ // else we just update it
-          Item.update({_id: req.body._id}, req.body, {overwrite: true}, function(err,item){
-            if (err) throw err;
-            console.log(data.lastEdit = item);
-            getItems.exec(function(err,items){
+            console.log('new item');
+          }else{ // else we just update it
+            Item.update({_id: req.body._id}, req.body, {overwrite: true}, function(err,item){
               if (err) throw err;
-              data.list = items;
-              console.log(data);
-
-              res.json(data);
-              console.log('updated item');
+              data.lastEdit = item;
+              getItems.exec(function(err,items){
+                if (err) throw err;
+                console.log('========');
+                console.log('updated item');
+                data.list = items;
+                console.log(data);
+                res.json(data);
+              });
             });
-          });
-        }
+          }
       }
     )
   });

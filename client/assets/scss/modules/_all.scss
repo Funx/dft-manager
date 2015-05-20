@@ -1,8 +1,12 @@
+$header-height: 5rem;
+$row-width: 800px;
+
 .panel{
   @extend .low;
 
   &:hover,{@extend .medium;}
 }
  body{
-   background: #eee;
+   background: desaturate($primary-color, 5%);
+   padding-top: $header-height;
  }

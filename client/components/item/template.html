@@ -1,5 +1,13 @@
 <div class="item">
-  <p>
+    <p
+      class="item__type"
+      editable-text="model.type"
+      buttons="no"
+      onaftersave="item.save()"
+      e-placeholder="type"
+      blur="submit">
+      {{model.type || 'type'}}
+    </p>
     <h4
       class="item__name"
       editable-text="model.name"
@@ -9,36 +17,38 @@
       blur="submit">
       {{model.name || 'nom'}}
     </h4>
-    <small
-      class="item__type"
-      editable-text="model.type"
+  <p class="item__category">
+    <a
+      href="#/category"
+      class=""
+      editable-text="model.category"
       buttons="no"
       onaftersave="item.save()"
-      e-placeholder="type"
+      e-placeholder="catégorie"
       blur="submit">
-      {{model.type || 'type'}}
-    </small>
+      {{model.category || 'catégorie'}}
+    </a>
   </p>
-  <a
-    href="#/category"
-    class="item__category"
-    editable-text="model.category"
-    buttons="no"
-    onaftersave="item.save()"
-    e-placeholder="catégorie"
-    blur="submit">
-    {{model.category || 'catégorie'}}
-  </a>
+  <div class="row">
+    <button
+      class="button button--toggle"
+      ng-init="item.showRecipe = false"
+      ng-click="item.showRecipe = !item.showRecipe">
+      recette <span ng-hide="item.showRecipe">></span><span ng-show="item.showRecipe">x</span>
+    </button>
+    <button
+      ng-show="status != 'readonly'"
+      class="button button--delete alert"
+      ng-click="item.delete()">
+      DEL
+    </button>
+  </div>
   <div
-    class="list list--recipe">
+    class="recipe"
+    ng-show="item.showRecipe">
     <recipe model="model.recipe"></recipe>
   </div>
 
-  <button
-    ng-show="status != 'readonly'"
-    class="item__button alert"
-    ng-click="item.delete()">
-    DEL
-  </button>
+
 
 </div>

@@ -28,8 +28,12 @@ angular.module('itemEditor.component', [
     console.log("hey");
     console.log($scope.newItem);
     if($scope.newItem.name){
-      Items.create($scope.newItem);
-      $scope.newItem = {}; // clear the form so our user is ready to enter another
+      newItem = $scope.newItem
+      Items.create(newItem);
+      $scope.newItem = {
+        category: newItem.category,
+        type: newItem.type
+      }; // clear the form so our user is ready to enter another
       $scope.focus = 'false';
       $timeout(function(){
         $scope.focus = 'name';

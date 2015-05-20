@@ -1,17 +1,15 @@
 <div
   class="recipe">
-  <div ng-repeat="dosage in model" class="tag">
-    <span class="tagName">{{dosage._ingredient.name}}</span>
-    *
-      <input type="number" ng-model="dosage.quantity" class="input input--quantity">
-    <span>&nbsp;<b ng-click="removeIngredient($index)" class="fa fa-times cross">X</b></span>
+  <div ng-repeat="dosage in model track by dosage._ingredient._id" class="dosage">
+    <input type="number" ng-model="dosage.quantity" class="input input--quantity dosage__quantity">
+    <span class="dosage__ingredient">{{dosage._ingredient.name}}</span>
+    <span>&nbsp;<b ng-click="removeIngredient($index)" class="dosage__delete-button button--delete">X</b></span>
   </div>
-  <div class="ingredient__name grid-block small-6">
+  <div class="ingredient__name grid-block small-12">
     <auto-complete
       class="input input--text input--autocomplete"
       url="/api/search/items"
-      placeholder="Ingrédient"
-      ng-model="ingredients">
+      placeholder="Ingrédient">
     </auto-complete>
   </div>
 </div>

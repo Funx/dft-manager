@@ -3,13 +3,23 @@
 .form--edit {
 
 }
-#{$text-input-selectors}{
-  &.input {}
+#{$text-input-selectors} {
+  &.input {
+    width: 100%;
+  }
   &.input--text {}
   &.input--quantity {
-    width: 4rem;
+    margin: 0;
+    padding: 0;
+    width: 2rem;
     display: inline-block;
+    height: 2rem;
+    border: 0;
   }
+}
+
+.input {
+  width: 100%;
 }
 
 .list {}
@@ -17,6 +27,31 @@
 .list--recipe {
   padding: 0;
   margin: 0;
+}
+
+.tags-wrapper {
+  position: relative;
+}
+
+.suggestions-list {
+  @extend .low;
+
+  position: absolute;
+  top: 2.5rem;
+  left: 0;
+  right: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #eee;
+}
+
+.suggestion {
+  padding: 0.25rem 0.5rem;
+}
+
+.suggestion.active{
+  background-color: #aaa;
 }
 
 .ingredient {

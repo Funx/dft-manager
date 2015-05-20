@@ -8,11 +8,11 @@
   <ul class="suggestions-list">
     <li
       ng-repeat="suggestion in suggestions"
-      class="blockSpan"
+      class="suggestion"
       ng-click="addToModel($index)"
       ng-mouseover="$parent.selectedIndex=$index"
-      ng-class="{active : selectedIndex===$index}">
-      {{suggestion.name}}
+      ng-class="{active : selectedIndex===$index || (selectedIndex===-1 && $index===-1)}">
+      {{quantity}} {{suggestion.name}}
     </li>
   </ul>
 </div>

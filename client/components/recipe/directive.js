@@ -10,36 +10,29 @@ angular.module('recipe.directive', [
     },
     templateUrl: '/components/recipe/template.html',
     link: function($scope, $element, $attributes, $ctrls){
-      $scope.recipe = [];
       $scope.model = $scope.model || [];
       console.log($scope.model);
 
-      $scope.ingredients = $scope.recipe.map(function(dosage){
-        return dosage._ingredient;
-      });
+      $scope.ingredients = $scope.model
 
       $scope.$watch(function(){return $scope.ingredients.length}, function(){
-        console.log('ingredients', $scope.ingredients);
-
-        $scope.ingredients.map(function(ingredient){
-          if(!ingredient._id && !ingredient.saved){
-            Items.create(ingredient, function(item){
-              $scope.model.push({
-                quantity: 1,
-                _ingredient: item
-              });
+        $scope.model = $scope.model || [];
+        console.log('=watch ingredients.length', $scope.model);
+        $scope.ingredients.map(function(dosage){
+          if(!dosage._ingredient._id && !dosage.saved){
+            Items.create(dosage._ingredient, function(item){
+              dosage = item;
+              dosage.saved = true;
             });
-            ingredient.saved = true;
-          }else if(!ingredient.saved &&
-            Utils.arrayObjectIndexOf($scope.recipe, ingredient._id, '_ingredient._id') === -1){
-            $scope.model.push({
-              quantity: 1,
-              _ingredient: ingredient
-            });
-            ingredient.saved = true;
+            console.log('create ingredient');
+          }else if(!dosage.saved &&
+            Utils.arrayObjectIndexOf($scope.model, dosage._ingredient._id, '_ingredient._id') === -1){
+            dosage.saved = true;
+            console.log('save existing ingredient');
           }else{
+            console.log('do nothing');
           }
-        })
+        });
 
       });
 

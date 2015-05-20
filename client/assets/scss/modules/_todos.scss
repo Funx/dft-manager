@@ -66,6 +66,7 @@ $row-height : 3rem;
 
 .item{
   @extend .panel;
+  overflow: visible;
   position: relative;
   padding: 2rem;
   text-transform: capitalize;
@@ -99,4 +100,20 @@ $row-height : 3rem;
 .item .editable-empty{
   color: #aaa;
 
+}
+
+.dosage {
+  background: #fff;
+  position: relative;
+  padding-right: 1.5rem;
+  padding-left: 0.5rem;
+}
+
+.dosage__delete-button {
+  cursor: pointer;
+  color: #f00;
+  position: absolute;
+  right: 0.5rem;
+  top: -0.25rem;
+  line-height: 2.5rem;
 }

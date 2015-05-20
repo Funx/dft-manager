@@ -6,8 +6,14 @@ angular.module('utils.service', [])
 .factory('Utils', [function() {
   return {
     arrayObjectIndexOf: function(array, searchTerm, property) {
+      property = property.split('.');
       for(var i = 0, len = array.length; i < len; i++) {
-          if (array[i][property] === searchTerm) return i;
+        var value = array[i];
+        property.map(function(prop){
+          value = value[prop];
+        });
+        console.log(searchTerm);
+        if (value && searchTerm && value.toLowerCase() === searchTerm.toLowerCase()) return i;
       }
       return -1;
     }

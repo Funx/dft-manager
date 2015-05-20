@@ -6,6 +6,8 @@ angular.module('autocomplete.directive', [])
     $scope: false,
     templateUrl: '/components/autocomplete/template.html',
     link: function($scope, elem, attrs) {
+      var validated = false; //flag to know if the user already hit enter for the previous suggestions
+
       $scope.suggestions = [];
       $scope.selectedIndex = 0;
       $scope.placeHolder = attrs.placeholder || 'Start typing';
@@ -16,25 +18,30 @@ angular.module('autocomplete.directive', [])
         if($scope.searchText){
           var pattern = /^([0-9])+/gm;
           $scope.quantity = $scope.searchText.match(pattern) || [1];
-          $scope.quantity = parseInt($scope.quantity[0]);
+          $scope.quantity = parseInt($scope.quantity[$scope.quantity.length-1]);
           searchText = $scope.searchText.replace(pattern, '').trim() || $scope.quantity;
+          $scope.suggestions[0] = {name: searchText}
           if(searchText === $scope.quantity) {$scope.quantity = 1}
           console.log($scope.quantity, searchText);
           $http.get(attrs.url + '/' + searchText)
           .success(function(data) {
-            if (Utils.arrayObjectIndexOf(data, searchText, 'name') === -1) {
-              data.unshift({name: searchText});
+            if(!validated){
+              if (Utils.arrayObjectIndexOf(data, searchText, 'name') === -1) {
+                data.unshift({name: searchText});
+              }
+              $scope.suggestions = data || [];
+              $scope.selectedIndex = 0;
             }
-            $scope.suggestions = data || [];
-            $scope.selectedIndex = 0;
           });
         } else {
           $scope.selectedIndex = 0;
           $scope.suggestions = [];
+          $scope.quantity = 0;
         }
       }
 
       $scope.checkKeyDown = function(event) {
+        validated = false;
         if (event.keyCode === 40) { //down key, increment selectedIndex
           event.preventDefault();
           if ($scope.selectedIndex + 1 !== $scope.suggestions.length) {
@@ -55,10 +62,11 @@ angular.module('autocomplete.directive', [])
       }
 
       $scope.addToModel=function(index){
+        if(index === -1) index = 0;
+        $scope.model = $scope.model || [];
         console.log('=addToModel');
         console.log('to be added',$scope.suggestions[index]);
         console.log('actual data',$scope.model);
-        if(index === -1) index = 0;
         var arrayObjectIndexOfId = Utils.arrayObjectIndexOf($scope.model, $scope.suggestions[index]._id, '_ingredient._id');
         var arrayObjectIndexOfName = Utils.arrayObjectIndexOf($scope.model, $scope.suggestions[index].name, '_ingredient.name');
         if(arrayObjectIndexOfId===-1){
@@ -73,6 +81,8 @@ angular.module('autocomplete.directive', [])
         }
         $scope.searchText='';
         $scope.suggestions=[];
+        $scope.quantity = 0;
+        validated = true;
       }
 
       $scope.print = function(variable){
@@ -80,7 +90,7 @@ angular.module('autocomplete.directive', [])
       }
 
       $scope.$watch('selectedIndex',function(val){
-        if(val > -1 && val < $scope.suggestions.length) {
+        if(val > 0 && val < $scope.suggestions.length) {
           $scope.searchText = $scope.quantity + ' ' + $scope.suggestions[$scope.selectedIndex].name;
         }
       });

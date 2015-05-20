@@ -13,7 +13,7 @@ angular.module('utils.service', [])
           value = value[prop];
         });
         console.log(searchTerm);
-        if (value && searchTerm && value.toLowerCase() === searchTerm.toLowerCase()) return i;
+        if (value && searchTerm && value.toString().toLowerCase() === searchTerm.toString().toLowerCase()) return i;
       }
       return -1;
     }

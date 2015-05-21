@@ -13,8 +13,6 @@ module.exports = function(app) {
     getItems.exec(function(err,items){
       console.log('========');
       console.log('get item');
-      console.log(items);
-
       res.json(items);
     });
   });
@@ -30,12 +28,21 @@ module.exports = function(app) {
     async.each(req.body.recipe,
       function(dosage, callback){
         console.log(dosage);
-        if(!dosage._ingredient._id){ // create the ingredient if not in database
-          var ingredient = new Item(dosage._ingredient);
-          ingredient.save(function(err,item){
-            if (err) throw (err);
-            dosage._ingredient = item._id;
-            callback();
+        if(!dosage._ingredient._id) {
+          Item.find({'name': dosage._ingredient.name}).exec(function(err, item){
+            if(item.length) {
+              console.log('==item with same name already exists',item[0]);
+              dosage._ingredient = item[0]._id;
+              callback();
+            }else{
+              var ingredient = new Item(dosage._ingredient);
+              ingredient.save(function(err,item){
+                if (err) throw (err);
+                console.log("==creaate a new ingredient")
+                dosage._ingredient = item._id;
+                callback();
+              });
+            }
           });
         }else{ // else just replace the ingredient by its ref
           dosage._ingredient = dosage._ingredient._id;
@@ -55,7 +62,6 @@ module.exports = function(app) {
                 console.log('========');
                 console.log('created item');
                 res.json(data);
-                console.log(data);
               });
             });
             console.log('new item');
@@ -68,7 +74,6 @@ module.exports = function(app) {
                 console.log('========');
                 console.log('updated item');
                 data.list = items;
-                console.log(data);
                 res.json(data);
               });
             });
@@ -125,6 +130,7 @@ module.exports = function(app) {
       .exec(function(err,items){
         if(err) throw err
         if(items.length === 1) res.send(items[0]);
+        else res.send(false);
       });
     }
   });
@@ -132,7 +138,9 @@ module.exports = function(app) {
   // application -------------------------------------------------------------
   app.get('*', function(req, res) {
     console.log("get *");
-
+    // Item.remove({
+    //   _id: '555e4e51977c5eea6b3c7dff'
+    // })
     res.sendFile(app.dir + '/build/index.html'); // load the single view file (angular will handle the page changes on the front-end)
   });
 

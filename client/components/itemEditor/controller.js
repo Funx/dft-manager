@@ -42,7 +42,7 @@ angular.module('itemEditor.component', [
   };
 
   $scope.addChildIngredient = function(){
-    if($scope.newItem.name && $scope.newItem.category){
+    if($scope.newItem.name && $scope.newItem.category && !$scope.newItem.recipe.length){
       switch ($scope.newItem.category.toSlug()){
         case 'trophee-moyen':
           query = 'Trophée mineur/';
@@ -60,20 +60,22 @@ angular.module('itemEditor.component', [
 
         $http.get('/api/search/items/' + query)
         .success(function(data){
-          $scope.newItem.recipe.push({
-            quantity: 1,
-            _ingredient: data
-          });
-
-          indexOfMetaObject = Utils.arrayObjectIndexOf(data.recipe, 'Méta', '_ingredient.category');
-          console.log(data.recipe);
-          if(indexOfMetaObject > -1) {
-            ingredientName = data.recipe[indexOfMetaObject]._ingredient.name.replace(/moyen/gi, 'majeur').replace(/mineur/gi, 'moyen');
-            console.log(ingredientName);
+          if(data){
+            $scope.newItem.recipe = [];
             $scope.newItem.recipe.push({
-              quantity: 1,
-              _ingredient: {name: ingredientName}
-            })
+              _ingredient: data,
+              quantity: 1
+            });
+
+            var indexOfMetaObject = Utils.arrayObjectIndexOf(data.recipe, 'Méta', '_ingredient.category');
+            if(indexOfMetaObject > -1) {
+              var ingredientName = data.recipe[indexOfMetaObject]._ingredient.name.replace(/moyen/gi, 'majeur').replace(/mineur/gi, 'moyen');
+              var data = {name: ingredientName};
+              $scope.newItem.recipe.push({
+                _ingredient: data,
+                quantity: 1
+              });
+            }
           }
 
         });

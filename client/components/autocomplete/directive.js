@@ -70,9 +70,6 @@ angular.module('autocomplete.directive', [])
       $scope.addToModel=function(index){
         if(index === -1) index = 0;
         $scope.model = $scope.model || [];
-        console.log('=addToModel');
-        console.log('to be added',$scope.suggestions[index]);
-        console.log('actual data',$scope.model);
         var arrayObjectIndexOfId = Utils.arrayObjectIndexOf($scope.model, $scope.suggestions[index]._id, '_ingredient._id');
         var arrayObjectIndexOfName = Utils.arrayObjectIndexOf($scope.model, $scope.suggestions[index].name, '_ingredient.name');
         if(arrayObjectIndexOfId===-1){

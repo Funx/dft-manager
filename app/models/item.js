@@ -23,4 +23,8 @@ var itemSchema = new Schema({
 
 itemSchema.plugin(createdModifiedPlugin, {index: true});
 
+itemSchema.virtual('categorySlug').get(function () {
+  return this.category.toSlug();
+});
+
 module.exports = mongoose.model('Item', itemSchema);

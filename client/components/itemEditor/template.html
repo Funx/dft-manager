@@ -10,6 +10,7 @@
     type="text"
     placeholder="Nom de l'ingrédient"
     ng-model="newItem.name"
+    ng-change="addChildIngredient()"
     focus-me="focus == 'name'">
 
   <input
@@ -22,6 +23,7 @@
     class="modal__input"
     type="text"
     placeholder="Catégorie"
+    ng-change="addChildIngredient()"
     ng-model="newItem.category">
 
   <recipe model="newItem.recipe"></recipe>

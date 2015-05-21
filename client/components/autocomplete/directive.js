@@ -29,6 +29,10 @@ angular.module('autocomplete.directive', [])
               if (Utils.arrayObjectIndexOf(data, searchText, 'name') === -1) {
                 data.unshift({name: searchText});
               }
+              data.map(function(suggestion){
+                suggestion.category = suggestion.category || '';
+                suggestion.className = suggestion.category.toSlug();
+              })
               $scope.suggestions = data || [];
               $scope.selectedIndex = 0;
             }
@@ -54,7 +58,9 @@ angular.module('autocomplete.directive', [])
             $scope.selectedIndex--;
           }
         } else if (event.keyCode === 13) { //enter pressed
+          console.log('pressend enter', $scope.searchText);
           if($scope.searchText){
+            console.log('save entry');
             event.preventDefault();
             $scope.addToModel($scope.selectedIndex);
           }
@@ -83,6 +89,7 @@ angular.module('autocomplete.directive', [])
         $scope.suggestions=[];
         $scope.quantity = 0;
         validated = true;
+        $scope.$emit('change');
       }
 
       $scope.print = function(variable){

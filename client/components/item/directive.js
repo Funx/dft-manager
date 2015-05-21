@@ -18,10 +18,10 @@ angular.module('item.directive', [
     link: function($scope, $element, $attributes, $ctrls){
       $scope.model= $scope.model || {};
 
-      // $scope.$watch(
-      //   function(){return $scope.model.recipe.length},
-      //   $scope.item.save()
-      // )
+      $scope.model.category = $scope.model.category || '';
+      $scope.className = $scope.model.category.toSlug();
+
+      $scope.$on('change', $scope.item.save);
 
       $scope.item = {
         delete: function(){
@@ -33,13 +33,12 @@ angular.module('item.directive', [
           Edit.setCurrentItem($scope.model);
           $scope.model = Edit.currentItem;
           console.log('lol');
-
         },
         save: function(){
           if($scope.model.name){
-            console.log('save')
             console.log($scope.model);
             Items.create($scope.model, function(data){});
+            console.log('save');
           }
         }
       }

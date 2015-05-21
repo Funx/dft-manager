@@ -1,3 +1,72 @@
+// displayed colors
+$item-default-color: desaturate($primary-color, 10%);
+$item-meta-color: desaturate($primary-color, 40%);
+$item-minor-color: desaturate($secondary-color, 70%);
+$item-middle-color: desaturate($secondary-color, 40%);
+$item-major-color: $secondary-color;
+$item-shield-color: hsl(30, 50%, 50%);
+
+@mixin color-code() {
+  @extend .default;
+
+  &.meta {
+    @extend .meta;
+  }
+  &.trophee-mineur {
+    @extend .trophee-mineur;
+  }
+  &.trophee-moyen {
+    @extend .trophee-moyen;
+  }
+  &.trophee-majeur {
+    @extend .trophee-majeur;
+  }
+  &.bouclier {
+    @extend .bouclier;
+  }
+}
+
+.default {
+  $self-color: $item-default-color;
+  background-color: $self-color;
+  &.active {
+    background-color: darken($self-color, 20%);
+  }
+}
+
+.meta {
+  $self-color: $item-meta-color;
+  background-color: $self-color;
+  &.active {
+    background-color: darken($self-color, 20%);
+  }
+}
+.trophee-mineur {
+  $self-color: $item-minor-color;
+  background-color: $self-color;
+  &.active {
+    background-color: darken($self-color, 20%);
+  }}
+.trophee-moyen {
+  $self-color: $item-middle-color;
+  background-color: $self-color;
+  &.active {
+    background-color: darken($self-color, 20%);
+  }}
+.trophee-majeur {
+  $self-color: $item-major-color;
+  background-color: $self-color;
+  &.active {
+    background-color: darken($self-color, 20%);
+  }}
+.bouclier {
+  $self-color: $item-shield-color;
+  background-color: $self-color;
+  &.active {
+    background-color: darken($self-color, 20%);
+  }}
+
+
 $row-height : 3rem;
 
 .grid-block{
@@ -16,9 +85,7 @@ $row-height : 3rem;
 .stack {
   display: flex;
   flex-flow: row wrap;
-  align-items: flex-start;
-  justify-content: flex-start;
-  position: relative;
+  justify-content: space-between;
   transition: all .5s ease-in-out;
 }
 
@@ -66,14 +133,16 @@ $row-height : 3rem;
 
 .item{
   @extend .panel;
+  @include color-code();
+
+  box-shadow: 0;
+  // border: 2px solid lighten($secondary-color, 80%);
   overflow: visible;
   position: relative;
   padding: 1rem;
   text-transform: capitalize;
   display: block;
-  border: 1px solid transparent;
   color: #fff;
-  background-color: lighten($primary-color, 5%);
 }
 
 .item--alone {
@@ -88,6 +157,8 @@ $row-height : 3rem;
 }
 
 .item__name {
+  font-weight: 400;
+  text-transform: uppercase;
   display: inline-block;
   margin-top: 0;
   margin-bottom: 0;
@@ -123,7 +194,8 @@ $row-height : 3rem;
 }
 
 .dosage {
-  background: #fff;
+  @include color-code();
+  color: #fff;
   position: relative;
   padding-right: 1.5rem;
   padding-left: 0.5rem;
@@ -133,7 +205,14 @@ $row-height : 3rem;
 }
 
 #{$text-input-selectors}{
+  &.input {
+    background-color: #fff;
+    color: #444;
+    border: 0;
+  }
   &.dosage__quantity {
+    color: inherit;
+    background: transparent;
     font-size: 0.75rem;
     height: 0.75rem;
     padding: 0;

@@ -1,6 +1,7 @@
 <div class="tags-wrapper">
   <input
     type="text"
+    class="input"
     placeholder="{{placeHolder}}"
     ng-keydown="checkKeyDown($event)"
     ng-model="searchText"
@@ -8,7 +9,7 @@
   <ul class="suggestions-list">
     <li
       ng-repeat="suggestion in suggestions"
-      class="suggestion"
+      class="suggestion {{suggestion.className}}"
       ng-click="addToModel($index)"
       ng-mouseover="$parent.selectedIndex=$index"
       ng-class="{active : selectedIndex===$index || (selectedIndex===-1 && $index===-1)}">

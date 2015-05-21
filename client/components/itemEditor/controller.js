@@ -7,7 +7,7 @@ angular.module('itemEditor.component', [
   'autocomplete.directive'
 ])
 
-.controller('ItemEditorCtrl', ['$scope', '$timeout', 'Items', 'Edit', function($scope, $timeout, Items, Edit) {
+.controller('ItemEditorCtrl', ['$scope', '$timeout', '$http', 'Utils', 'Items', 'Edit', function($scope, $timeout, $http, Utils, Items, Edit) {
   $scope.newItem = {};
   $scope.placeHolder = {
     name: "Nom de l'objet",
@@ -41,23 +41,44 @@ angular.module('itemEditor.component', [
     }
   };
 
-  $scope.addIngredient = function(){
-    item = $scope.newItem;
-    newIngredient = item.newIngredient
-    if(newIngredient && newIngredient.name){
-      newIngredient.quantity = newIngredient.quantity || 1;
-      if(!item.recipe) item.recipe = [];
-      item.recipe.map(function(ingredient){
-        if(ingredient.name === newIngredient.name){
-          ingredient = newIngredient;
-          newIngredient = false;
-        }
-      });
-      if(newIngredient) item.recipe.push(newIngredient);
-      newIngredient = {};
-      console.log(newIngredient);
-      console.log(item.recipe);
-      $scope.newItem.newIngredient = {};
+  $scope.addChildIngredient = function(){
+    if($scope.newItem.name && $scope.newItem.category){
+      switch ($scope.newItem.category.toSlug()){
+        case 'trophee-moyen':
+          query = 'Trophée mineur/';
+          break;
+        case 'trophee-majeur':
+          query = 'Trophée moyen/';
+          break;
+        default :
+          query = false;
+      }
+      if(query){
+        searchTerm = $scope.newItem.name.replace(/moyen/gi, '').replace(/majeur/gi, '');
+
+        query += searchTerm;
+
+        $http.get('/api/search/items/' + query)
+        .success(function(data){
+          $scope.newItem.recipe.push({
+            quantity: 1,
+            _ingredient: data
+          });
+
+          indexOfMetaObject = Utils.arrayObjectIndexOf(data.recipe, 'Méta', '_ingredient.category');
+          console.log(data.recipe);
+          if(indexOfMetaObject > -1) {
+            ingredientName = data.recipe[indexOfMetaObject]._ingredient.name.replace(/moyen/gi, 'majeur').replace(/mineur/gi, 'moyen');
+            console.log(ingredientName);
+            $scope.newItem.recipe.push({
+              quantity: 1,
+              _ingredient: {name: ingredientName}
+            })
+          }
+
+        });
+      }
+
     }
   }
 

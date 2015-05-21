@@ -35,15 +35,16 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  background: #eee;
+  background: $primary-color;
 }
 
 .suggestion {
+  color: #fff;
   padding: 0.25rem 0.5rem;
 }
 
 .suggestion.active{
-  background-color: #aaa;
+  background-color: darken($primary-color, 10%);
 }
 
 .ingredient {

@@ -7,6 +7,16 @@ $row-width: 800px;
   &:hover,{@extend .medium;}
 }
  body{
-   background: desaturate($primary-color, 5%);
+   background: #fff;
+   padding: 2rem;
    padding-top: $header-height;
+
+   @include breakpoint(medium) {
+     padding: 5rem;
+     padding-top: $header-height;
+   }
+   @include breakpoint(large) {
+     padding: 9rem;
+     padding-top: $header-height;
+   }
  }

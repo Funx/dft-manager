@@ -96,9 +96,7 @@ $row-height : 3rem;
   opacity: 1;
   // max-height: 160px;
   transition:
-    opacity .2s 0s ease-in,
-    transform .2s 0s ease-in,
-    max-height .2s 0s ease-in-out;
+    all .1s 0s ease-in-out;
   margin: 0.5rem;
 
   &.ng-enter, &.ng-hide-remove{
@@ -143,6 +141,8 @@ $row-height : 3rem;
   text-transform: capitalize;
   display: block;
   color: #fff;
+
+  transition: all .2s ease-in-out;
 }
 
 .item--alone {

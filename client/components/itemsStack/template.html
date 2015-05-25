@@ -2,13 +2,19 @@
   class=""
   ng-controller="ItemsListCtrl">
 
-  <h3 class="grid-content shrink">Liste des trophées</h3>
-  {{ctrl}}
+  <div class="grid-block shrink header low no-scale">
+    <h1 class="grid-content header__title">Trophy manager</h1>
+    <input
+      class="header__search-bar search-bar"
+      ng-change="filterItems()"
+      ng-model="filter">
+  </div>
+
   <div
     class="stack">
     <item
       model="item"
-      ng-repeat="item in items track by item._id | orderBy:modified"
+      ng-repeat="item in items track by item._id"
       class="stack__element">
     </item>
     <!-- <item

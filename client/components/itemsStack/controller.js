@@ -5,14 +5,33 @@ angular.module('itemsList.component', [
   'item.directive'
 ])
 
-.controller('ItemsListCtrl', ['$scope', '$timeout', 'Items', function($scope, $timeout, Items) {
-  $scope.items = Items.list;
-  $scope.itemHeight = 160;
+.controller('ItemsListCtrl', [
+  '$scope',
+  '$timeout',
+  '$filter',
+  'Items', function($scope, $timeout, $filter, Items) {
 
-  $scope.$watch(function(){return Items.list.length}, function(){
-    $timeout(function(){
-      $scope.items = Items.list;
-    },500);
+  var orderBy = $filter('orderBy');
+  var filterBy = $filter('filter');
+
+  $scope.filter = 'acro';
+
+  var filters = function(array){
+    array = orderBy(array, 'modified', true);
+    array = filterBy(array, $scope.filter);
+    return array;
+  }
+
+  $scope.filterItems = function(){
+    $scope.items = filters(Items.list);
+  }
+
+  $scope.$watch(
+    function(){return Items.list.length},
+    function(){
+      $timeout(function(){
+        $scope.items = filters(Items.list);
+      });
   });
 
   // when landing on the page, get all Items and show them

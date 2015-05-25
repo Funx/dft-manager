@@ -12,8 +12,6 @@ angular.module('autocomplete.directive', [])
       $scope.selectedIndex = 0;
       $scope.placeHolder = attrs.placeholder || 'Start typing';
 
-      console.log($scope.model);
-
       $scope.search = function() {
         if($scope.searchText){
           var pattern = /^([0-9])+/gm;

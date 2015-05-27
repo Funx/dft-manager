@@ -46,6 +46,7 @@ String.prototype.toSlug = function(){
 }
 
 angular.module('app', [
+	'foundation',
   'utils.service',
   'utils.directive',
   'itemsList.component',

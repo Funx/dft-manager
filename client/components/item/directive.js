@@ -21,7 +21,11 @@ angular.module('item.directive', [
       $scope.model.category = $scope.model.category || '';
       $scope.className = $scope.model.category.toSlug();
 
-      $scope.$on('change', $scope.item.save);
+      $scope.$on('change', function(){
+        console.log('received change event');
+
+        $scope.item.save()
+      });
 
       $scope.item = {
         delete: function(){
@@ -42,6 +46,18 @@ angular.module('item.directive', [
           }
         }
       }
+    },
+    controller: function($scope){
+      $scope.yo = "yooo" + Math.floor(Math.random()*100);
+
+      $scope.isVisible = function(){
+        var filter = $scope.filter || '';
+        var name = $scope.name || '';
+        var isSubstring = ( name.indexOf( filter ) !== -1 );
+        // If the filter value is not a substring of the
+        // name, we have to exclude it from view.
+        return isSubstring || !filter;
+      };
     }
   }
 }])

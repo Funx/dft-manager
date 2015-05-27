@@ -1,6 +1,32 @@
 <div
   ng-class="className"
+  ng-show="isVisible()"
   class="item">
+  <zf-action-sheet>
+    <zf-as-button title="I'm an Action Sheet"></zf-as-button>
+    <zf-as-content position="bottom">
+      <p>Tap to share</p>
+      <ul>
+      <li><a href="#">Twitter</a></li>
+      <li><a href="#">Facebook</a></li>
+      <li><a href="#">Mail</a></li>
+      </ul>
+    </zf-as-content>
+  </zf-action-sheet>
+    <!-- <div class="small-menu row">
+      <button
+        class="button button--toggle"
+        ng-init="item.showRecipe = false"
+        ng-click="item.showRecipe = !item.showRecipe">
+        recette <span ng-hide="item.showRecipe">></span><span ng-show="item.showRecipe">x</span>
+      </button>
+      <button
+        ng-show="status != 'readonly'"
+        class="button button--delete alert"
+        ng-click="item.delete()">
+        DEL
+      </button>
+    </div> -->
     <p
       class="item__type"
       editable-text="model.type"
@@ -31,26 +57,9 @@
       {{model.category || 'catégorie'}}
     </a>
   </p>
-  <div class="row">
-    <button
-      class="button button--toggle"
-      ng-init="item.showRecipe = false"
-      ng-click="item.showRecipe = !item.showRecipe">
-      recette <span ng-hide="item.showRecipe">></span><span ng-show="item.showRecipe">x</span>
-    </button>
-    <button
-      ng-show="status != 'readonly'"
-      class="button button--delete alert"
-      ng-click="item.delete()">
-      DEL
-    </button>
-  </div>
   <div
     class="recipe"
-    ng-show="item.showRecipe">
+    ng-if="item.showRecipe">
     <recipe model="model.recipe"></recipe>
   </div>
-
-  {{model.modified}}
-
 </div>

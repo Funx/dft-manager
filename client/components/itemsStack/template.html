@@ -7,14 +7,17 @@
     <input
       class="header__search-bar search-bar"
       ng-change="filterItems()"
-      ng-model="filter">
+      ng-model="filterQuery">
   </div>
 
   <div
+    vs-repeat
     class="stack">
     <item
       model="item"
-      ng-repeat="item in items track by item._id"
+      ng-repeat="item in items track by item._id | orderBy:-item.modified"
+      ng-show="([item.name] | filter:filter).length || !filter"
+      postRepeatDirective
       class="stack__element">
     </item>
     <!-- <item

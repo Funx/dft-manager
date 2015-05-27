@@ -9,21 +9,23 @@ angular.module('itemsList.component', [
   '$scope',
   '$timeout',
   '$filter',
-  'Items', function($scope, $timeout, $filter, Items) {
+  '$debounce',
+  'Items',
+  function($scope, $timeout, $filter, $debounce, Items) {
 
   var orderBy = $filter('orderBy');
   var filterBy = $filter('filter');
 
-  $scope.filter = 'acro';
+  $scope.filter = '';
 
   var filters = function(array){
     array = orderBy(array, 'modified', true);
-    array = filterBy(array, $scope.filter);
+    // array = filterBy(array, $scope.filter);
     return array;
   }
 
   $scope.filterItems = function(){
-    $scope.items = filters(Items.list);
+    $scope.filter = $scope.filterQuery;
   }
 
   $scope.$watch(
@@ -37,4 +39,4 @@ angular.module('itemsList.component', [
   // when landing on the page, get all Items and show them
   Items.init();
 
-}]);
+}])

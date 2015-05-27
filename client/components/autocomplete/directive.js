@@ -84,6 +84,7 @@ angular.module('autocomplete.directive', [])
         $scope.suggestions=[];
         $scope.quantity = 0;
         validated = true;
+        console.log('emit change');
         $scope.$emit('change');
       }
 

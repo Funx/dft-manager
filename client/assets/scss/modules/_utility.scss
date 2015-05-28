@@ -1,7 +1,7 @@
 @mixin setZ($value){
   @if $value < 0{$value:0};
   box-shadow: $value*0.0px $value*1px $value*2px (rgba(0,0,0,0.2));
-  transform: scale(($value) * 0.0025 + 1);
+  // transform: scale(($value) * 0.0025 + 1);
   z-index:$value*10;
 
   transition-property:box-shadow, transform, z-index;
@@ -128,7 +128,7 @@ $noDarkBorder:rgba(0,0,0,0);
   @include setZ(16);
 }
 .no-scale{
-  transform: scale(1)!important;
+  // transform: scale(1)!important;
 }
 .no-shadow{
   box-shadow: none;

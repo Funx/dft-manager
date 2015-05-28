@@ -50,6 +50,14 @@ angular.module('item.directive', [
     controller: function($scope){
       $scope.yo = "yooo" + Math.floor(Math.random()*100);
 
+      $scope.hideActionSheet = function() {
+        $scope.isActionSheetVisible = false;
+      }
+
+      $scope.showActionSheet = function(){
+        $scope.isActionSheetVisible = true;
+      }
+
       $scope.isVisible = function(){
         var filter = $scope.filter || '';
         var name = $scope.name || '';

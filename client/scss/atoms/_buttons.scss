@@ -1,0 +1,43 @@
+.button {
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  margin: 0;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.button--delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: transparent !important;
+  color: transparent;
+  font-size: 0.1px;
+  padding: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+
+  &:after, &:before {
+    position: absolute;
+    content: ' ';
+    display: block;
+    background: #fff;
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    top: calc(50% - 1px);
+    right: 25%;
+    width: 50%;
+    height: 2px;
+  }
+
+  &:before {
+    right: calc(50% - 1px);
+    top: 25%;
+    width: 2px;
+    height: 50%;
+  }
+}

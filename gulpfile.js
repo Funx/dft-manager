@@ -32,7 +32,7 @@ var paths = {
   ],
   // Sass will check these folders for files when you use @import.
   sass: [
-    'client/assets/scss',
+    'client/scss',
     'bower_components/foundation-apps/scss',
     'bower_components/animate.css/',
     'bower_components/angular-xeditable/dist/css/'
@@ -58,7 +58,10 @@ var paths = {
   // These files are for your app's JavaScript
   appJS: [
     'client/components/**/*.js',
-    'client/assets/scripts/app.js'
+    'client/modules/**/*.js',
+    'client/utils/**/*.js',
+    'client/config/**/*.js',
+    'client/app.js'
   ]
 }
 
@@ -113,7 +116,7 @@ gulp.task('copy:foundation', function(cb) {
 
 // Compiles Sass
 gulp.task('sass', function () {
-  return gulp.src('client/assets/scss/app.scss')
+  return gulp.src('client/app.scss')
     // .pipe(compass({
     //   sass: 'client/assets/scss/',
     //   import_path: paths.sass,
@@ -194,7 +197,7 @@ gulp.task('default', ['server'], function () {
   gulp.watch(['./client/assets/scss/**/*', './scss/**/*'], ['sass']);
 
   // Watch JavaScript
-  gulp.watch(['./client/assets/scripts/**/*', './client/components/**/*.js'], ['watch:js']);
+  gulp.watch(['./client/app.js', './client/components/**/*.js', './client/modules/**/*.js'], ['watch:js']);
 
   // Watch static files
   gulp.watch(['./client/**/*.*', './client/components/**/*.html', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*'], ['watch:static']);

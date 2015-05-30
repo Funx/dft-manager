@@ -1,0 +1,12 @@
+$primary-color: hsl(145, 49%, 53%);
+$secondary-color: #00558b;
+$body-background: #eee;
+
+
+// displayed colors
+$item-default-color: desaturate($primary-color, 10%);
+$item-meta-color: desaturate($primary-color, 40%);
+$item-minor-color: desaturate($secondary-color, 70%);
+$item-middle-color: desaturate($secondary-color, 40%);
+$item-major-color: $secondary-color;
+$item-shield-color: hsl(30, 50%, 50%);

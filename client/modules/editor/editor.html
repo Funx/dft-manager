@@ -1,0 +1,37 @@
+<form
+  ng-controller="EditorCtrl"
+  class="create-item-view"
+  name="createItemForm"
+  ng-submit="createItem()"
+  editable-form>
+
+  <input
+    class="modal__input"
+    type="text"
+    placeholder="Nom de l'ingrédient"
+    ng-model="newItem.name"
+    ng-change="addChildIngredient()"
+    focus-me="focus == 'name'">
+
+  <input
+    class="modal__input"
+    type="text"
+    placeholder="Type"
+    ng-model="newItem.type">
+
+  <input
+    class="modal__input"
+    type="text"
+    placeholder="Catégorie"
+    ng-change="addChildIngredient()"
+    ng-model="newItem.category">
+
+  <recipe model="newItem.recipe"></recipe>
+
+  <button
+    type="submit"
+    class="button submit success">
+    Create
+  </button>
+
+</form>

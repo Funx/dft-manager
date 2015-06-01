@@ -1,11 +1,17 @@
 // js/core.js
 
 angular.module('dftm', [
+	//utils
 	'dftm.plugins',
-	'dftm.items',
+	'dftm.ui',
+	'dftm.utils',
+
+	//components
 	'dftm.item',
 	'dftm.actionBubble',
-  'dftm.utils',
+	
+	//views
+	'dftm.items',
 	'dftm.editor'
 ])
 

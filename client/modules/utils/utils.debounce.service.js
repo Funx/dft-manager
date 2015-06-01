@@ -1,4 +1,4 @@
-angular.module('debounce.service', [])
+angular.module('utils.debounce.service', [])
 
 .factory('$debounce', ['$rootScope', '$browser', '$q', '$exceptionHandler',
         function($rootScope,   $browser,   $q,   $exceptionHandler) {

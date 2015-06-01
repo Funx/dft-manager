@@ -1,10 +1,10 @@
-angular.module('autocomplete.directive', [])
+angular.module('recipe.autocomplete.directive', [])
 
 .directive('autoComplete', ['$http', '$timeout', 'Utils', function($http, $timeout, Utils) {
   return {
     restrict: 'AE',
     $scope: false,
-    templateUrl: '/components/autocomplete/template.html',
+    templateUrl: '/modules/recipe/recipe.autocomplete.html',
     link: function($scope, elem, attrs) {
       var validated = false; //flag to know if the user already hit enter for the previous suggestions
 

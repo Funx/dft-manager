@@ -1,5 +1,5 @@
 angular.module('dftm.utils', [
   'utils.directives',
   'utils.services',
-  'debounce.service'
+  'utils.debounce.service'
 ]);

@@ -1,0 +1,34 @@
+<!-- <context-menu
+  class="action-sheet">
+  <ul>
+    <li>
+      <a href=#
+      ng-click="item.showRecipe = !item.showRecipe">
+        recette <span ng-hide="item.showRecipe">></span>
+        <span ng-show="item.showRecipe">x</span>
+      </a>
+    </li>
+  </ul>
+</context-menu> -->
+  <div zf-as-content="" position="bottom">
+  <ul>
+    <li>
+      <a
+      href="#"
+      ng-init="item.showRecipe = false"
+      ng-click="item.showRecipe = !item.showRecipe">
+      <span ng-hide="item.showRecipe">Afficher</span>
+      <span ng-show="item.showRecipe">Masquer</span>
+      la recette
+      </a>
+    </li>
+    <li>
+      <a
+      href="#"
+      class="button alert"
+      ng-click="item.delete()">
+        supprimer
+      </a>
+    </li>
+  </ul>
+  </div>

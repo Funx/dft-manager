@@ -194,7 +194,7 @@ gulp.task('watch:templates', ['copy:templates'], browserSync.reload);
 // Default task: builds your app, starts a server, and recompiles assets when they change
 gulp.task('default', ['server'], function () {
   // Watch Sass
-  gulp.watch(['./client/assets/scss/**/*', './scss/**/*'], ['sass']);
+  gulp.watch(['./client/scss/**/*', './scss/**/*'], ['sass']);
 
   // Watch JavaScript
   gulp.watch(['./client/app.js', './client/components/**/*.js', './client/modules/**/*.js'], ['watch:js']);

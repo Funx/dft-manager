@@ -21,6 +21,10 @@ angular.module('item.directive', [])
         $scope.item.save()
       });
 
+      $scope.sayHello = function(){
+        console.log('it works');
+      }
+
       $scope.item = {
         delete: function(){
           console.log($scope.model);

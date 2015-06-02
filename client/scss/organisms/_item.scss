@@ -13,13 +13,13 @@ $row-height : 3rem;
 }
 
 .item{
-  @extend .panel;
+  // @extend .panel;
   @include color-code();
 
+  position: relative;
   box-shadow: 0;
   // border: 2px solid lighten($secondary-color, 80%);
   overflow: visible;
-  position: static;
   padding: 1rem;
   text-transform: capitalize;
   display: block;
@@ -73,8 +73,14 @@ $row-height : 3rem;
   color: #aaa;
 }
 
-.action-sheet {
-  background: #faf;
-  position: fixed;
-  bottom: 0;
+.item__button--action-sheet{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.item__action-sheet{
+  position: absolute;
+  top: 0;
+  right: 0;
 }

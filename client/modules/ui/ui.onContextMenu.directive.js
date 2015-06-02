@@ -6,9 +6,10 @@ angular.module('ui.onContextMenu.directive', [])
 		link: function($scope, $elm, $attrs) {
 
 			function triggerEvent() {
+				$scope.$emit('contextMenu');
 				$scope.$apply(function() {
-          $scope.$eval($attrs.onLongPress);
-					$scope.$emit('contextMenu');
+          $scope.$eval($attrs.onContextMenu);
+					console.log($attrs.onContextMenu);
         });
 			}
 

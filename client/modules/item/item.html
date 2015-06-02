@@ -1,14 +1,14 @@
 <div
   ng-class="className"
   ng-show="isVisible()"
-  on-long-press="showActionSheet()"
+  on-context-menu="item.displayContextMenu = !item.displayContextMenu"
   class="item">
 
-  <div
-    class="action-sheet"
-    ng-if="isActionSheetVisible">
-    Yoo
+  <div zf-action-sheet="" class="item__action-sheet">
+    <div class="item__button--action-sheet" zf-as-button="" title="^"></div>
+    <ng-include src="'modules/item/contextmenu.html'"></ng-include>
   </div>
+
     <!-- <div class="small-menu row">
       <button
         class="button button--toggle"

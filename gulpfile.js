@@ -26,9 +26,8 @@ var isProduction = !!(argv.production);
 var paths = {
   assets: [
     './client/**/*.*',
-    '!./client/templates/**/*.*',
-    '!./client/assets/{scss,js}/**/*.*',
-    './client/components/**/*.html'
+    '!./client/**/*.{sccs,js}',
+    './client/modules/**/*.html'
   ],
   // Sass will check these folders for files when you use @import.
   sass: [
@@ -116,15 +115,7 @@ gulp.task('copy:foundation', function(cb) {
 
 // Compiles Sass
 gulp.task('sass', function () {
-  return gulp.src('client/app.scss')
-    // .pipe(compass({
-    //   sass: 'client/assets/scss/',
-    //   import_path: paths.sass,
-    //   sourcemap: true,
-    //   style: (isProduction ? 'compressed' : 'nested'),
-    //   debug: true,
-    //   require: ['sass-css-importer']
-    // }))
+  return gulp.src('./client/app.scss')
     .pipe($.sass({
       includePaths: paths.sass,
       outputStyle: (isProduction ? 'compressed' : 'nested'),
@@ -194,13 +185,13 @@ gulp.task('watch:templates', ['copy:templates'], browserSync.reload);
 // Default task: builds your app, starts a server, and recompiles assets when they change
 gulp.task('default', ['server'], function () {
   // Watch Sass
-  gulp.watch(['./client/scss/**/*', './scss/**/*'], ['sass']);
+  gulp.watch(['./client/scss/**/*.scss', './client/app.scss'], ['sass']);
 
   // Watch JavaScript
   gulp.watch(['./client/app.js', './client/components/**/*.js', './client/modules/**/*.js'], ['watch:js']);
 
   // Watch static files
-  gulp.watch(['./client/**/*.*', './client/components/**/*.html', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*'], ['watch:static']);
+  gulp.watch(['./client/**/*.*','!./client/**/*.{scss,js}', './client/modules/**/*.html', '!./client/modules/**/*.js', '!./client/templates/**/*.*', '!./client/{scss}/**/*.scss'], ['watch:static']);
 
   // Watch app templates
   gulp.watch(['./client/templates/**/*.html'], ['watch:templates']);

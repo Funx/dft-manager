@@ -1,0 +1,11 @@
+.contextMenu {
+
+
+  @include breakpoint(medium) {
+    z-index: 1000;
+    background: #fff;
+    position: fixed;
+    top: 500px;
+    right: 100px;
+  }
+}

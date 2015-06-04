@@ -51,12 +51,10 @@ angular.module('richContextMenu.directive', [
       });
     },
     controller: function($scope){
-      console.log($scope);
       $scope.i = $scope.i || 0;
       $scope.i++;
       $scope.rand = $scope.rand || []
       $scope.rand.push(Math.floor(100*Math.random()));
-      console.log($scope.i, $scope.rand);
     }
   }
 }]);

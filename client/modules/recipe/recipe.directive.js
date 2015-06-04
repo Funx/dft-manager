@@ -29,7 +29,6 @@ angular.module('recipe.directive', [
 
       $scope.removeIngredient = function(index){
         $scope.model.splice(index,1);
-        console.log('emit change');
         $scope.$emit('change');      }
     }
   }

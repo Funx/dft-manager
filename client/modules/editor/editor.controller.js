@@ -26,8 +26,6 @@ angular.module('editor.controller', [
 
     // when submitting the add form, send the text to the node API
   $scope.createItem = function() {
-    console.log("hey");
-    console.log($scope.newItem);
     if($scope.newItem.name){
       newItem = $scope.newItem
       Items.create(newItem);

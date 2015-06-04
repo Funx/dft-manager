@@ -14,12 +14,11 @@ angular.module('items.service', [])
     create: function(todoData, done) {
       $this = this;
       todoData.recipe = todoData.recipe || [];
-      console.log(todoData.recipe);
+
       $http.post('/api/items', todoData)
       .success(function(data){
         $this.list = data.list;
         $this.lastEdit = data.lastEdit;
-        console.log(data);
         if(done) return done(data.lastEdit);
       })
 

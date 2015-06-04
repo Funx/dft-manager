@@ -1,31 +1,15 @@
 <div
-  ng-class="className"
+  ng-class="{
+    'item--selected':item.selected,
+    }"
   ng-show="isVisible()"
-  on-context-menu="item.displayContextMenu = !item.displayContextMenu"
-  class="item">
+  on-context-menu="openContextMenu()"
+  ng-click="selectItem()"
+  class="item {{className}}">
 
-  <div
-    class="item__button--action-sheet"
-    ng-click="item.displayContextMenu = !item.displayContextMenu">
-    ^
-  </div>
-  <rich-context-menu class="item__contextMenu" trigger="item.displayContextMenu">
+  <rich-context-menu class="item__contextMenu" trigger="displayContextMenu">
     <ng-include src="'modules/item/contextmenu.html'"></ng-include>
   </rich-context-menu>
-    <!-- <div class="small-menu row">
-      <button
-        class="button button--toggle"
-        ng-init="item.showRecipe = false"
-        ng-click="item.showRecipe = !item.showRecipe">
-        recette <span ng-hide="item.showRecipe">></span><span ng-show="item.showRecipe">x</span>
-      </button>
-      <button
-        ng-show="status != 'readonly'"
-        class="button button--delete alert"
-        ng-click="item.delete()">
-        DEL
-      </button>
-    </div> -->
     <p
       class="item__type"
       editable-text="model.type"

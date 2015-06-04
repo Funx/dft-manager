@@ -12,7 +12,7 @@ angular.module('utils.services', [])
         property.map(function(prop){
           value = value[prop];
         });
-        console.log(searchTerm);
+
         if (value && searchTerm && value.toString().toLowerCase() === searchTerm.toString().toLowerCase()) return i;
       }
       return -1;

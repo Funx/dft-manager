@@ -18,10 +18,17 @@ $row-height : 3rem;
   position: relative;
   box-shadow: 0;
   // border: 2px solid lighten($secondary-color, 80%);
+  border-width: 0;
   overflow: visible;
   padding: 1rem;
   display: block;
   color: #fff;
+  transition: all .1s ease-in-out;
+}
+
+.item--selected {
+  border: 0.5rem solid hsla(0, 0, 100, 0.5);
+  padding: 0.5rem;
 }
 
 .item--alone {
@@ -44,6 +51,12 @@ $row-height : 3rem;
   font-size: 1.2rem;
   color: inherit;
 
+}
+
+.item__name--nega {
+  color: #000;
+  text-align: center;
+  margin: auto;
 }
 
 .item__category {

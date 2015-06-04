@@ -11,15 +11,22 @@ angular.module('dftm', [
 	'dftm.actionBubble',
 	'dftm.richContextMenu',
 
+	//partials
+	'dftm.query',
+
 	//views
 	'dftm.items',
-	'dftm.editor'
+	'dftm.editor',
+	'dftm.prices'
 ])
 
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
   $routeProvider.
     when('/items', {
       templateUrl: 'modules/items/items.html',
+    })
+    .when('/prices', {
+      templateUrl: 'modules/prices/prices.html',
     })
     .otherwise({
       redirectTo: '/items'

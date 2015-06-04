@@ -9,7 +9,6 @@ angular.module('ui.onContextMenu.directive', [])
 				$scope.$emit('contextMenu');
 				$scope.$apply(function() {
           $scope.$eval($attrs.onContextMenu);
-					console.log($attrs.onContextMenu);
         });
 			}
 

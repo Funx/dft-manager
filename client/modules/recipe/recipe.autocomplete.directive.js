@@ -20,7 +20,7 @@ angular.module('recipe.autocomplete.directive', [])
           searchText = $scope.searchText.replace(pattern, '').trim() || $scope.quantity;
           $scope.suggestions[0] = {name: searchText}
           if(searchText === $scope.quantity) {$scope.quantity = 1}
-          console.log($scope.quantity, searchText);
+
           $http.get(attrs.url + '/' + searchText)
           .success(function(data) {
             if(!validated){
@@ -56,9 +56,7 @@ angular.module('recipe.autocomplete.directive', [])
             $scope.selectedIndex--;
           }
         } else if (event.keyCode === 13) { //enter pressed
-          console.log('pressend enter', $scope.searchText);
           if($scope.searchText){
-            console.log('save entry');
             event.preventDefault();
             $scope.addToModel($scope.selectedIndex);
           }

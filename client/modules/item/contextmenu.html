@@ -1,20 +1,16 @@
-  <ul>
-    <li class="contextMenu__action">
-      <a
-      href="#"
+<h4 class="rich-context-menu__title">{{model.name}}</h4>
+  <ul class="rich-context-menu__actions">
+    <li
+      class="rich-context-menu__action"
       ng-init="item.showRecipe = false"
       ng-click="item.showRecipe = !item.showRecipe">
       <span ng-hide="item.showRecipe">Afficher</span>
       <span ng-show="item.showRecipe">Masquer</span>
       la recette
-      </a>
     </li>
-    <li class="contextMenu__action">
-      <a
-      href="#"
-      class="button alert"
+    <li
+      class="rich-context-menu__action action--delete"
       ng-click="item.delete()">
         supprimer
-      </a>
     </li>
   </ul>

@@ -16,31 +16,45 @@ angular.module('item.directive', [])
       $scope.className = $scope.model.category.toSlug();
 
       $scope.$on('change', function(){
-        console.log('received change event');
-
         $scope.item.save()
       });
 
-      $scope.sayHello = function(){
-        console.log('it works');
+      $scope.selectItem = function(){
+        $scope.item.selected = true;
+        console.log('select');
       }
+
+      $scope.openContextMenu = function(){
+        $scope.selectItem();
+        $scope.displayContextMenu = true;
+      }
+
+      $element.bind('click', function(event){
+        if($scope.item.selected){
+          event.stopPropagation();
+          console.log('stop !');
+        }
+      });
+
+      document.body.addEventListener('click', function(event){
+        if($scope.item.selected){
+          $scope.$apply(function(){
+            $scope.item.selected = false;
+          });
+        }
+      });
 
       $scope.item = {
         delete: function(){
-          console.log($scope.model);
-
           Items.delete($scope.model._id);
         },
         edit: function(){
           Edit.setCurrentItem($scope.model);
           $scope.model = Edit.currentItem;
-          console.log('lol');
         },
         save: function(){
           if($scope.model.name){
-            console.log($scope.model);
             Items.create($scope.model, function(data){});
-            console.log('save');
           }
         }
       }

@@ -10,7 +10,8 @@ angular.module('items.controller', [
   '$filter',
   '$debounce',
   'Items',
-  function($scope, $timeout, $filter, $debounce, Items) {
+  'Query',
+  function($scope, $timeout, $filter, $debounce, Items, Query) {
 
   var orderBy = $filter('orderBy');
   var filterBy = $filter('filter');
@@ -23,9 +24,14 @@ angular.module('items.controller', [
     return array;
   }
 
-  $scope.filterItems = function(){
-    $scope.filter = $scope.filterQuery;
-  }
+  $scope.$watch(
+    function(){
+      return Query.value;
+    },
+    function(){
+      $scope.filter = Query.value;
+    }
+  );
 
   $scope.$watch(
     function(){return Items.list.length},

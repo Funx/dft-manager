@@ -9,7 +9,8 @@ angular.module('dftm', [
 	//components
 	'dftm.item',
 	'dftm.actionBubble',
-	
+	'dftm.richContextMenu',
+
 	//views
 	'dftm.items',
 	'dftm.editor'

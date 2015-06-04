@@ -1,3 +1,5 @@
 angular.module('dftm.ui', [
-  'ui.onContextMenu.directive'
-])
+  'ui.onContextMenu.directive',
+  'ui.mouse.service',
+  'ui.mouseTracking.directive',
+]);

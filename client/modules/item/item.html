@@ -9,8 +9,9 @@
     ng-click="item.displayContextMenu = !item.displayContextMenu">
     ^
   </div>
-  <ng-include src="'modules/item/contextmenu.html'" ng-if="item.displayContextMenu"></ng-include>
-
+  <rich-context-menu class="item__contextMenu" trigger="item.displayContextMenu">
+    <ng-include src="'modules/item/contextmenu.html'"></ng-include>
+  </rich-context-menu>
     <!-- <div class="small-menu row">
       <button
         class="button button--toggle"

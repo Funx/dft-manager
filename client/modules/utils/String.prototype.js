@@ -42,3 +42,8 @@ String.prototype.toSlug = function(){
 
   return str;
 }
+
+String.prototype.reverse = function(){
+	//use small esrever lib to properly reverse my string
+	return esrever.reverse(this);
+}

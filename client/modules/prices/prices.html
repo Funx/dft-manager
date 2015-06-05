@@ -1,3 +1,37 @@
 <div ng-controller="PricesCtrl">
+  <div
+    class="item item--inline {{item.className}}"
+    on-context-menu="item.displayContextMenu = true"
+    ng-repeat="item in items track by item._id | orderBy:-item.modified"
+    ng-show="([item.name] | filter:filter).length || !filter"
+    ng-click="item.selected = true"
+    ng-class="{
+      'item--selected':item.selected || item.displayContextMenu || item.showRecipe
+    }">
 
+    <div class="item__wrapper--inner">
+      <span class="item__type">{{item.type || 'Basique'}}</span>
+      <span class="item__name">{{item.name}}</span>
+      <input
+        ng-focus="item.selected = true"
+        ng-blur="item.selected = false; saveItem($index)"
+        focus-me="item.selected && !item.showRecipe"
+        ng-enter="focusNext($index)"
+        type="text"
+        class="item__price input input__price"
+        select-on-focus
+        format-as-currency="k"
+        ng-model="item.price">
+    </div>
+
+      <rich-context-menu class="item__contextMenu" trigger="item.displayContextMenu">
+        <ng-include src="'modules/item/contextmenu.html'"></ng-include>
+      </rich-context-menu>
+      <recipe
+        ng-if="item.showRecipe"
+        model="item.recipe"
+        class="item__recipe recipe">
+      </recipe>
+
+  </div>
 </div>

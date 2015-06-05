@@ -1,13 +1,13 @@
 body {
   padding: 2rem;
-  padding-top: $header-height;
+  padding-top: $header-height + 2rem;
 
   @include breakpoint(medium) {
     padding: 5rem;
-    padding-top: $header-height;
+    padding-top: $header-height + 5rem;
   }
   @include breakpoint(large) {
     padding: 9rem;
-    padding-top: $header-height;
+    padding-top: $header-height + 9rem;
   }
 }

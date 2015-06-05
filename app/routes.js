@@ -143,13 +143,4 @@ module.exports = function(app) {
     // })
     res.sendFile(app.dir + '/build/index.html'); // load the single view file (angular will handle the page changes on the front-end)
   });
-
-
-  var promise = function(err, item, req, res) {
-    if (err) throw (err)
-    getItems.exec(function(err,items){
-      res.json(items);
-    });
-  }
-
 };

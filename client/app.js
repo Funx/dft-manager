@@ -5,6 +5,7 @@ angular.module('dftm', [
 	'dftm.plugins',
 	'dftm.ui',
 	'dftm.utils',
+	'dftm.formating',
 
 	//components
 	'dftm.item',

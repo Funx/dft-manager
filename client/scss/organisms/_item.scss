@@ -24,10 +24,11 @@ $row-height : 3rem;
   display: block;
   color: #fff;
   transition: all .1s ease-in-out;
+  border: 0rem solid hsla(0, 0, 0, 0.5);
 }
 
 .item--selected {
-  border: 0.5rem solid hsla(0, 0, 100, 0.5);
+  border-width: 0.5rem;
   padding: 0.5rem;
 }
 
@@ -39,7 +40,6 @@ $row-height : 3rem;
   margin: 0;
   font-size: 0.75rem;
   color: inherit;
-
 }
 
 .item__name {
@@ -53,23 +53,69 @@ $row-height : 3rem;
 
 }
 
-.item__name--nega {
-  color: #000;
-  text-align: center;
-  margin: auto;
-}
-
 .item__category {
   font-size: 1rem;
   margin: 0;
   color: inherit;
-
 }
+
+#{$text-input-selectors} {
+  &.item__price{
+    display: inline-block;
+    float: none;
+    height: 1rem;
+    margin: 0;
+    max-width: 100px;
+    padding: .125rem;
+    margin: -.25rem;
+    box-sizing: content-box;
+    background-color: transparent;
+    color: #fff;
+    border-bottom: 1.5px solid #fff;
+  }
+}
+
 
 .item__button{
   @extend .button;
   float: right;
   margin: 0;
+}
+
+.item--inline {
+  padding: 0.75rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0.25rem;
+  max-width: 800px;
+}
+
+.item__wrapper--inner{
+  display: flex;
+  width: 100%;
+}
+
+.item--inline.item--selected{
+  border-width: 0.25rem;
+  padding: 1rem 0.5rem;
+}
+
+.item--inline .item__type {
+  display: inline-block;
+  flex: 1;
+  font-size: .8rem;
+  max-width: 100px;
+}
+
+.item--inline .item__name {
+  display: inline-block;
+  width: 100px;
+  flex: 2;
+  font-size: .8rem;
+}
+
+.item--inline .item__recipe .recipe{
+  margin-top: 2rem;
 }
 
 .item .editable {

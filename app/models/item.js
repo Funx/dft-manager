@@ -17,8 +17,8 @@ var itemSchema = new Schema({
   type: String,
   category: String,
   recipe: [dosageSchema],
-  buyingPrice: Number,
-  sellingPrice: Number
+  cost: Number,
+  price: Number
 });
 
 itemSchema.plugin(createdModifiedPlugin, {index: true});

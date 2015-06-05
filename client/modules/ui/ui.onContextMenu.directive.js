@@ -15,12 +15,12 @@ angular.module('ui.onContextMenu.directive', [])
       //==== handle right click
       document.oncontextmenu = function (e) {
         if(e.target.hasAttribute('on-context-menu')) {
-          return false;
         }
       };
 
       $elm.bind('contextmenu',function(e){
 				triggerEvent();
+				e.preventDefault();
       });
 
       //==== handle long press

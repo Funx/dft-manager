@@ -12,13 +12,25 @@
 
 </head>
 
-<body class="grid-block vertical" ui-mouse-tracking>
+<body
+  class="grid-block vertical"
+  ng-class="{
+    'body--without-header': !queryFocused && hideTopBar
+  }"
+  ui-mouse-tracking
+  watch-keyboard-opening
+  on-keyboard-opening="hideOverlays = true"
+  on-keyboard-closing="hideOverlays = false">
 
   <ng-include src="'modules/query/query.html'"></ng-include>
 
-  <ng-view></ng-view>
+  <ng-view
+    class="page-wrapper">
+  </ng-view>
 
-  <action-bubble></action-bubble>
+  <action-bubble
+    ng-hide="hideOverlays">
+  </action-bubble>
 
   <script src="assets/js/foundation.js"></script>
   <script src="assets/js/templates.js"></script>

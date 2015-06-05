@@ -8,6 +8,10 @@
     width: 100%;
   }
   &.input--text {}
+
+  &.input__price {
+    text-align: right;
+  }
 }
 
 .input {

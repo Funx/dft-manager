@@ -1,9 +1,17 @@
 <div
+  ng-hide="hideOverlays && !queryFocused"
   class="grid-block shrink header low no-scale"
   ng-controller="QueryCtrl">
   <h1 class="grid-content header__title">Trophy manager</h1>
   <input
     class="header__search-bar search-bar"
+    ng-focus="queryFocused = true"
+    ng-blur="queryFocused = false"
     ng-change="filterItems()"
     ng-model="filterQuery">
+
+  <div class="navigation">
+    <a class="navigation__link" href="/prices">Prix</a>
+    <a class="navigation__link" href="/items">Items</a>
+  </div>
 </div>

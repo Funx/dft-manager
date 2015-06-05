@@ -11,11 +11,11 @@ angular.module('items.service', [])
       return $http.get('/api/items');
     },
 
-    create: function(todoData, done) {
+    create: function(itemData, done) {
       $this = this;
-      todoData.recipe = todoData.recipe || [];
+      itemData.recipe = itemData.recipe || [];
 
-      $http.post('/api/items', todoData)
+      $http.post('/api/items', itemData)
       .success(function(data){
         $this.list = data.list;
         $this.lastEdit = data.lastEdit;
@@ -55,12 +55,16 @@ angular.module('items.service', [])
       $http.get('/api/items')
 
       .success(function(data) {
-        $this.list = data;
-        console.log(data);
+        $this.list = data.map(function(item){
+          item.category = item.category || '';
+          item.className = item.category.toSlug();
+          return item;
+        });
+        console.log($this.list);
         // $this.list.map(function(item){
         //   $this.delete(item._id);
         // });
-        return data;
+        return $this.list;
       })
 
       .error(function(data) {

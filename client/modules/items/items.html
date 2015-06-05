@@ -8,7 +8,10 @@
       <item
         model="item"
         ng-repeat="item in items track by item._id | orderBy:-item.modified"
-        ng-show="([item.name] | filter:filter).length || !filter"
+        ng-show="
+          ([item.name] | filter:filter).length ||
+          ([item.category] | filter:filter).length ||
+          !filter"
         postRepeatDirective
         class="stack__element">
       </item>

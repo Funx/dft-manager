@@ -11,25 +11,30 @@ angular.module('ui.onKeyboardOpening.directive', [
       controller: function($scope) {
         var height_old, height_new;
         var focus = false;
+        var waiting = false;
         var self = this;
         self.keyBoardOpened = false;
 
         document.body.addEventListener('focus', function(){
           var focus = true;
-          height_old = window.innerHeight;
+          if(!waiting){
+            height_old = window.innerHeight;
+          }
           window.addEventListener('resize', ifResize);
         }, true);
 
         document.body.addEventListener('blur', function(){
           focus = false;
+          waiting = true;
           $timeout(function(){
+            waiting = false;
             if(!focus){
               $scope.$apply(function(){
                 self.keyBoardOpened = false;
               });
               window.removeEventListener('resize', ifResize);
             }
-          });
+          },500);
         }, true);
 
         function ifResize() {
@@ -65,7 +70,7 @@ angular.module('ui.onKeyboardOpening.directive', [
     require: '^watchKeyboardOpening',
     link: function($scope, $elem, $attrs, keyboardWatcher) {
       $scope.$watch(function(){
-        console.log('watcher :' , keyboardWatcher);
+        console.log('watcher :' , keyboardWatcher.keyBoardOpened);
         return keyboardWatcher.keyBoardOpened;
       },function(){
         console.log(keyboardWatcher.keyBoardOpened);

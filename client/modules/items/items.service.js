@@ -17,7 +17,11 @@ angular.module('items.service', [])
 
       $http.post('/api/items', itemData)
       .success(function(data){
-        $this.list = data.list;
+        $this.list = data.list.map(function(item){
+          item.category = item.category || '';
+          item.className = item.category.toSlug();
+          return item;
+        });
         $this.lastEdit = data.lastEdit;
         if(done) return done(data.lastEdit);
       })
@@ -35,8 +39,11 @@ angular.module('items.service', [])
       $http.delete('/api/items/' + id)
 
       .success(function(data){
-        $this.list = data;
-        console.log(data);
+        $this.list = data.map(function(item){
+          item.category = item.category || '';
+          item.className = item.category.toSlug();
+          return item;
+        });
         if(!done) done = function(){}
         return done(data);
       })

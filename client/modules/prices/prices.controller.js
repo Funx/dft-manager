@@ -27,6 +27,10 @@ angular.module('prices.controller', [])
       Items.create($scope.items[itemId], function(data){});
     }
 
+    $scope.deleteItem = function(itemId){
+      Items.delete($scope.items[itemId]._id);
+    }
+
     $scope.focusNext = function(prevId){
       if(prevId + 1 < $scope.items.length){
         $scope.items.map(function(item){

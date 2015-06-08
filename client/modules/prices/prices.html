@@ -4,9 +4,7 @@
     on-context-menu="item.displayContextMenu = true"
     ng-repeat="item in items track by item._id | orderBy:-item.modified"
     ng-show="
-      ([item.name] | filter:filter).length ||
-      ([item.category] | filter:filter).length ||
-      !filter"
+      ([item] | filter:filter).length || !filter"
     ng-click="item.selected = true"
     ng-class="{
       'item--selected':item.selected || item.displayContextMenu || item.showRecipe
@@ -28,7 +26,7 @@
     </div>
 
       <rich-context-menu class="item__contextMenu" trigger="item.displayContextMenu">
-        <ng-include ng-init="model = item" src="'modules/item/contextmenu.html'"></ng-include>
+        <ng-include ng-init="model = item" src="'modules/prices/contextmenu.html'"></ng-include>
       </rich-context-menu>
       <recipe
         ng-if="item.showRecipe"

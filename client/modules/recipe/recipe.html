@@ -5,7 +5,7 @@
     <span class="dosage__ingredient">{{::dosage._ingredient.name}}</span>
     <span>&nbsp;<b ng-click="removeIngredient($index)" class="dosage__delete-button button--delete">X</b></span>
   </div>
-  <div class="ingredient__name grid-block small-12">
+  <div class="ingredient__name small-12">
     <auto-complete
       class="input input--text input--autocomplete"
       url="/api/search/items"

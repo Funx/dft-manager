@@ -1,0 +1,86 @@
+@font-face {
+	font-family: "icons";
+	src: url('../../assets/fonts/icons/icons.eot');
+	src: url('../../assets/fonts/icons/icons.eot?#iefix') format('eot'),
+		url('../../assets/fonts/icons/icons.woff') format('woff'),
+		url('../../assets/fonts/icons/icons.ttf') format('truetype'),
+		url('../../assets/fonts/icons/icons.svg#icons') format('svg');
+}
+
+%icon {
+	font-family: "icons";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	// speak: none; // only necessary if not using the private unicode range (firstGlyph option)
+	text-decoration: none;
+	text-transform: none;
+	text-align: center;
+	display: flex;
+	align-items: center;
+}
+
+@function icon-char($filename) {
+	$char: "";
+
+	@if $filename == check {
+		$char: "\E001";
+	}
+	@if $filename == cross {
+		$char: "\E002";
+	}
+	@if $filename == ding {
+		$char: "\E003";
+	}
+	@if $filename == eye {
+		$char: "\E004";
+	}
+	@if $filename == gear {
+		$char: "\E005";
+	}
+	@if $filename == search {
+		$char: "\E006";
+	}
+	@if $filename == test {
+		$char: "\E007";
+	}
+	@if $filename == user {
+		$char: "\E008";
+	}
+
+	@return $char;
+}
+
+@mixin icon($filename, $insert: before) {
+	&:#{$insert} {
+		@extend %icon;
+		content: icon-char($filename);
+	}
+}
+
+.icon-check {
+	@include icon(check);
+}
+.icon-cross {
+	@include icon(cross);
+}
+.icon-ding {
+	@include icon(ding);
+}
+.icon-eye {
+	@include icon(eye);
+}
+.icon-gear {
+	@include icon(gear);
+}
+.icon-search {
+	@include icon(search);
+}
+.icon-test {
+	@include icon(test);
+}
+.icon-user {
+	@include icon(user);
+}

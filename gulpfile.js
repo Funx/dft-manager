@@ -12,6 +12,8 @@ var rimraf   = require('rimraf');
 var router   = require('front-router');
 var sequence = require('run-sequence');
 var compass  = require('gulp-compass');
+var iconfont = require('gulp-iconfont');
+var iconfontCss = require('gulp-iconfont-css');
 
 var nodemon = require('gulp-nodemon');
 var browserSync = require('browser-sync');
@@ -26,8 +28,7 @@ var isProduction = !!(argv.production);
 var paths = {
   assets: [
     './client/**/*.*',
-    '!./client/**/*.{sccs,js}',
-    './client/modules/**/*.html'
+    '!./client/**/*.{sccs,js}'
   ],
   // Sass will check these folders for files when you use @import.
   sass: [
@@ -62,6 +63,9 @@ var paths = {
     'client/utils/**/*.js',
     'client/config/**/*.js',
     'client/app.js'
+  ],
+  icons: [
+    './client/assets/images/icons/**/*.svg'
   ]
 }
 
@@ -159,6 +163,23 @@ gulp.task('uglify:app', function() {
   ;
 });
 
+gulp.task('glyphicons', function() {
+  var fontName = 'icons';
+  console.log('glyphicons...')
+  return gulp.src(['./client/assets/images/icons/*.svg'])
+    .pipe(iconfontCss({
+      fontName: fontName, // nom de la fonte, doit être identique au nom du plugin iconfont
+      path: './client/scss/atoms/_icons-template.scss',
+      targetPath: '../../../scss/atoms/_icons.scss', // emplacement de la css finale
+      fontPath: '../../assets/fonts/icons/' // emplacement des fontes finales
+    }))
+    .pipe(iconfont({
+      fontName: fontName, // identique au nom de iconfontCss
+    }))
+    .pipe(gulp.dest('./client/assets/fonts/icons/') )
+  ;
+});
+
 // Starts a test server, which you can view at http://localhost:3000
 gulp.task('server', ['build'], function() {
   nodemon({
@@ -169,18 +190,20 @@ gulp.task('server', ['build'], function() {
 
   browserSync({
     proxy: "localhost:8080",
-    notify: false
+    notify: false,
+    open: false
   });
   browserSync.reload();
 });
 
 // Builds your entire app once, without starting a server
 gulp.task('build', function(cb) {
-  sequence('clean', ['copy', 'copy:foundation', 'sass', 'uglify'], 'copy:templates', cb);
+  sequence('clean', ['copy', 'copy:foundation', 'glyphicons','sass', 'uglify'], 'copy:templates', cb);
 });
 
 gulp.task('watch:js', ['uglify:app'], browserSync.reload);
 gulp.task('watch:static', ['copy'], browserSync.reload);
+gulp.task('watch:icons', ['glyphicons'], browserSync.reload);
 gulp.task('watch:templates', ['copy:templates'], browserSync.reload);
 
 // Default task: builds your app, starts a server, and recompiles assets when they change
@@ -192,8 +215,16 @@ gulp.task('default', ['server'], function () {
   gulp.watch(['./client/app.js', './client/components/**/*.js', './client/modules/**/*.js'], ['watch:js']);
 
   // Watch static files
-  gulp.watch(['./client/**/*.*','!./client/**/*.{scss,js}', './client/modules/**/*.html', '!./client/modules/**/*.js', '!./client/templates/**/*.*', '!./client/{scss}/**/*.scss'], ['watch:static']);
+  gulp.watch([
+    './client/**/*.*',
+    '!./client/**/*.{scss,js}',
+    '!./client/assets/images/icons/*',
+    '!./client/templates/**/*.*'
+    ], ['watch:static']);
 
   // Watch app templates
   gulp.watch(['./client/templates/**/*.html'], ['watch:templates']);
+
+  // Watch app templates
+  gulp.watch([paths.icons], ['watch:icons']);
 });

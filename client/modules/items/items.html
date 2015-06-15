@@ -10,7 +10,6 @@
         ng-repeat="item in items track by item._id | orderBy:-item.modified"
         ng-show="
           ([item] | filter:filter).length || !filter"
-        postRepeatDirective
         class="stack__element">
       </item>
       <!-- <item

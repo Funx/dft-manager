@@ -16,7 +16,7 @@ angular.module('formatAsCurrency.directive', [])
               .replace(/\s\D/g, '');
             input = parseInt(input);
           }
-          console.log('model formatting :',input);
+          // console.log('model formatting :',input);
           return input || null; //converted
         });
 
@@ -33,7 +33,7 @@ angular.module('formatAsCurrency.directive', [])
               input += ' ' + currency;
             }
           }
-          console.log('view formatting :',input);
+          // console.log('view formatting :',input);
           return input || null;
         });
 

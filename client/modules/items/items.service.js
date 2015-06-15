@@ -63,8 +63,8 @@ angular.module('items.service', [])
 
       .success(function(data) {
         $this.list = data.map(function(item){
-          item.category = item.category || '';
-          item.className = item.category.toSlug();
+          // item.category = item.category || '';
+          // item.className = item.category.toSlug();
           return item;
         });
         console.log($this.list);

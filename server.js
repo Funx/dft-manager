@@ -71,8 +71,7 @@ function extendNativeObjects() {
   };
 
   String.prototype.toSlug = function(){
-    str = this.replace(/^\s+|\s+$/g, ''); // trim
-    str = str.toLowerCase();
+    var str = this.replace(/^\s+|\s+$/g, '').toLowerCase();
 
     // remove accents, swap ñ for n, etc
     var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";

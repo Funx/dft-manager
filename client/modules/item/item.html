@@ -5,47 +5,35 @@
   ng-show="isVisible()"
   on-context-menu="openContextMenu()"
   ng-click="selectItem()"
-  class="item {{className}}">
+  class="item {{className}} item--inline">
 
-  <rich-context-menu class="item__contextMenu" trigger="displayContextMenu">
-    <ng-include src="'modules/item/contextmenu.html'"></ng-include>
-  </rich-context-menu>
-
-    <p
-      class="item__type"
+  <form
+    editable-form name="itemForm"
+    class="item__wrapper--inner" >
+    <span
       editable-text="model.type"
-      buttons="no"
-      onaftersave="item.save()"
-      e-placeholder="type"
-      blur="submit">
-      {{model.type || 'type'}}
-    </p>
-    <h4
-      class="item__name"
+      class="item__type">{{model.type || 'Basique'}}</span>
+    <span
       editable-text="model.name"
-      buttons="no"
-      onaftersave="item.save()"
-      e-placeholder="nom"
-      blur="submit">
-      {{model.name || 'nom'}}
-    </h4>
-    <p class="item__category">
-      <a
-        href="#/category"
-        class=""
-        editable-text="model.category"
-        buttons="no"
-        onaftersave="item.save()"
-        e-placeholder="catégorie"
-        blur="submit">
-        {{model.category || 'catégorie'}}
-      </a>
-    </p>
-  
-  <div
-    class="recipe"
-    ng-if="item.showRecipe">
-    <recipe model="model.recipe"></recipe>
-  </div>
+      class="item__name">{{model.name}}</span>
+    <input
+      ng-focus="item.selected = true"
+      ng-blur="item.selected = false; saveItem($index)"
+      ng-enter="focusNext($index)"
+      type="text"
+      class="item__price input input__price"
+      select-on-focus
+      format-as-currency="k"
+      ng-model="model.price">
+  </form>
+
+    <rich-context-menu class="item__contextMenu" trigger="displayContextMenu">
+      <ng-include src="'modules/item/contextmenu.html'"></ng-include>
+    </rich-context-menu>
+    <recipe
+      ng-if="item.showRecipe"
+      model="item.recipe"
+      class="item__recipe recipe">
+    </recipe>
 
 </div>

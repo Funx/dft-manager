@@ -2,6 +2,11 @@
   <ul class="rich-context-menu__actions">
     <li
       class="rich-context-menu__action"
+      ng-click="itemForm.$show()">
+      éditer
+    </li>
+    <li
+      class="rich-context-menu__action"
       ng-click="item.showRecipe = !item.showRecipe">
       <span ng-hide="item.showRecipe">Afficher</span>
       <span ng-show="item.showRecipe">Masquer</span>
@@ -10,6 +15,6 @@
     <li
       class="rich-context-menu__action action--delete"
       ng-click="item.delete($index)">
-        supprimer
+      supprimer
     </li>
   </ul>

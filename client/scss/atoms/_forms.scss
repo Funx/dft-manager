@@ -55,10 +55,14 @@
   list-style: none;
 }
 
+.editable-wrap {
+  display: block;
+}
+
 .editable-input {
   height: auto !important;
   width: auto !important;
-  display: inline !important;
+  display: block !important;
   border: 0 !important;
   padding: 0 !important;
   margin: 0 !important;

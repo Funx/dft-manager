@@ -42,6 +42,6 @@ angular.module('items.controller', [
   });
 
   // when landing on the page, get all Items and show them
-  Items.init();
+  if(!Items.list.length){Items.init();}
 
 }])

@@ -13,6 +13,7 @@ module.exports = function(app) {
     getItems.exec(function(err,items){
       console.log('========');
       console.log('get item');
+      console.log(items);
       res.json(items);
     });
   });

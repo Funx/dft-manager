@@ -26,22 +26,22 @@ var itemSchema = new Schema({
 itemSchema.plugin(createdModifiedPlugin, {index: true});
 
 itemSchema.virtual('categorySlug').get(function () {
-  return this.category.toSlug();
+  var categorySlug = this.category || '';
+  return categorySlug.toSlug();
 });
 
-itemSchema.virtual('cost').get(function() {
-  $this = this;
-  if(this.recipe.length) {
-    return this.recipe.reduce(function(prev, next){
-      next._ingredient = next._ingredient || {cost:0};
-      console.log(next._ingredient.name, next._ingredient.cost, next.quantity);
-      return prev + next._ingredient.cost * next.quantity;
-    }, 0);
-  } else {
-    return this.price || 0;
-  }
-
-});
+// itemSchema.virtual('cost').get(function() {
+//   $this = this;
+//   if(this.recipe.length) {
+//     return this.recipe.reduce(function(prev, next){
+//       next._ingredient = next._ingredient || {cost:0};
+//       return prev + next._ingredient.cost * next.quantity;
+//     }, 0);
+//   } else {
+//     return this.price || 0;
+//   }
+//
+// });
 
 itemSchema.set('toJSON', { virtuals: true });
 itemSchema.set('toObject', { virtuals: true });

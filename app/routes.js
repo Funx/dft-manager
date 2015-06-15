@@ -1,6 +1,7 @@
 // app/routes.js
 
 async = require("async");
+_ = require("underscore");
 
 // load the Item model
 var Item = require('./models/Item');
@@ -10,15 +11,51 @@ module.exports = function(app) {
 
   app.get('/api/items', function(req,res){
     console.log('get');
-    getItems.exec(function(err,items){
+    getItems(function(err,items){
       console.log('========');
       console.log('get item');
-      console.log(items);
+      // console.log(items);
       res.json(items);
     });
   });
 
-  var getItems = Item.find({}).populate('recipe._ingredient');
+  var getItems = function(cb){
+    Item.find({}).populate('recipe._ingredient').exec(function(err, items){
+      items = items.map(function(item){
+        item.cost = getItemCost(item, items);
+        return item
+      });
+      cb(err, items);
+    });
+  };
+
+  var getItemCost = function(item, items, iterator, cb) {
+    iterator = (iterator + 1) || 1;
+    if(iterator > 100){
+      console.log('too much iterations');
+      return 0;
+    }
+    if(!item){
+      console.log('item undefined');
+      return 0;
+    }
+    if(!item._id){
+      item = item.toString();
+      item = _.find(items, function(searchedItem){
+        return (searchedItem._id.toString() == item);
+      }); // || {};
+    }
+
+    if(item && item.recipe && item.recipe.length && !item.cost){
+      item.cost = item.recipe.reduce(function(sum,currDosage){
+        return sum + currDosage.quantity * getItemCost(currDosage._ingredient, items, iterator);
+      }, 0);
+    } else {
+      item.cost = item.price || 0;
+    }
+    return item.cost;
+  }
+
 
   // create Item and send back all Items after creation
   app.post('/api/items', function(req, res) {

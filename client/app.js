@@ -16,27 +16,33 @@ angular.module('dftm', [
 	'dftm.query',
 
 	//views
+
 	'dftm.items',
 	'dftm.editor',
-	'dftm.prices'
+	'dftm.prices',
+
+	// new
+	'dftm.deck',
+	'dftm.floatingActionButton'
 ])
 
-.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
-  $routeProvider.
-    when('/items', {
-      templateUrl: 'modules/items/items.html',
-    })
-    .when('/prices', {
-      templateUrl: 'modules/prices/prices.html',
-    })
-    .otherwise({
-      redirectTo: '/items'
-    });
+.config([
+	'$routeSegmentProvider',
+	'$routeProvider',
+	'$locationProvider',
+	function($routeSegmentProvider, $routeProvider, $locationProvider){
+	  $routeProvider.otherwise({
+	    redirectTo: '/'
+	  });
 
-  if(window.history && window.history.pushState){
-    $locationProvider.html5Mode({
-      enabled: true,
-      requireBase: false
-    });
-  }
+		$routeSegmentProvider
+			.when('/', 'fullSet')
+
+
+	  if(window.history && window.history.pushState){
+	    $locationProvider.html5Mode({
+	      enabled: true,
+	      requireBase: false
+	    });
+	  }
 }])

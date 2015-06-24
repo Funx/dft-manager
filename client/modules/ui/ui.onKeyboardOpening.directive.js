@@ -42,17 +42,13 @@ angular.module('ui.onKeyboardOpening.directive', [
             height_new = window.innerHeight;
             var diff = Math.round(height_old - height_new);
             var ratio = Math.round((diff / height_old) * 100);
-            console.log('window resized of :',ratio, '%');
             if(ratio > 20){
               $scope.$apply(function(){
                 self.keyBoardOpened = true;
-                console.log(self);
-                console.log('controller :',self.keyBoardOpened);
               });
             }else{
               $scope.$apply(function(){
                 self.keyBoardOpened = false;
-                console.log('controller :',self.keyBoardOpened);
               });
             }
           }, 50);
@@ -70,13 +66,10 @@ angular.module('ui.onKeyboardOpening.directive', [
     require: '^watchKeyboardOpening',
     link: function($scope, $elem, $attrs, keyboardWatcher) {
       $scope.$watch(function(){
-        console.log('watcher :' , keyboardWatcher.keyBoardOpened);
         return keyboardWatcher.keyBoardOpened;
       },function(){
-        console.log(keyboardWatcher.keyBoardOpened);
         if(keyboardWatcher.keyBoardOpened){
           $scope.$eval($attrs.onKeyboardOpening);
-          console.log("open keyboard");
         }
       });
     }
@@ -95,7 +88,6 @@ angular.module('ui.onKeyboardOpening.directive', [
       },function(){
         if(!keyboardWatcher.keyBoardOpened){
           $scope.$eval($attrs.onKeyboardClosing);
-          console.log("close keyboard");
         }
       });
     }

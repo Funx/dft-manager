@@ -22,15 +22,11 @@
   on-keyboard-opening="hideOverlays = true"
   on-keyboard-closing="hideOverlays = false">
 
-  <ng-include src="'modules/query/query.html'"></ng-include>
+  <ng-include src="'modules/sidebar/sidebar.html'"></ng-include>
 
-  <ng-view
-    class="page-wrapper">
-  </ng-view>
+  <div app-view-segment="0" class="page-wrapper"></div>
 
-  <action-bubble
-    ng-hide="hideOverlays">
-  </action-bubble>
+  <ng-include src="'modules/floatingActionButton/floatingActionButton.html'"></ng-include>
 
   <script src="assets/js/foundation.js"></script>
   <script src="assets/js/templates.js"></script>

@@ -1,3 +1,13 @@
-<div class="page-wrapper__wrapper--inner deck">
-  <div card="card" ng-repeat="card in deck.cards"></div>
+<div class="page-wrapper__wrapper--inner" ng-controller="DeckCtrl as deck">
+  <button ng-click="deck.filterCards()"></button>
+
+  <div class="deck" isotope-container="isotope-container">
+    <div isotope-item="isotope-item"
+      class="deck__card__wrapper--outer card__wrapper--outer"
+      ng-repeat="card in deck.cards track by card._id | filter:search"
+      ng-show="!search || ([card]).length">
+      <div card="card"></div>
+    </div>
+  </div>
 </div>
+<div >

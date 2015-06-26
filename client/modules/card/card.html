@@ -1,1 +1,9 @@
-{{ card.model.name }}
+<div class="card card--{{ card.model.categorySlug }}">
+  <h2 class="card__title">{{ card.model.name }}</h2>
+  <p class="card__price">{{ card.model.price|currency:'k':0}}</p>
+  <p class="card__benef-area" ng-if="card.model.recipe.length">
+      <span class="card__benef benef benef--fixe">{{ card.model.price - card.model.cost|currency:'k':0 }}</span>
+      |
+      <span class="card__benef benef benef--fixe">{{ (card.model.price / card.model.cost) * 100 - 100| number:0}}%</span>
+  </p>
+</div>

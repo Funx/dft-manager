@@ -1,0 +1,68 @@
+$gutter-width: 2rem;
+
+.page-wrapper__wrapper--inner {
+  padding: $gutter-width / 2;
+}
+
+.deck {
+  margin: auto;
+  width: auto;
+  // margin: - $gutter-width / 2;
+  display: flex;
+  // flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.grid-sizer {
+  width: 33%;
+}
+.gutter-sizer {
+  width: 0;
+}
+
+.deck__card__wrapper--outer {
+  width: 100%;
+  padding: $gutter-width / 2;
+  // width: 100%;
+  // margin-bottom: $gutter-width;
+
+  @include breakpoint('medium'){
+    width: 50%;
+  }
+  @include breakpoint('large'){
+    width: 33.333%;
+  }
+}
+
+
+/**** Transitions ****/
+
+.masonry,
+.masonry li { /* apply before masonry add class */
+    position: absolute; /* important to add it before enter animation start */
+
+    -webkit-transition-duration: .7s;
+    transition-duration: .7s;
+
+    -webkit-transition-property: all;
+    transition-property: all;
+}
+
+.masonry .masonry-enter { /* limit animated properties for entering elements */
+    -webkit-transition-property: -webkit-transform, opacity;
+    transition-property: transform, opacity;
+}
+
+.masonry-enter,
+.masonry-leave.masonry-leave-active {
+    opacity: 0;
+    -webkit-transform: scale(0.1);
+    transform: scale(0.1);
+}
+
+.masonry-leave,
+.masonry-enter.masonry-enter-active {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}

@@ -1,4 +1,4 @@
-angular.module('dft.sidebar', [
+angular.module('dftm.sidebar', [
   'sidebar.controller',
   'sidebar.service'
 ])

@@ -32,6 +32,10 @@
 @import "scss/organisms/stack";
 @import "scss/organisms/item";
 
+@import "modules/card/card";
+@import "modules/sidebar/sidebar";
+@import "modules/deck/deck";
+
 /* Views */
 @import "scss/views/common";
 @import "scss/views/modals";

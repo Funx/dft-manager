@@ -7,13 +7,13 @@
   <title>Trophy Manager for Dofus</title>
 
   <link rel="stylesheet" href="assets/css/app.css">
-  <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css'>
   <!--script src="assets/scripts/vendor/modernizr.js"></script-->
 
 </head>
 
 <body
-  class="grid-block vertical"
+  class="layout"
   ng-class="{
     'body--without-header': !queryFocused && hideTopBar
   }"
@@ -22,11 +22,15 @@
   on-keyboard-opening="hideOverlays = true"
   on-keyboard-closing="hideOverlays = false">
 
-  <ng-include src="'modules/sidebar/sidebar.html'"></ng-include>
+  <div class="layout__sidebar sidebar [ left ]"
+    ng-include src="'modules/sidebar/sidebar.html'">
+  </div>
 
-  <div app-view-segment="0" class="page-wrapper"></div>
+  <div class="layout__page-wrapper page-wrapper" app-view-segment="0"></div>
 
-  <ng-include src="'modules/floatingActionButton/floatingActionButton.html'"></ng-include>
+  <div class="layout__fab fab"
+    ng-include src="'modules/floatingActionButton/floatingActionButton.html'">
+  </div>
 
   <script src="assets/js/foundation.js"></script>
   <script src="assets/js/templates.js"></script>

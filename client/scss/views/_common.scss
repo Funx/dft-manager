@@ -1,13 +1,29 @@
-body {
+html, body {
+  height: 100%;
+}
+
+.layout {
+  height: 100%;
+}
+
+.layout__sidebar {
+  height: 100%;
+  float: left;
+  width: 300px;
+}
+
+.layout__page-wrapper {
+  height: 100%;
+  overflow: auto;
+}
+
+.page-wrapper__wrapper--inner {
   padding: 2rem;
-  padding-top: $header-height + 2rem;
 
   @include breakpoint(medium) {
     padding: 5rem;
-    padding-top: $header-height + 5rem;
   }
   @include breakpoint(large) {
     padding: 9rem;
-    padding-top: $header-height + 9rem;
   }
 }

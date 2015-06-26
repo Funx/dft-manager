@@ -22,6 +22,7 @@ angular.module('dftm', [
 	'dftm.prices',
 
 	// new
+	'dftm.sidebar',
 	'dftm.deck',
 	'dftm.floatingActionButton'
 ])

@@ -39,6 +39,8 @@ var paths = {
   ],
   // These files include Foundation for Apps and its dependencies
   foundationJS: [
+    'bower_components/jquery/dist/jquery.js',
+    'bower_components/masonry/dist/masonry.pkgd.js',
     'bower_components/fastclick/lib/fastclick.js',
     'bower_components/viewport-units-buggyfill/viewport-units-buggyfill.js',
     'bower_components/tether/tether.js',
@@ -55,6 +57,8 @@ var paths = {
     'bower_components/foundation-apps/js/vendor/**/*.js',
     'bower_components/foundation-apps/js/angular/**/*.js',
     'bower_components/esrever/esrever.js',
+    'bower_components/isotope/dist/isotope.pkgd.js',
+    'bower_components/angular-isotope/dist/angular-isotope.js',
     '!bower_components/foundation-apps/js/angular/app.js'
   ],
   // These files are for your app's JavaScript
@@ -143,7 +147,6 @@ gulp.task('uglify:foundation', function(cb) {
     .on('error', function (e) {
       console.log(e);
     }));
-
   return gulp.src(paths.foundationJS)
     .pipe(uglify)
     .pipe($.concat('foundation.js'))

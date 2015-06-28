@@ -18,12 +18,12 @@ html, body {
 }
 
 .page-wrapper__wrapper--inner {
-  padding: 2rem;
+  // padding: 2rem;
 
   @include breakpoint(medium) {
-    padding: 5rem;
+    // padding: 5rem;
   }
   @include breakpoint(large) {
-    padding: 9rem;
+    // padding: 9rem;
   }
 }

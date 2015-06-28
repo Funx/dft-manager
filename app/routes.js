@@ -14,13 +14,12 @@ module.exports = function(app) {
     getItems(function(err,items){
       console.log('========');
       console.log('get item');
-      // console.log(items);
       res.json(items);
     });
   });
 
   var getItems = function(cb){
-    Item.find({}).populate('recipe._ingredient').exec(function(err, items){
+    Item.find({}).populate('recipe._ingredient').lean().exec(function(err, items){
       items = items.map(function(item){
         item.cost = getItemCost(item, items);
         return item
@@ -45,15 +44,15 @@ module.exports = function(app) {
         return (searchedItem._id.toString() == item);
       }); // || {};
     }
-
-    if(item && item.recipe && item.recipe.length && !item.cost){
+    if(item.cost) {
+      return item.cost;
+    } else if(item && item.recipe && item.recipe.length && !item.cost) {
       item.cost = item.recipe.reduce(function(sum,currDosage){
         return sum + currDosage.quantity * getItemCost(currDosage._ingredient, items, iterator);
       }, 0);
     } else {
-      item.cost = item.price || 0;
+      return item.price || 0;
     }
-    return item.cost;
   }
 
 

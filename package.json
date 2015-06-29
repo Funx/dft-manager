@@ -6,7 +6,7 @@
   },
   "devDependencies": {
     "body-parser": "^1.12.3",
-    "browser-sync": "~2.6.4",
+    "browser-sync": "^2.7.13",
     "connect-modrewrite": "^0.7.9",
     "express": "^4.12.3",
     "front-matter": "^0.2.0",

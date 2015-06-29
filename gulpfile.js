@@ -193,7 +193,7 @@ gulp.task('server', ['build'], function() {
   })
 
   browserSync({
-    proxy: "localhost:8080",
+    proxy: "localhost:8888",
     notify: false,
     open: false
   });

@@ -32,7 +32,12 @@ $gutter-width: 2rem;
   @include breakpoint('large'){
     width: 33.333%;
   }
+
+  &.bigger {
+    width: 100%;
+  }
 }
+
 
 
 /**** Transitions ****/

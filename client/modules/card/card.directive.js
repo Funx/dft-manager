@@ -11,7 +11,9 @@ angular.module('card.directive', [])
       },
       controller: function(){},
       scope: {},
-      link: function($scope, $elem, $attrs){}
+      link: function($scope, $elem, $attrs){
+        $scope.bigger = false;
+      }
     };
   }
 ]);

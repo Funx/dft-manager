@@ -26,7 +26,17 @@
     ng-include src="'modules/sidebar/sidebar.html'">
   </div>
 
-  <div class="layout__page-wrapper page-wrapper" app-view-segment="0"></div>
+  <div class="layout__page-wrapper page-wrapper height-100"
+    sw-stage="page"
+    scroll-watch="{from :0, to: -1, stage: 'page'}"
+    sw-broadcast="{
+      $rootScope: true,
+      pageScroll: true
+    }">
+    <div class="height-100"
+      app-view-segment="0"
+    </div>
+  </div>
 
   <div class="layout__fab fab"
     ng-include src="'modules/floatingActionButton/floatingActionButton.html'">

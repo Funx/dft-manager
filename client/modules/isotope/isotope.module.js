@@ -1,4 +1,5 @@
 angular.module('dftm.isotope', [
   'iso',
-  'isotope.directive'
+  'isotope.directive',
+  'isotope.service'
 ]);

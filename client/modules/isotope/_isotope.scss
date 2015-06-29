@@ -1,15 +1,31 @@
 .isotope,
 .isotope .isotope-item {
   /* change duration value to whatever you like */
-  transition-duration: 0.8s;
+  transition-duration: 0.4s;
 }
 
 .isotope {
   transition-property: height, width;
 }
 
+.isotope-item.ng-enter {
+  transform: scale(0);
+  opacity: 0;
+  transition: all .4s .8s ease-in-out;
+}
+
+.isotope-item.ng-leave {
+  transform: scale(0);
+  opacity: 0;
+  transition: all .4s .8s ease-in-out;
+}
+
 .isotope .isotope-item {
   transition-property: transform, opacity;
+  // animation-name: dropHeader;
+  // animation-iteration-count: 1;
+  // animation-timing-function: ease-in;
+  // animation-duration: 0.4s;
 }
 
 /**** disabling Isotope CSS3 transitions ****/
@@ -18,4 +34,21 @@
 .isotope.no-transition .isotope-item,
 .isotope .isotope-item.no-transition {
   transition-duration: 0s;
+}
+
+.isotope__wrapper--outer {
+  height: 100%;
+  overflow: auto;
+}
+
+@keyframes dropHeader {
+    0% {
+      opacity: 0;;
+    }
+    99% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
 }

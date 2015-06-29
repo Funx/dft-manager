@@ -4,5 +4,6 @@ angular.module('dftm.plugins', [
 	'iso',
   'ngRoute',
 	'ngResource',
+	'pc035860.scrollWatch',
 	'route-segment', 'view-segment'
 ]);

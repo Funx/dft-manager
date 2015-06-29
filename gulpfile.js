@@ -58,6 +58,7 @@ var paths = {
     'bower_components/foundation-apps/js/angular/**/*.js',
     'bower_components/esrever/esrever.js',
     'bower_components/isotope/dist/isotope.pkgd.js',
+    'bower_components/angular-scroll-watch/build/angular-scroll-watch.js',
     'bower_components/angular-isotope/dist/angular-isotope.js',
     '!bower_components/foundation-apps/js/angular/app.js'
   ],

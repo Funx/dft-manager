@@ -33,7 +33,8 @@
     "angular-masonry-directive": "*",
     "jquery": "~2.1.4",
     "angular-masonry": "~0.11.1",
-    "angular-isotope": "~0.1.14"
+    "angular-isotope": "~0.1.14",
+    "angular-scroll-watch": "~0.5.4"
   },
   "devDependencies": {
     "angular-route": "~1.3.15",

@@ -1,7 +1,8 @@
 angular.module('card.directive', [])
 
 .directive('card', [
-  function(){
+  'Isotope',
+  function(Isotope){
     return {
       restrict: 'AE',
       templateUrl: 'modules/card/card.html',
@@ -11,8 +12,12 @@ angular.module('card.directive', [])
       },
       controller: function(){},
       scope: {},
-      link: function($scope, $elem, $attrs){
-        $scope.bigger = false;
+      link: function($scope, $elem, $attrs){},
+      controller: function() {
+        this.makeBigger = function(){
+          this.model.bigger = !this.model.bigger;
+          Isotope.relayout();
+        }
       }
     };
   }

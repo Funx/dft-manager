@@ -4,9 +4,9 @@ angular.module('isotope.directive', [])
 .directive('isotope', [
       '$timeout',
       '$rootScope',
-      '$debounce',
+      '$throttle',
       'Isotope',
-      function($timeout, $rootScope, $debounce, Isotope) {
+      function($timeout, $rootScope, $throttle, Isotope) {
         return {
           restrict: 'EA',
           transclude: true,
@@ -19,7 +19,12 @@ angular.module('isotope.directive', [])
             var scrollPosition = 0;
             var stageHeight = 1200;
             var firstInit = true;
-            var INTERVAL = 100;
+            var INTERVAL = 250;
+            var relayout = $throttle(1000, Isotope.relayout);
+            var onScroll = $throttle(500, function(){
+              $throttle(500,pushWhile)();
+              $throttle(500,popWhile)();
+            });
 
             $scope.renderedElements = [
               {_id:1},
@@ -30,44 +35,32 @@ angular.module('isotope.directive', [])
 
             $scope.$on('pageScroll', function($evt, a, locals) {
               scrollPosition = locals.$positive;
-              console.log(scrollPosition);
               stageHeight = locals.$height;
-              $debounce(pushWhile, INTERVAL*1);
-              $debounce(popWhile, INTERVAL*5);
-              // if(locals.$negative > -300) {
-              //   console.log('push !');
-              //   var count = 1;
-              //   while(index < $scope.elements.length && count > 0) {
-              //     count--;
-              //     $scope.renderedElements.push($scope.elements[index++]);
-              //     console.log($scope.renderedElements.length);
-              //     $debounce(Isotope.relayout);
-              //   }
-              // } else if (locals.$direction < 0 && locals.$negative < -600) {
-              //   popWhile(locals.$positive);
-              // }
+              onScroll();
             });
 
-            function pushWhile() {
+            var pushWhile = function() {
               if($elem.height() < stageHeight * 2 + scrollPosition && $scope.renderedElements.length < $scope.elements.length) {
+                console.log('push');
                 $scope.renderedElements.push($scope.elements[$scope.renderedElements.length]);
-                Isotope.relayout();
+                relayout();
                 $timeout(function() {
                   pushWhile();
                 }, INTERVAL);
                 }
-              }
+              };
 
 
-              function popWhile() {
+            var popWhile = function() {
                 if($elem.height() > stageHeight * 4 + scrollPosition) {
+                  console.log('pop');
                   $scope.renderedElements.pop();
-                  Isotope.relayout();
+                  relayout();
                   $timeout(function() {
                     popWhile();
                   }, INTERVAL);
                 }
-              }
+              };
 
               $scope.$watch(function() {
                 return $scope.elements.length;

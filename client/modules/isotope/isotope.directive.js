@@ -22,8 +22,7 @@ angular.module('isotope.directive', [])
             var INTERVAL = 250;
             var relayout = $throttle(1000, Isotope.relayout);
             var onScroll = $throttle(500, function(){
-              $throttle(500,pushWhile)();
-              $throttle(500,popWhile)();
+              $throttle(5000,pushWhile)();
             });
 
             $scope.renderedElements = [
@@ -31,52 +30,14 @@ angular.module('isotope.directive', [])
               {_id:2},
               {_id:3},
             ];
-            console.log($elem);
-
-            $scope.$on('pageScroll', function($evt, a, locals) {
-              scrollPosition = locals.$positive;
-              stageHeight = locals.$height;
-              onScroll();
-            });
-
-            var pushWhile = function() {
-              if($elem.height() < stageHeight * 2 + scrollPosition && $scope.renderedElements.length < $scope.elements.length) {
-                console.log('push');
-                $scope.renderedElements.push($scope.elements[$scope.renderedElements.length]);
-                relayout();
-                $timeout(function() {
-                  pushWhile();
-                }, INTERVAL);
-                }
-              };
-
-
-            var popWhile = function() {
-                if($elem.height() > stageHeight * 4 + scrollPosition) {
-                  console.log('pop');
-                  $scope.renderedElements.pop();
-                  relayout();
-                  $timeout(function() {
-                    popWhile();
-                  }, INTERVAL);
-                }
-              };
 
               $scope.$watch(function() {
                 return $scope.elements.length;
               }.bind(this), function() {
-                console.log($scope.elements.length);
-                if($scope.elements.length){
-                  if(firstInit){
-                    $scope.renderedElements = [];
-                    pushWhile();
-                    firstInit = false;
-                  } else {
-                    $scope.renderedElements = $scope.elements.slice(0, $scope.renderedElements.length);
-                    Isotope.relayout();
-                  }
-                }
+                $scope.renderedElements = $scope.elements;
+                Isotope.relayout();
               });
+
             }
           }
         }

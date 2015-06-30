@@ -6,7 +6,8 @@ angular.module('deck.controller', [])
   '$timeout',
   'filterFilter',
   'Deck',
-  function($rootScope, $scope, $timeout, filter, Deck){
+  'Families',
+  function($rootScope, $scope, $timeout, filter, Deck, Families){
 
     function makeid(length){
       var text = "";
@@ -24,6 +25,7 @@ angular.module('deck.controller', [])
 
     var ravageur = 'ravageur terre';
     var iterator = 0;
+
     this.filterCards = function(str){
       var query = this.query.split(' ');
       this.cards = this.deck;
@@ -32,9 +34,8 @@ angular.module('deck.controller', [])
         this.cards = filter(this.cards, word);
       }.bind(this));
 
-
     }
-    console.log($scope);
+
     $scope.$watch(function(){
       return this.cards.length;
     }.bind(this), function(){

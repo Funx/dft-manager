@@ -1,7 +1,10 @@
-<div class="page-wrapper__wrapper--inner"
-  ng-controller="DeckCtrl as deck">
-  <button ng-click="deck.filterCards()"></button>
-  <input type="text" ng-model="deck.query" ng-change="deck.filterCards()">
+<div class="page-wrapper__wrapper--inner" ng-controller="DeckCtrl as deck">
+
+  <input class="[ fixed ]"
+    type="text"
+    ng-model="deck.query"
+    ng-change="deck.filterCards()">
+
 
   <div isotope elements="deck.cards"><div card="element"></div></div>
 

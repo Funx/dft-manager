@@ -40,6 +40,7 @@ var paths = {
   // These files include Foundation for Apps and its dependencies
   foundationJS: [
     'bower_components/jquery/dist/jquery.js',
+    'bower_components/underscore/underscore.js',
     'bower_components/masonry/dist/masonry.pkgd.js',
     'bower_components/fastclick/lib/fastclick.js',
     'bower_components/viewport-units-buggyfill/viewport-units-buggyfill.js',
@@ -60,6 +61,8 @@ var paths = {
     'bower_components/isotope/dist/isotope.pkgd.js',
     'bower_components/angular-scroll-watch/build/angular-scroll-watch.js',
     'bower_components/angular-isotope/dist/angular-isotope.js',
+    'bower_components/angular-underscore/angular-underscore.js',
+    'client/modules/plugins/remove-diacritics.js',
     '!bower_components/foundation-apps/js/angular/app.js'
   ],
   // These files are for your app's JavaScript

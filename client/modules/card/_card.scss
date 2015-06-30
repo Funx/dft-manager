@@ -1,3 +1,34 @@
 .card {
   background: #fff;
+  border: 0;
+  color: #fff;
+  padding: 0;
+
+  &.bigger {
+    padding: 1rem;
+  }
+
+  &.selected {
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.2);
+    transform: scale(1.05);
+    outline: solid 1px #fff;
+  }
 }
+
+  .card__area {
+    margin: 0;
+    padding: 1rem;
+  }
+
+  .area--benef {
+    text-align: center;
+  }
+
+  .card__title, .card__price  {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+    .card__title {
+      font-weight: bolder;
+    }

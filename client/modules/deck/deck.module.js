@@ -3,6 +3,7 @@ angular.module('dftm.deck', [
 
   'deck.controller',
   'deck.service',
+  'families.service',
   'fullSet.controller'
 ])
 

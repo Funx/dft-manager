@@ -1,8 +1,14 @@
+.card__wrapper--outer {
+  // transition: all .5s ease-in-out;
+}
+
 .card {
   background: #fff;
   border: 0;
   color: #fff;
   padding: 0;
+  font-size: 0.75rem; //scale
+  z-index: 1;
 
   &.bigger {
     padding: 1rem;
@@ -10,8 +16,14 @@
 
   &.selected {
     box-shadow: 10px 10px 20px rgba(0,0,0,0.2);
-    transform: scale(1.05);
-    outline: solid 1px #fff;
+    border: .5rem solid rgba(255,255,255,0.5);
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+
+    .card__area {
+      padding: .5rem;
+    }
+
   }
 }
 
@@ -22,11 +34,12 @@
 
   .area--benef {
     text-align: center;
+    background: rgba(0,0,0,.2) !important;
   }
 
   .card__title, .card__price  {
     margin: 0;
-    font-size: 1rem;
+    font-size: .75rem;
   }
 
     .card__title {

@@ -136,3 +136,12 @@ $noDarkBorder:rgba(0,0,0,0);
 .centered {
   margin: auto;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.pointer-events-auto {
+  pointer-events: auto;
+}

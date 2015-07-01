@@ -5,8 +5,7 @@ angular.module('isotope.directive', [])
       '$timeout',
       '$rootScope',
       '$throttle',
-      'Isotope',
-      function($timeout, $rootScope, $throttle, Isotope) {
+      function($timeout, $rootScope, $throttle) {
         return {
           restrict: 'EA',
           transclude: true,
@@ -15,15 +14,6 @@ angular.module('isotope.directive', [])
           },
           templateUrl: 'modules/isotope/isotope.html',
           link: function($scope, $elem) {
-            var index = 0;
-            var scrollPosition = 0;
-            var stageHeight = 1200;
-            var firstInit = true;
-            var INTERVAL = 250;
-            var relayout = $throttle(1000, Isotope.relayout);
-            var onScroll = $throttle(500, function(){
-              $throttle(5000,pushWhile)();
-            });
 
             $scope.renderedElements = [
               {_id:1},
@@ -31,17 +21,18 @@ angular.module('isotope.directive', [])
               {_id:3},
             ];
 
-              $scope.$watch(function() {
-                return $scope.elements.length;
-              }.bind(this), function() {
-                $scope.renderedElements = $scope.elements;
-                Isotope.relayout();
-              });
+            // $scope.$watch(function() {
+            //   return $scope.elements.length;
+            // }.bind(this), function() {
+            //   // var sliceTo = Math.max($scope.renderedElements.length, 20)
+            //   // $scope.renderedElements = $scope.elements.slice(0, sliceTo);
+            //   $scope.renderedElements = $scope.elements;
+            // });
 
-            }
           }
         }
-      ])
+      }
+    ])
 
     .directive('inject', function() {
       return {

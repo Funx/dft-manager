@@ -15,6 +15,7 @@ html, body {
 .layout__page-wrapper {
   height: 100%;
   overflow: auto;
+  position: relative;
 }
 
 .page-wrapper__wrapper--inner {

@@ -16,6 +16,16 @@ angular.module('utils.services', [])
         if (value && searchTerm && value.toString().toLowerCase() === searchTerm.toString().toLowerCase()) return i;
       }
       return -1;
+    },
+    deepValue: function(obj, deepKey){
+        // get deep value in case of a param key like : item.deep.value
+        var deepKeys = deepKey.split('.');
+        var objValue = obj;
+        deepKeys.forEach(function(key){
+          objValue = objValue ? objValue[key] : '';
+        });
+        return objValue;
     }
   }
+
 }])

@@ -33,6 +33,7 @@ var paths = {
   // Sass will check these folders for files when you use @import.
   sass: [
     'client/scss',
+    'bower_components/famous-angular/dist/',
     'bower_components/foundation-apps/scss',
     'bower_components/animate.css/',
     'bower_components/angular-xeditable/dist/css/'
@@ -41,6 +42,7 @@ var paths = {
   foundationJS: [
     'bower_components/jquery/dist/jquery.js',
     'bower_components/underscore/underscore.js',
+    'bower_components/famous/dist/famous-global.js',
     'bower_components/masonry/dist/masonry.pkgd.js',
     'bower_components/fastclick/lib/fastclick.js',
     'bower_components/viewport-units-buggyfill/viewport-units-buggyfill.js',
@@ -63,6 +65,8 @@ var paths = {
     'bower_components/angular-isotope/dist/angular-isotope.js',
     'bower_components/angular-underscore/angular-underscore.js',
     'client/modules/plugins/remove-diacritics.js',
+    'bower_components/famous-angular/dist/famous-angular.js',
+    'bower_components/angular-optimistic-cache/dist/angular-optimistic-cache.js',
     '!bower_components/foundation-apps/js/angular/app.js'
   ],
   // These files are for your app's JavaScript

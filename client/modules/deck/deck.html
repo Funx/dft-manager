@@ -1,12 +1,34 @@
 <div class="page-wrapper__wrapper--inner" ng-controller="DeckCtrl as deck">
 
-  <input class="[ fixed ]"
+  <input class="deck__amazingQuery amazingQuery [ fixed ]"
     type="text"
+    placeholder="Amazing query... search by 'keyword', 'key':'!value' and even by 'key.deepkey'<'value' !"
     ng-model="deck.query"
     ng-change="deck.filterCards()">
 
+    <!-- <div amazing-query ng-model="deck.query" class="deck__amazingQuery amazingQuery [ fixed ]"></div> -->
 
-  <div isotope elements="deck.cards"><div card="element"></div></div>
+    <!-- <fa-app class="deck">
+      <fa-view ng-repeat="card in deck.cards track by card._id | filter:deck.query"
+        fa-size="[50, 50]"
+        fa-animate-enter="cubeEnter(photo, $done)">
+        <fa-modifier>
+          <fa-surface>
+            <div card="card"></div>
+          </fa-surface>
+        </fa-modifier>
+      </fa-view>
+    </fa-app> -->
+
+    <div class="deck">
+      <div class="deck__card__wrapper--outer card__wrapper--outer"
+        ng-class="{bigger: card.bigger}"
+        ng-repeat="card in deck.cards track by card._id">
+        <div card="card"></div>
+      </div>
+    </div>
+
+  <!-- <div isotope elements="deck.cards"><div card="element"></div></div> -->
 
   <!-- <div class="deck" isotope-container="isotope-container">
     <div isotope-item="isotope-item"

@@ -8,13 +8,7 @@ angular.module('deck.service', [])
       get: {
         method: 'GET',
         isArray: true,
-        cache: true,
-        transformResponse: [angular.fromJson, function(data) {
-          return data.map(function(card) {
-            card.categorySlug = slugify(card.category);
-            return card;
-          });
-        }]
+        cache: true
       }
     });
   }

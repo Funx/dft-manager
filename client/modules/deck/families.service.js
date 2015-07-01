@@ -1,17 +1,20 @@
 angular.module('families.service', [])
 
 .factory('Families', [
+  '$cacheFactory',
+  'slugifyFilter',
   'Deck',
-  function(Deck){
+  function($cacheFactory, slugify, Deck){
 
-    var families = null;
+    var families = $cacheFactory('families');
+    console.log(families);
 
     var getFamilies = function(done) {
 
       Deck.get(function(data){
         data = _.unique(
           data.map(function(card){
-            return card.categorySlug;
+            return slugify(card.category) || 'base';
           })
         )
         .reduce(function(categories, categoryName, index, categoryNames){
@@ -22,22 +25,25 @@ angular.module('families.service', [])
           return categories;
         }, {});
 
-
-        families = data;
+        console.log('families:',data);
         done(data);
 
       });
     }
 
-    return {
-      get: function(done){
-        if(families){
-          done(families);
-        } else {
-          getFamilies(done);
-        }
+    getFamilies(function(data){
+      console.log('cache:',families);
+      families.put('data', data);
+    })
 
+    return {
+      get: function(familyName){
+        if (typeof familyName === 'undefined'){
+          return families.get('data');
+        } else {
+          return families.get('data') ? families.get('data')[familyName] : {};
+        }
       }
-    }
+    };
   }
 ])

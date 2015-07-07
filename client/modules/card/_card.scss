@@ -7,6 +7,7 @@
   border: 0;
   color: #fff;
   padding: 0;
+  margin: 0;
   font-size: 0.75rem; //scale
   z-index: 1;
 
@@ -30,6 +31,16 @@
   .card__area {
     margin: 0;
     padding: 1rem;
+
+    .selected &:first-child {
+      padding-bottom: 1rem;
+    }
+    .selected &:last-child {
+      padding-top: 1rem;
+    }
+    .selected &:last-child:first-child {
+      padding: .5rem;
+    }
   }
 
   .area--benef {

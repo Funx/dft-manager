@@ -1,4 +1,4 @@
-$gutter-width: 2rem;
+$gutter-width: 1rem;
 $amazingQuery-height: 4rem;
 
 .page-wrapper__wrapper--inner {
@@ -21,7 +21,7 @@ $amazingQuery-height: 4rem;
     column-count: 3;
   }
   @include breakpoint('large'){
-    column-count: 4;
+    column-count: 5;
   }
 }
 
@@ -49,4 +49,8 @@ $amazingQuery-height: 4rem;
 
   .deck__amazingQuery {
     position: fixed;
+    left: 6 + 2rem;
+    right: 2rem;
+    top: 2rem;
+    width: auto;
   }

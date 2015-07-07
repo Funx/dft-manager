@@ -2,17 +2,14 @@ angular.module('deck.controller', [])
 
 .controller('DeckCtrl', [
   '$rootScope',
-  '$scope',
-  '$timeout',
   'filterFilter',
   'slugifyFilter',
   'Deck',
-  'Families',
   'Utils',
-  function($rootScope, $scope, $timeout, filter, slugify, Deck, Families, Utils){
+  function($rootScope, filter, slugify, Deck, Utils){
 
-    function transformRequest(request){
-      return request.split(' ').map(function(request){
+    function transformRequest (request) {
+      return request.split(' ').map(function (request) {
 
         var isKeyValue = /[A-Z0-9!]+[:=]{1}[A-Z0-9!]+/gi;
         var isTest = /(.+)([<>])(.+)/gi;
@@ -56,23 +53,15 @@ angular.module('deck.controller', [])
     var ravageur = 'ravageur terre';
     var iterator = 0;
 
-    this.filterCards = function(str){
+    this.filterCards = function (str) {
       this.cards = this.deck;
 
       var query = transformRequest(this.query);
-      query.forEach(function(request){
+      query.forEach(function (request) {
         this.cards = filter(this.cards, request);
       }.bind(this));
 
     }
-
-    $scope.$watch(function(){
-      return this.cards.length;
-    }.bind(this), function(){
-      $timeout(function(){
-        $rootScope.$broadcast('iso-init', {name:null, params:null});
-      })
-    });
 
   }
 ])

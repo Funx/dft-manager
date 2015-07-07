@@ -9,7 +9,8 @@ html, body {
 .layout__sidebar {
   height: 100%;
   float: left;
-  width: 300px;
+  width: 6rem;
+  overflow: hidden;
 }
 
 .layout__page-wrapper {
@@ -19,12 +20,18 @@ html, body {
 }
 
 .page-wrapper__wrapper--inner {
-  // padding: 2rem;
+  padding: 2.5rem;
 
   @include breakpoint(medium) {
-    // padding: 5rem;
+    padding: 2rem 6rem;
   }
   @include breakpoint(large) {
     // padding: 9rem;
   }
+}
+
+.layout__fab {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
 }

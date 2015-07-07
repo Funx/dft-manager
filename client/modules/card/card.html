@@ -20,7 +20,7 @@
     </h2>
     <p class="card__price">
       <span style="
-      font-size: {{ card.getPonderedValue({ min: 1, max: 2, disabled: 1 }) }}em;">
+      font-size: {{ card.getPonderedValue({ min: 1, max: 1.5, disabled: 1 }) }}em;">
         {{ ::card.model.price|currency:'k':0 }}
       </span>
     </p>
@@ -29,7 +29,7 @@
 
   <p style="
     background: hsla({{ card.family.hue }}, 27%, 44%, {{ !card.model.selected }});
-    font-size: {{ card.getPonderedValue({ min: 1.2, max: 2, disabled: 1 }) }}em;"
+    font-size: {{ card.getPonderedValue({ min: 1.2, max: 1.5, disabled: 1 }) }}em;"
     class="card__area area--benef"
     ng-if="card.model.recipe.length">
       <span class="card__benef benef benef--taux">

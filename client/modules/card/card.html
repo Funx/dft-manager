@@ -1,9 +1,9 @@
 <div class="card card--{{ ::card.model.categorySlug }} [ cursor-pointer ]"
   ng-class="{
-    'bigger': card.model.bigger,
-    'selected': card.model.selected
+    'bigger': card.bigger,
+    'selected': card.selected
   }"
-  ng-click="card.model.selected = !card.model.selected"
+  ng-click="card.toggleSelection()"
   style="
     background: hsl(
       {{ ::card.family.hue}},
@@ -11,6 +11,7 @@
       {{ ::card.getLuminosity() }}%
     );">
 
+    {{ 'selected ?' + card.selected }}
   <div class="card__area area--description" style="">
     <h2 class="card__title" >
       <span style="

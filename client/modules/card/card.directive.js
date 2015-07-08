@@ -8,14 +8,26 @@ angular.module('card.directive', [])
     return {
       restrict: 'AE',
       templateUrl: 'modules/card/card.html',
+      scope: {},
       controllerAs: 'card',
       bindToController: {
         model: '=card'
       },
       controller: function(){},
-      scope: {},
       link: function($scope, $elem, $attrs){
-        $scope.Math = window.Math;
+        ctrl = $scope.card;
+        ctrl.select = function selectCard () {
+          ctrl.selected = true;
+          $scope.$emit('selected', ctrl.model);
+        }
+        ctrl.unselect = function unselectCard () {
+          ctrl.selected = false;
+          $scope.$emit('unselected', ctrl.model);
+        }
+        ctrl.toggleSelection = function toggleCardSelection () {
+          ctrl.selected ? ctrl.unselect() : ctrl.select();
+        }
+
       },
       controller: function() {
         var lowerBoundRate = 10;

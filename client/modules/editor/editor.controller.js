@@ -8,7 +8,8 @@ angular.module('editor.controller', [
   '$timeout',
   '$http',
   'Utils',
-  'Items', function($scope, $timeout, $http, Utils, Items, Edit) {
+  'Items',
+  function EditorCtrl ($scope, $timeout, $http, Utils, Items, Edit) {
   $scope.newItem = {};
   $scope.placeHolder = {
     name: "Nom de l'objet",

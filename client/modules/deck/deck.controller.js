@@ -2,13 +2,15 @@ angular.module('deck.controller', [])
 
 .controller('DeckCtrl', [
   '$rootScope',
+  '$scope',
   'filterFilter',
   'slugifyFilter',
   'Deck',
+  'Selection',
   'Utils',
-  function($rootScope, filter, slugify, Deck, Utils){
+  function($rootScope, $scope, filter, slugify, Deck, Selection, Utils){
 
-    function transformRequest (request) {
+    var transformRequest = function transformRequest (request) {
       return request.split(' ').map(function (request) {
 
         var isKeyValue = /[A-Z0-9!]+[:=]{1}[A-Z0-9!]+/gi;
@@ -26,9 +28,7 @@ angular.module('deck.controller', [])
         }
 
         if (isTest.test(request)) {
-          console.log(isTest.test(request));
           var logicTest = isTest.exec(request);
-          console.log(logicTest);
           var operator = logicTest[2];
           return function(element){
             if (operator == '>') {
@@ -53,7 +53,7 @@ angular.module('deck.controller', [])
     var ravageur = 'ravageur terre';
     var iterator = 0;
 
-    this.filterCards = function (str) {
+    this.filterCards = function filterCards (str) {
       this.cards = this.deck;
 
       var query = transformRequest(this.query);
@@ -62,6 +62,23 @@ angular.module('deck.controller', [])
       }.bind(this));
 
     }
+
+    $scope.$on('selected', function selectedHandler (evt, element) {
+      Selection.add(element);
+    });
+    $scope.$on('unselected', function unselectedHandler (evt, element) {
+      Selection.remove(element);
+    });
+    $scope.$on('plzUnselectVisible', function plzUnselectVisibleHandler () {
+      Selection.empty([]);
+    });
+    $scope.$on('plzCreate', function plzCreateHandler () {
+      // create a new item
+    });
+    $scope.$on('plzEdit', function plzEditHandler () {
+      // edit selected items
+    });
+
 
   }
 ])

@@ -8,56 +8,56 @@ angular.module('floatingActionButton.controller', [])
         icon: '',
         expression: '"Ajouter 1 objet"',
         action: function () {
-          $rootScope.$broadcast('create');
+          $rootScope.$broadcast('plzCreate');
         }
       },
       edit: {
         icon: '',
         expression: '"Editer " + fab.selectedItemsLength + " objets"',
         action: function () {
-          $rootScope.$broadcast('edit');
+          $rootScope.$broadcast('plzEdit');
         }
       },
       craft: {
         icon: '',
         expression: '"Crafter les " + fab.selectedItemsLength + " objets sélectionnés"',
         action: function () {
-          $rootScope.$broadcast('craft');
+          $rootScope.$broadcast('plzCraft');
         }
       },
       sell: {
         icon: '',
         expression: '"Vendre les " + fab.selectedItemsLength + " objets sélectionnés"',
         action: function () {
-          $rootScope.$broadcast('sell');
+          $rootScope.$broadcast('plzSell');
         }
       },
       delete: {
         icon: '',
         expression: '"Supprimer la sélection (" + fab.selectedItemsLength + " objets)"',
         action: function () {
-          $rootScope.$broadcast('delete');
+          $rootScope.$broadcast('plzDelete');
         }
       },
-      selectAll: {
+      selectVisible: {
         icon: '',
-        expression: '"Tout sélectionner"',
+        expression: '"Sélectionner tous les éléments visibles"',
         action: function () {
-          $rootScope.$broadcast('selectAll');
+          $rootScope.$broadcast('plzSelectAll');
         }
       },
-      unselectAll: {
+      unselectVisible: {
         icon: '',
-        expression: '"Tout désélectionner"',
+        expression: '"Désélectionner les éléments visibles"',
         action: function () {
-          $rootScope.$broadcast('unselectAll');
+          $rootScope.$broadcast('plzUnselectVisible');
         }
       }
     }
 
     this.selectedItemsLength = 10;
 
-    this.availableActions = ['create', 'edit', 'selectAll', 'unselectAll', 'delete', 'craft'];
+    this.availableActions = ['create', 'edit', 'selectVisible', 'unselectVisible', 'delete', 'craft'];
 
   }
 ])

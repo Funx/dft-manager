@@ -9,10 +9,15 @@
   <ul class="suggestions-list">
     <li
       ng-repeat="suggestion in suggestions"
-      class="suggestion {{suggestion.className}}"
+      class="suggestion"
+      style="background: hsl(
+        {{ ::suggestion.category | hue}},
+        70%,
+        45%
+      );"
       ng-click="addToModel($index)"
       ng-mouseover="$parent.selectedIndex=$index"
-      ng-class="{active : selectedIndex===$index || (selectedIndex===-1 && $index===-1)}">
+      ng-class="{ 'active': selectedIndex === $index || (selectedIndex === -1 && $index === -1) }">
       {{quantity}} {{suggestion.name}}
     </li>
   </ul>

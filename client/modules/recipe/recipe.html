@@ -1,6 +1,13 @@
 <div
   class="recipe">
-  <div ng-repeat="dosage in model track by dosage._ingredient.name" class="dosage" ng-class="dosage._ingredient.className">
+  <div ng-repeat="dosage in model track by dosage._ingredient.name"
+    class="dosage"
+    style="background: hsl(
+      {{ ::dosage._ingredient.category | hue}},
+      70%,
+      45%
+    );"
+    ng-class="dosage._ingredient.className">
     <input type="number" ng-model="dosage.quantity" class="input input--quantity dosage__quantity">
     <span class="dosage__ingredient">{{::dosage._ingredient.name}}</span>
     <span>&nbsp;<b ng-click="removeIngredient($index)" class="dosage__delete-button button--delete">X</b></span>

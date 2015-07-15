@@ -6,7 +6,7 @@
   ng-click="card.toggleSelection()"
   style="
     background: hsl(
-      {{ ::card.family.hue}},
+      {{ ::card.category | hue }},
       {{ ::card.getSaturation() }}%,
       {{ ::card.getLuminosity() }}%
     );">
@@ -28,7 +28,7 @@
 
 
   <p style="
-    background: hsla({{ card.family.hue }}, 27%, 44%, {{ !card.model.selected }});
+    background: hsla({{ ::card.category | hue }}, 27%, 44%, {{ !card.model.selected }});
     font-size: {{ card.getPonderedValue({ min: 1.2, max: 1.5, disabled: 1 }) }}em;"
     class="card__area area--benef"
     ng-if="card.model.recipe.length">

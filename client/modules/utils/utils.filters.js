@@ -4,7 +4,8 @@ angular.module('utils.filters', [])
   'removeDiacritics',
   function(removeDiacritics){
     return function(str){
-      return removeDiacritics.seo(str);
+      str = str || ''
+      return removeDiacritics.seo(str)
     }
   }
 ])

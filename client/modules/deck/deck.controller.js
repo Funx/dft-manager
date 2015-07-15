@@ -10,6 +10,7 @@ angular.module('deck.controller', [])
   'Utils',
   function($rootScope, $scope, filter, slugify, Deck, Selection, Utils){
 
+    // map through the amazing query request
     var transformRequest = function transformRequest (request) {
       return request.split(' ').map(function (request) {
 

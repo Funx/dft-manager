@@ -14,7 +14,7 @@ angular.module('families.service', [])
       Deck.get(function(data){
         data = _.unique(
           data.map(function(card){
-            return slugify(card.category) || 'base';
+            return slugify(card.category);
           })
         )
         .reduce(function(categories, categoryName, index, categoryNames){
@@ -25,7 +25,6 @@ angular.module('families.service', [])
           return categories;
         }, {});
 
-        console.log('families:',data);
         done(data);
 
       });
@@ -38,11 +37,8 @@ angular.module('families.service', [])
 
     return {
       get: function(familyName){
-        if (typeof familyName === 'undefined'){
-          return families.get('data');
-        } else {
+          familyName = slugify(familyName);
           return families.get('data') ? families.get('data')[familyName] : {};
-        }
       }
     };
   }

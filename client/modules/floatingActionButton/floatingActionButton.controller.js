@@ -2,13 +2,15 @@ angular.module('floatingActionButton.controller', [])
 
 .controller('FloatingActionButtonCtrl', [
   '$rootScope',
-  function($rootScope){
+  '$location',
+  function($rootScope, $location){
     this.actions = {
       create: {
         icon: '',
         expression: '"Ajouter 1 objet"',
         action: function () {
           $rootScope.$broadcast('plzCreate');
+          $location.path( "/create" );
         }
       },
       edit: {
@@ -16,6 +18,7 @@ angular.module('floatingActionButton.controller', [])
         expression: '"Editer " + fab.selectedItemsLength + " objets"',
         action: function () {
           $rootScope.$broadcast('plzEdit');
+          $location.path( "/edit/selection" );
         }
       },
       craft: {

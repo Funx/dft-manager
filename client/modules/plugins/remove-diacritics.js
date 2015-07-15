@@ -200,7 +200,7 @@ angular
 
 		return {
 			replace: function (str) {
-				str = str || '';
+				str = _.isString(str) ? str : ''
 				return str.replace(/[^\u0000-\u007E]/g, function (a) {
 					return diacriticsMap[a] || a;
 				});

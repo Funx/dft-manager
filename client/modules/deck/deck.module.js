@@ -4,6 +4,7 @@ angular.module('dftm.deck', [
   'deck.controller',
   'deck.service',
   'families.service',
+  'families.filters',
   'selection.service',
   'fullSet.controller'
 ])

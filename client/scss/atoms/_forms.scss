@@ -43,12 +43,24 @@
 }
 
 .suggestion {
+  position: relative;
   color: #fff;
   padding: 0.25rem 0.5rem;
 }
 
-.suggestion.active{
-  background-color: darken($primary-color, 10%);
+.suggestion.active::after{
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  pointer-events: none;
+
+  background: #000;
+  opacity: .1;
 }
 
 .ingredient {

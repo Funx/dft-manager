@@ -40,6 +40,8 @@ angular.module('dftm', [
 
 		$routeSegmentProvider
 			.when('/', 'fullSet')
+			.when('/create', 'create')
+			.when('/edit/:id', 'edit')
 
 
 	  if(window.history && window.history.pushState){

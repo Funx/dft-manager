@@ -22,6 +22,7 @@ angular.module('dftm', [
 	'dftm.prices',
 
 	// new
+	'dftm.collection',
 	'dftm.isotope',
 	'dftm.sidebar',
 	'dftm.deck',
@@ -41,6 +42,7 @@ angular.module('dftm', [
 		$routeSegmentProvider
 			.when('/', 'fullSet')
 			.when('/create', 'create')
+			.when('/edit', 'edit')
 			.when('/edit/:id', 'edit')
 
 

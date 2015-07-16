@@ -24,21 +24,19 @@ angular.module('families.service', [])
           };
           return categories;
         }, {});
-
         done(data);
 
       });
     }
 
     getFamilies(function(data){
-      console.log('cache:',families);
       families.put('data', data);
     })
 
     return {
       get: function(familyName){
-          familyName = slugify(familyName);
-          return families.get('data') ? families.get('data')[familyName] : {};
+        familyName = slugify(familyName)
+        return families.get('data') ? (families.get('data')[familyName] || families.get('data')[""]) : { hue: 0 }
       }
     };
   }

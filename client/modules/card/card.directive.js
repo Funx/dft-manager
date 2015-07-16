@@ -11,7 +11,8 @@ angular.module('card.directive', [])
       scope: {},
       controllerAs: 'card',
       bindToController: {
-        model: '=card'
+        model: '=card',
+        expanded: '='
       },
       controller: function(){},
       link: function($scope, $elem, $attrs){
@@ -34,13 +35,13 @@ angular.module('card.directive', [])
         var lowerBound = 20000;
         var higherBoundRate = 200;
 
-        var disabledLuminosity = 5;
-        var disabledSaturation = 100;
+        var disabledLuminosity = 70;
+        var disabledSaturation = 30;
 
-        var minLuminosity = 30;
-        var maxLuminosity = 60;
-        var minSaturation = 10;
-        var maxSaturation = 70;
+        var minLuminosity = 40;
+        var maxLuminosity = 50;
+        var minSaturation = 50;
+        var maxSaturation = 90;
 
         this.getPonderedValue = function (options) {
 
@@ -72,17 +73,27 @@ angular.module('card.directive', [])
         }
 
         this.getSaturation = function() {
-           return this.getPonderedValue({min: minSaturation, max: maxSaturation, disabled: disabledSaturation, reverse: false});
+           return this.getPonderedValue({
+             min: minSaturation
+            ,max: maxSaturation
+            ,disabled: disabledSaturation
+            ,reverse: false
+          })
         }
 
         this.getLuminosity = function() {
-          return this.getPonderedValue({min: minLuminosity, max: maxLuminosity, disabled: disabledLuminosity, reverse: false});
+          return this.getPonderedValue({
+             min: minLuminosity
+            ,max: maxLuminosity
+            ,disabled: disabledLuminosity
+            ,reverse: true
+          })
         }
 
-        this.model.category = this.model.category || 'base';
-        this.family = Families.get(slugify(this.model.category));
-        this.model.benefits = this.calcBenefits();
-        this.model.benefitsRate = this.calcBenefitsRate();
+        this.model.category = this.model.category
+        this.family = Families.get(slugify(this.model.category))
+        this.model.benefits = this.calcBenefits()
+        this.model.benefitsRate = this.calcBenefitsRate()
 
         this.model.keyWords = ['all'];
 
@@ -96,7 +107,7 @@ angular.module('card.directive', [])
 
         if(!this.hasPrice()) this.model.keyWords.push('no price', '!price');
 
-        if(!this.model.recipe.length) this.model.keyWords.push('no recipe');
+        if(!this.model.recipe || !this.model.recipe.length) this.model.keyWords.push('no recipe');
 
       }
     };

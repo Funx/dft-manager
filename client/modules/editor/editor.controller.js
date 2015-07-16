@@ -3,50 +3,58 @@
 angular.module('editor.controller', [])
 
 .controller('EditorCtrl', [
-   '$scope'
-  ,'$timeout'
+   '$timeout'
   ,'$http'
   ,'Utils'
-  ,'Items'
-  ,function EditorCtrl ($scope, $timeout, $http, Utils, Items, Edit) {
-    $scope.newItem = {}
-    $scope.placeHolder = {
+  ,'Editor'
+  ,'Collection'
+  ,'slugifyFilter'
+  ,function EditorCtrl ($timeout, $http, Utils, Editor, Collection, slugify) {
+    this.newItem = {}
+    this.placeHolder = {
        name: "Nom de l'objet"
       ,type: "Type d'objet"
       ,category: "Catégorie"
       ,ingredient: {
          name: "Ingrédients"
-        ,quantity: "1"
       }
     };
+    this.focus = 'name'
 
-    $scope.hello = "yo"
-    $scope.focus = 'name'
-
+    this.savedItems = new Collection
+    this.newDependencies = []
+    this.waitingLine = []
 
       // when submitting the add form, send the text to the node API
-    $scope.createItem = function createItem () {
-      if ($scope.newItem.name) {
+    this.save = function createItem () {
+      if (this.newItem.name) {
 
-        newItem = $scope.newItem
-        Items.create(newItem)
+        var newItem = Editor.save(this.newItem).$promise
+          .then(function (data) {
+            this.savedItems.push(data.saved)
+            this.newDependencies = this.newDependencies.concat(data.newDependencies)
+          }.bind(this))
 
-        $scope.newItem = {
-          category: newItem.category,
-          type: newItem.type
+        console.log(newItem)
+
+        this.newItem = {
+          category: this.newItem.category,
+          type: this.newItem.type
         } // clear the form so our user is ready to enter another
 
-        $scope.focus = 'false'
+        this.focus = 'false'
         $timeout(function () {
-          $scope.focus = 'name'
+          this.focus = 'name'
         })
       }
     }
 
-    $scope.addChildIngredient = function addChildIngredient () {
-      if ($scope.newItem.name && $scope.newItem.category && !$scope.newItem.recipe.length) {
+    this.addChildIngredient = function addChildIngredient () {
+      console.log(this.newItem);
+
+      if (this.newItem.name && this.newItem.category && !this.newItem.recipe.length) {
         var query = false;
-        switch ($scope.newItem.category.toSlug()) {
+        switch (slugify(this.newItem.category)) {
           case
             'trophee-moyen':
             query = 'Trophée mineur/'
@@ -60,7 +68,7 @@ angular.module('editor.controller', [])
         }
 
         if (query) {
-          var searchTerm = $scope.newItem.name
+          var searchTerm = this.newItem.name
             .replace(/moyen/gi, '')
             .replace(/majeur/gi, '')
 
@@ -69,8 +77,8 @@ angular.module('editor.controller', [])
           $http.get('/api/search/items/' + query)
           .success(function (data) {
             if (data) {
-              $scope.newItem.recipe = []
-              $scope.newItem.recipe.push({
+              this.newItem.recipe = []
+              this.newItem.recipe.push({
                  _ingredient: data
                 ,quantity: 1
               })
@@ -86,24 +94,24 @@ angular.module('editor.controller', [])
 
                 var data = {name: ingredientName}
 
-                $scope.newItem.recipe.push({
+                this.newItem.recipe.push({
                   _ingredient: data,
                   quantity: 1
                 })
               }
             }
 
-          })
+          }.bind(this))
         }
 
       }
     }
 
     // delete an Item after checking it
-    $scope.deleteItem = function (id, index) {
+    this.deleteItem = function (id, index) {
       Items.delete(id)
         .success(function(data) {
-          $scope.items = data;
+          this.items = data;
         })
     }
 

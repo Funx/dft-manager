@@ -15,6 +15,16 @@ var compass  = require('gulp-compass');
 var iconfont = require('gulp-iconfont');
 var iconfontCss = require('gulp-iconfont-css');
 
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var globby = require('globby');
+var through = require('through2');
+var gutil = require('gulp-util');
+var uglify = require('gulp-uglify');
+var sourcemaps = require('gulp-sourcemaps');
+var reactify = require('reactify');
+
 var nodemon = require('gulp-nodemon');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -163,16 +173,64 @@ gulp.task('uglify:foundation', function(cb) {
 });
 
 gulp.task('uglify:app', function() {
-  var uglify = $.if(isProduction, $.uglify()
-    .on('error', function (e) {
-      console.log(e);
-    }));
+  // var browserified = transform(function(filename) {
+  //   console.log(filename)
+  //   var b = browserify(filename);
+  //   return b.bundle();
+  // });
+  //
+  // var uglify = $.if(isProduction, $.uglify()
+  //   .on('error', function (e) {
+  //     console.log(e);
+  //   }));
 
-  return gulp.src(paths.appJS)
-    .pipe(uglify)
-    .pipe($.concat('app.js'))
-    .pipe(gulp.dest('./build/assets/js/'))
-  ;
+  // return gulp.src(paths.appJS)
+  //   .pipe(browserified)
+  //   .pipe(uglify)
+  //   .pipe($.concat('app.js'))
+  //   .pipe(gulp.dest('./build/assets/js/'))
+  //
+    // gulp expects tasks to return a stream, so we create one here.
+    var bundledStream = through();
+
+    bundledStream
+      // turns the output bundle stream into a stream containing
+      // the normal attributes gulp plugins expect.
+      .pipe(source('app.js'))
+      // the rest of the gulp task, as you would normally write it.
+      // here we're copying from the Browserify + Uglify2 recipe.
+      .pipe(buffer())
+      .pipe(sourcemaps.init({loadMaps: true}))
+        // Add gulp plugins to the pipeline here.
+        // .pipe(uglify())
+        // .on('error', gutil.log)
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest('./build/assets/js/'));
+
+    // "globby" replaces the normal "gulp.src" as Browserify
+    // creates it's own readable stream.
+    globby(paths.appJS, function(err, entries) {
+      // ensure any errors from globby are handled
+      if (err) {
+        bundledStream.emit('error', err);
+        return;
+      }
+
+      // create the Browserify instance.
+      var b = browserify({
+        entries: entries,
+        debug: true,
+        transform: [reactify]
+      });
+
+      // pipe the Browserify stream into the stream we created earlier
+      // this starts our gulp pipeline.
+      b.bundle().pipe(bundledStream);
+    });
+
+    // finally, we return the stream, so gulp knows when this task is done.
+    return bundledStream;
+
 });
 
 gulp.task('glyphicons', function() {

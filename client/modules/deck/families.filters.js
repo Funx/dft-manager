@@ -5,7 +5,6 @@ angular.module('families.filters', [])
    'slugifyFilter'
   ,function (Families, slugify) {
     return function(familyName) {
-      console.log(Families.get(familyName));
       return Families.get(familyName).hue;
     }
   }

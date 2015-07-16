@@ -59,7 +59,10 @@ module.exports = function(app) {
   // create Item and send back all Items after creation
   app.post('/api/items', function(req, res) {
     // create a Item, information comes from AJAX request from Angular
-    var data = {}
+    var data = {
+       saved: false
+      ,newDependencies: []
+    }
     console.log("post");
 
     async.each(req.body.recipe,
@@ -77,6 +80,7 @@ module.exports = function(app) {
                 if (err) throw (err);
                 console.log("==creaate a new ingredient")
                 dosage._ingredient = item._id;
+                data.newDependencies.push(item)
                 callback();
               });
             }
@@ -91,28 +95,31 @@ module.exports = function(app) {
         if(!req.body._id){
             var item = new Item(req.body);
             item.save(function(err,item){
-              if (err) throw (err)
-              data.lastEdit = item;
-              getItems.exec(function(err,items){
-                if (err) throw (err)
-                data.list = items;
-                console.log('========');
-                console.log('created item');
-                res.json(data);
-              });
+              if (err) throw err
+              Item
+              .findById(item._id)
+              .populate('recipe._ingredient')
+              .exec(function (err, item) {
+                if (err) return handleError(err)
+                console.log(item)
+                data.saved = item
+                res.json(data)
+              })
             });
+            
             console.log('new item');
           }else{ // else we just update it
             Item.update({_id: req.body._id}, req.body, {overwrite: true}, function(err,item){
-              if (err) throw err;
-              data.lastEdit = item;
-              getItems.exec(function(err,items){
-                if (err) throw err;
-                console.log('========');
-                console.log('updated item');
-                data.list = items;
-                res.json(data);
-              });
+              if (err) throw err
+              Item
+              .findById(item._id)
+              .populate('recipe._ingredient')
+              .exec(function (err, item) {
+                if (err) return handleError(err)
+                console.log(item)
+                data.saved = item
+                res.json(data)
+              })
             });
           }
       }

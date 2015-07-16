@@ -1,5 +1,6 @@
 angular.module('dftm.editor', [
-  'editor.controller'
+   'editor.controller'
+  ,'editor.service'
 ])
 
 .config([
@@ -9,7 +10,7 @@ angular.module('dftm.editor', [
     var editorSegmentConfig = {
       templateUrl: 'modules/editor/editor.html',
       controller: 'EditorCtrl',
-      controllerAs: 'deck',
+      controllerAs: 'editor',
       dependencies: ['id']
     }
 

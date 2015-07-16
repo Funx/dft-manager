@@ -1,4 +1,4 @@
-<div class="page-wrapper__wrapper--inner" ng-controller="DeckCtrl as deck">
+<div class="page-wrapper__wrapper--inner">
 
   <div class="deck__amazingQuery amazingQuery [ fixed ]">
     <input class="amazingQuery__input" type="text"
@@ -6,21 +6,6 @@
       ng-model="deck.query"
       ng-change="deck.filterCards()">
   </div>
-
-
-    <!-- <div amazing-query ng-model="deck.query" class="deck__amazingQuery amazingQuery [ fixed ]"></div> -->
-
-    <!-- <fa-app class="deck">
-      <fa-view ng-repeat="card in deck.cards track by card._id | filter:deck.query"
-        fa-size="[50, 50]"
-        fa-animate-enter="cubeEnter(photo, $done)">
-        <fa-modifier>
-          <fa-surface>
-            <div card="card"></div>
-          </fa-surface>
-        </fa-modifier>
-      </fa-view>
-    </fa-app> -->
 
     <div class="deck">
       <div class="deck__card__wrapper--outer card__wrapper--outer"
@@ -30,15 +15,4 @@
       </div>
     </div>
 
-  <!-- <div isotope elements="deck.cards"><div card="element"></div></div> -->
-
-  <!-- <div class="deck" isotope-container="isotope-container">
-    <div isotope-item="isotope-item"
-      class="deck__card__wrapper--outer card__wrapper--outer"
-      ng-class="{bigger: card.bigger}"
-      ng-repeat="card in deck.cards track by card._id | filter:search"
-      ng-show="!search || ([card]).length">
-      <div card="card"></div>
-    </div>
-  </div> -->
 </div>

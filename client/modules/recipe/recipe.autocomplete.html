@@ -14,7 +14,7 @@
         {{ ::suggestion.category | hue}},
         70%,
         45%
-      );"
+      )"
       ng-click="addToModel($index)"
       ng-mouseover="$parent.selectedIndex=$index"
       ng-class="{ 'active': selectedIndex === $index || (selectedIndex === -1 && $index === -1) }">

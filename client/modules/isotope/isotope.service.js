@@ -6,10 +6,10 @@ angular.module('isotope.service', [])
   '$throttle',
   function($rootScope, $timeout, $throttle){
     return {
-      relayout: function(){
-        $timeout(function(){
-          console.log('relayout');
-          $rootScope.$broadcast('iso-init', {name:null, params:null});
+      relayout: () => {
+        $timeout(() => {
+          console.log('relayout')
+          $rootScope.$broadcast('iso-init', {name:null, params:null})
         })
       }
     }

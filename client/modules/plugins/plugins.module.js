@@ -1,5 +1,4 @@
 angular.module('dftm.plugins', [
-	'foundation',
   // 'ngAnimate',
 	'iso',
   'ngRoute',
@@ -8,4 +7,4 @@ angular.module('dftm.plugins', [
 	'angular-underscore',
 	'txx.diacritics',
 	'route-segment', 'view-segment'
-]);
+])

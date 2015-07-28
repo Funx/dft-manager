@@ -10,13 +10,13 @@ angular.module('recipe.autocomplete.directive', [])
     ,$scope: false
     ,templateUrl: '/modules/recipe/recipe.autocomplete.html'
     ,link: function autoCompleteLink ($scope, elem, attrs) {
-      var validated = false; //flag to know if the user already hit enter for the previous suggestions
+      var validated = false //flag to know if the user already hit enter for the previous suggestions
 
       $scope.suggestions = []
       $scope.selectedIndex = 0
       $scope.placeHolder = attrs.placeholder || 'Start typing'
 
-      $scope.search = function() {
+      $scope.search = () => {
         if($scope.searchText) {
           var quantityPattern = /^([0-9])+/gm
           $scope.quantity = $scope.searchText.match(quantityPattern) || [1]
@@ -24,7 +24,7 @@ angular.module('recipe.autocomplete.directive', [])
 
           var searchText = $scope.searchText.replace(quantityPattern, '').trim()
           if (!searchText) {
-            searchText = $scope.quantity;
+            searchText = $scope.quantity
             $scope.quantity = 1
           }
 
@@ -33,7 +33,7 @@ angular.module('recipe.autocomplete.directive', [])
           }
 
           $http.get(attrs.url + '/' + searchText)
-          .success(function(data) {
+          .success((data) => {
             if(validated){
               $scope.selectedIndex = 0
               $scope.suggestions = []
@@ -43,7 +43,7 @@ angular.module('recipe.autocomplete.directive', [])
                 data.unshift({name: searchText})
               }
 
-              data.map(function(suggestion){
+              data.map((suggestion) => {
                 suggestion.category = suggestion.category || ''
                 suggestion.className = suggestion.category.toSlug()
                 return suggestion
@@ -56,7 +56,7 @@ angular.module('recipe.autocomplete.directive', [])
         }
       }
 
-      $scope.checkKeyDown = function(event) {
+      $scope.checkKeyDown = (event) => {
 
         validated = false
         if (event.keyCode === 40) { //down key, increment selectedIndex
@@ -80,7 +80,7 @@ angular.module('recipe.autocomplete.directive', [])
         }
       }
 
-      $scope.addToModel=function(index){
+      $scope.addToModel=(index) => {
 
         (index === -1) ? index = 0 : false
         $scope.model = $scope.model || []
@@ -118,20 +118,20 @@ angular.module('recipe.autocomplete.directive', [])
 
       }
 
-      $scope.$watch('selectedIndex', function (val) {
+      $scope.$watch('selectedIndex', (val) => {
         if(val > 0 && val < $scope.suggestions.length) {
           $scope.searchText = $scope.quantity + ' ' + $scope.suggestions[$scope.selectedIndex].name
         }
       })
 
-      elem.find('input').bind('blur', function () {
-        $timeout(function () {
+      elem.find('input').bind('blur', () => {
+        $timeout(() => {
           $scope.suggestions = []
           $scope.searchText = ''
         }, 200)
       })
 
-      $scope.removeTag = function (index) {
+      $scope.removeTag = (index) => {
         $scope.ingredients.splice(index, 1)
       }
 

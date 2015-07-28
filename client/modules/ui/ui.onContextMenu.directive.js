@@ -6,63 +6,63 @@ angular.module('ui.onContextMenu.directive', [])
 		link: function($scope, $elm, $attrs) {
 
 			function triggerEvent() {
-				$scope.$emit('contextMenu');
-				$scope.$apply(function() {
-          $scope.$eval($attrs.onContextMenu);
-        });
+				$scope.$emit('contextMenu')
+				$scope.$apply(() => {
+          $scope.$eval($attrs.onContextMenu)
+        })
 			}
 
       //==== handle right click
-      document.oncontextmenu = function (e) {
+      document.oncontextmenu = (e) => {
         if(e.target.hasAttribute('on-context-menu')) {
         }
-      };
+      }
 
-      $elm.bind('contextmenu',function(e){
-				triggerEvent();
-				e.preventDefault();
-      });
+      $elm.bind('contextmenu',(e) => {
+				triggerEvent()
+				e.preventDefault()
+      })
 
       //==== handle long press
-			$elm.bind('touchstart', function(evt) {
+			$elm.bind('touchstart', (evt) => {
 				// Locally scoped variable that will keep track of the long press
 				if(evt.touches.length == 1){
 
-          $scope.longPress = true;
+          $scope.longPress = true
 
   				// We'll set a timeout for 600 ms for a long press
-  				$timeout(function() {
+  				$timeout(() => {
   					if ($scope.longPress) {
   						// If the touchend event hasn't fired,
   						// apply the function given in on the element's on-long-press attribute
-							triggerEvent();
+							triggerEvent()
   					}
-  				}, 600);
+  				}, 600)
         }
 
-			});
+			})
 
-      $elm.bind('touchmove', function(evt) {
+      $elm.bind('touchmove', (evt) => {
         // Prevent the onLongPress event from firing
-				$scope.longPress = false;
+				$scope.longPress = false
 				// If there is an on-touch-end function attached to this element, apply it
 				if ($attrs.onTouchEnd) {
-					$scope.$apply(function() {
+					$scope.$apply(() => {
 						$scope.$eval($attrs.onTouchMove)
-					});
+					})
 				}
-      });
+      })
 
-			$elm.bind('touchend', function(evt) {
+			$elm.bind('touchend', (evt) => {
 				// Prevent the onLongPress event from firing
-				$scope.longPress = false;
+				$scope.longPress = false
 				// If there is an on-touch-end function attached to this element, apply it
 				if ($attrs.onTouchEnd) {
-					$scope.$apply(function() {
+					$scope.$apply(() => {
 						$scope.$eval($attrs.onTouchEnd)
-					});
+					})
 				}
-			});
+			})
 		}
-	};
+	}
 })

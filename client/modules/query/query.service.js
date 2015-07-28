@@ -1,7 +1,7 @@
 angular.module('query.service', [])
 
-.factory('Query', [function(){
+.factory('Query', [() => {
   return {
     value: ''
-  };
-}]);
+  }
+}])

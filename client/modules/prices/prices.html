@@ -15,7 +15,7 @@
       <span class="item__name">{{item.name}}</span>
       <input
         ng-focus="item.selected = true"
-        ng-blur="item.selected = false; saveItem($index)"
+        ng-blur="item.selected = false saveItem($index)"
         focus-me="item.selected && !item.showRecipe"
         ng-enter="focusNext($index)"
         type="text"
@@ -26,7 +26,7 @@
     </div>
 
       <rich-context-menu class="item__contextMenu" trigger="item.displayContextMenu">
-        <ng-include ng-init="model = item" src="'modules/prices/contextmenu.html'"></ng-include>
+        <ng-include ng-init="model = item" src="'/modules/prices/contextmenu.html'"></ng-include>
       </rich-context-menu>
       <recipe
         ng-if="item.showRecipe"

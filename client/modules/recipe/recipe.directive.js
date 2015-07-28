@@ -14,15 +14,15 @@ angular.module('recipe.directive', [
     }
     ,templateUrl: '/modules/recipe/recipe.html'
     ,link: function ($scope, $element, $attributes, $ctrls) {
-      $scope.model = $scope.model || [];
+      $scope.model = $scope.model || []
 
       $scope.ingredients = $scope.model
 
-      $scope.$watch(function () {
+      $scope.$watch(() => {
         $scope.model = $scope.model || []
         return $scope.model.length
-      }, function () {
-        $scope.model.map(function (dosage) {
+      }, () => {
+        $scope.model.map((dosage) => {
           if (!dosage._ingredient) return null
           else {
             dosage._ingredient.category = dosage._ingredient.category || ''
@@ -30,9 +30,9 @@ angular.module('recipe.directive', [
             return dosage
           }
         })
-      });
+      })
 
-      $scope.removeIngredient = function(index){
+      $scope.removeIngredient = (index) => {
         $scope.model.splice(index, 1)
         $scope.$emit('change')
       }

@@ -4,8 +4,8 @@ angular.module('query.controller', [])
   '$scope',
   'Query',
   function($scope, Query){
-    $scope.$watch('filterQuery', function(){
+    $scope.$watch('filterQuery', () => {
       Query.value = $scope.filterQuery
     })
   }
-]);
+])

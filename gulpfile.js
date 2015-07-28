@@ -5,32 +5,34 @@
 // 1. LIBRARIES
 // - - - - - - - - - - - - - - -
 
-var $        = require('gulp-load-plugins')();
-var argv     = require('yargs').argv;
-var gulp     = require('gulp');
-var rimraf   = require('rimraf');
-var router   = require('front-router');
-var sequence = require('run-sequence');
-var compass  = require('gulp-compass');
-var iconfont = require('gulp-iconfont');
-var iconfontCss = require('gulp-iconfont-css');
+var $        = require('gulp-load-plugins')()
+var argv     = require('yargs').argv
+var gulp     = require('gulp')
+var rimraf   = require('rimraf')
+var router   = require('front-router')
+var sequence = require('run-sequence')
+var compass  = require('gulp-compass')
+var iconfont = require('gulp-iconfont')
+var iconfontCss = require('gulp-iconfont-css')
 
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var globby = require('globby');
-var through = require('through2');
-var gutil = require('gulp-util');
-var uglify = require('gulp-uglify');
-var sourcemaps = require('gulp-sourcemaps');
-var reactify = require('reactify');
+var browserify = require('browserify')
+var source = require('vinyl-source-stream')
+var buffer = require('vinyl-buffer')
+var globby = require('globby')
+var through = require('through2')
+var gutil = require('gulp-util')
+var uglify = require('gulp-uglify')
+var sourcemaps = require('gulp-sourcemaps')
+var reactify = require('reactify')
+var babel = require('gulp-babel')
+var watchify = require('watchify')
 
-var nodemon = require('gulp-nodemon');
-var browserSync = require('browser-sync');
-var reload = browserSync.reload;
+var nodemon = require('gulp-nodemon')
+var browserSync = require('browser-sync')
+var reload = browserSync.reload
 
 // Check for --production flag
-var isProduction = !!(argv.production);
+var isProduction = !!(argv.production)
 
 // 2. FILE PATHS
 // - - - - - - - - - - - - - - -
@@ -50,7 +52,6 @@ var paths = {
   ],
   // These files include Foundation for Apps and its dependencies
   foundationJS: [
-    'bower_components/jquery/dist/jquery.js',
     'bower_components/underscore/underscore.js',
     'bower_components/famous/dist/famous-global.js',
     'bower_components/masonry/dist/masonry.pkgd.js',
@@ -67,17 +68,18 @@ var paths = {
     'bower_components/angular-route-segment/build/angular-route-segment.js',
     'bower_components/angular-resource/angular-resource.js',
     'bower_components/angular-animate/angular-animate.js',
-    'bower_components/foundation-apps/js/vendor/**/*.js',
-    'bower_components/foundation-apps/js/angular/**/*.js',
+    // 'bower_components/foundation-apps/js/vendor/**/*.js',
+    // 'bower_components/foundation-apps/js/angular/**/*.js',
     'bower_components/esrever/esrever.js',
     'bower_components/isotope/dist/isotope.pkgd.js',
     'bower_components/angular-scroll-watch/build/angular-scroll-watch.js',
     'bower_components/angular-isotope/dist/angular-isotope.js',
     'bower_components/angular-underscore/angular-underscore.js',
-    'client/modules/plugins/remove-diacritics.js',
+    // 'client/modules/plugins/remove-diacritics.js',
     'bower_components/famous-angular/dist/famous-angular.js',
     'bower_components/angular-optimistic-cache/dist/angular-optimistic-cache.js',
-    '!bower_components/foundation-apps/js/angular/app.js'
+    'bower_components/angular/angular.js'
+    // '!bower_components/foundation-apps/js/angular/app.js'
   ],
   // These files are for your app's JavaScript
   appJS: [
@@ -97,8 +99,8 @@ var paths = {
 
 // Cleans the build directory
 gulp.task('clean', function(cb) {
-  rimraf('./build', cb);
-});
+  rimraf('./build', cb)
+})
 
 // Copies everything in the client folder except templates, Sass, and JS
 gulp.task('copy', function() {
@@ -106,8 +108,8 @@ gulp.task('copy', function() {
     base: './client/'
   })
     .pipe(gulp.dest('./build'))
-  ;
-});
+
+})
 
 // Copies your app's page templates and generates URLs for them
 gulp.task('copy:templates', function() {
@@ -117,29 +119,28 @@ gulp.task('copy:templates', function() {
       root: 'client'
     }))
     .pipe(gulp.dest('./build/templates'))
-  ;
-});
+
+})
 
 // Compiles the Foundation for Apps directive partials into a single JavaScript file
 gulp.task('copy:foundation', function(cb) {
-  gulp.src('bower_components/foundation-apps/js/angular/components/**/*.html')
-    .pipe($.ngHtml2js({
-      prefix: 'components/',
-      moduleName: 'foundation',
-      declareModule: false
-    }))
-    .pipe($.uglify())
-    .pipe($.concat('templates.js'))
-    .pipe(gulp.dest('./build/assets/js'))
-  ;
+  // gulp.src('bower_components/foundation-apps/js/angular/components/**/*.html')
+  //   .pipe($.ngHtml2js({
+  //     prefix: 'components/',
+  //     moduleName: 'foundation',
+  //     declareModule: false
+  //   }))
+  //   .pipe($.uglify())
+  //   .pipe($.concat('templates.js'))
+  //   .pipe(gulp.dest('./build/assets/js'))
+  //
+  //
+  // // Iconic SVG icons
+  // gulp.src('./bower_components/foundation-apps/iconic/**/*')
+  //   .pipe(gulp.dest('./build/assets/img/iconic/'))
 
-  // Iconic SVG icons
-  gulp.src('./bower_components/foundation-apps/iconic/**/*')
-    .pipe(gulp.dest('./build/assets/img/iconic/'))
-  ;
-
-  cb();
-});
+  cb()
+})
 
 // Compiles Sass
 gulp.task('sass', function () {
@@ -154,8 +155,8 @@ gulp.task('sass', function () {
     }))
     .pipe(gulp.dest('./build/assets/css/'))
     .pipe(reload({stream: true}))
-  ;
-});
+
+})
 
 // Compiles and copies the Foundation for Apps JavaScript, as well as your app's custom JS
 gulp.task('uglify', ['uglify:foundation', 'uglify:app'])
@@ -163,26 +164,26 @@ gulp.task('uglify', ['uglify:foundation', 'uglify:app'])
 gulp.task('uglify:foundation', function(cb) {
   var uglify = $.if(isProduction, $.uglify()
     .on('error', function (e) {
-      console.log(e);
-    }));
+      console.log(e)
+    }))
   return gulp.src(paths.foundationJS)
     .pipe(uglify)
     .pipe($.concat('foundation.js'))
     .pipe(gulp.dest('./build/assets/js/'))
-  ;
-});
+
+})
 
 gulp.task('uglify:app', function() {
   // var browserified = transform(function(filename) {
   //   console.log(filename)
-  //   var b = browserify(filename);
-  //   return b.bundle();
-  // });
+  //   var b = browserify(filename)
+  //   return b.bundle()
+  // })
   //
   // var uglify = $.if(isProduction, $.uglify()
   //   .on('error', function (e) {
-  //     console.log(e);
-  //   }));
+  //     console.log(e)
+  //   }))
 
   // return gulp.src(paths.appJS)
   //   .pipe(browserified)
@@ -191,7 +192,7 @@ gulp.task('uglify:app', function() {
   //   .pipe(gulp.dest('./build/assets/js/'))
   //
     // gulp expects tasks to return a stream, so we create one here.
-    var bundledStream = through();
+    var bundledStream = through()
 
     bundledStream
       // turns the output bundle stream into a stream containing
@@ -204,16 +205,17 @@ gulp.task('uglify:app', function() {
         // Add gulp plugins to the pipeline here.
         // .pipe(uglify())
         // .on('error', gutil.log)
+      .pipe(babel())
       .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest('./build/assets/js/'));
+      .pipe(gulp.dest('./build/assets/js/'))
 
     // "globby" replaces the normal "gulp.src" as Browserify
     // creates it's own readable stream.
     globby(paths.appJS, function(err, entries) {
       // ensure any errors from globby are handled
       if (err) {
-        bundledStream.emit('error', err);
-        return;
+        bundledStream.emit('error', err)
+        return
       }
 
       // create the Browserify instance.
@@ -221,20 +223,44 @@ gulp.task('uglify:app', function() {
         entries: entries,
         debug: true,
         transform: [reactify]
-      });
+      })
 
       // pipe the Browserify stream into the stream we created earlier
       // this starts our gulp pipeline.
-      b.bundle().pipe(bundledStream);
-    });
+      b.bundle().pipe(bundledStream)
+    })
 
     // finally, we return the stream, so gulp knows when this task is done.
-    return bundledStream;
+    return bundledStream
+  // function compile (watch) {
+  //   var bundler = watchify(browserify(['./client/app.js'], { debug: true }).transform(babel))
+  //
+  //   function rebundle() {
+  //     bundler.bundle()
+  //       .on('error', function(err) { console.error(err) this.emit('end') })
+  //       .pipe(source('app.js'))
+  //       .pipe(buffer())
+  //       .pipe(sourcemaps.init({ loadMaps: true }))
+  //       .pipe(sourcemaps.write('./'))
+  //       .pipe(gulp.dest('./build'))
+  //   }
+  //
+  //   if (watch) {
+  //     bundler.on('update', function() {
+  //       console.log('-> bundling...')
+  //       rebundle()
+  //     })
+  //   }
+  //
+  //   rebundle()
+  // }
+  //
+  // return compile(true)
 
-});
+})
 
 gulp.task('glyphicons', function() {
-  var fontName = 'icons';
+  var fontName = 'icons'
   console.log('glyphicons...')
   return gulp.src(['./client/assets/images/icons/*.svg'])
     .pipe(iconfontCss({
@@ -247,8 +273,8 @@ gulp.task('glyphicons', function() {
       fontName: fontName, // identique au nom de iconfontCss
     }))
     .pipe(gulp.dest('./client/assets/fonts/icons/') )
-  ;
-});
+
+})
 
 // Starts a test server, which you can view at http://localhost:3000
 gulp.task('server', ['build'], function() {
@@ -256,25 +282,39 @@ gulp.task('server', ['build'], function() {
     script: 'bootstrap.js'
   , ext: 'js html'
   , env: { 'NODE_ENV': 'development' }
+  , ignore: [
+      'node_modules/**'
+    , 'bower_components/**'
+    , 'build/**'
+    , 'client/**'
+    ]
   })
 
   browserSync({
     proxy: "localhost:8888",
     notify: false,
     open: false
-  });
-  browserSync.reload();
-});
+  })
+  browserSync.reload()
+})
 
 // Builds your entire app once, without starting a server
 gulp.task('build', function(cb) {
-  sequence('clean', ['copy', 'copy:foundation', 'glyphicons','sass', 'uglify'], 'copy:templates', cb);
-});
+  sequence('clean', [
+    'copy'
+    ,'copy:foundation'
+    /*, 'glyphicons'*/
+    ,'sass'
+    ,'uglify'
+  ]
+  ,'copy:templates'
+  ,cb)
+})
 
-gulp.task('watch:js', ['uglify:app'], browserSync.reload);
-gulp.task('watch:static', ['copy'], browserSync.reload);
-gulp.task('watch:icons', ['glyphicons'], browserSync.reload);
-gulp.task('watch:templates', ['copy:templates'], browserSync.reload);
+gulp.task('watch:js', ['uglify:app'], browserSync.reload)
+gulp.task('watch:static', ['copy'], browserSync.reload)
+gulp.task('watch:icons', ['glyphicons'], browserSync.reload)
+gulp.task('watch:templates', ['copy:templates'], browserSync.reload)
 
 // Default task: builds your app, starts a server, and recompiles assets when they change
 gulp.task('default', ['server'], function () {
@@ -283,10 +323,10 @@ gulp.task('default', ['server'], function () {
     './client/scss/**/*.scss',
     './client/modules/**/*.scss',
     './client/app.scss'
-  ], ['sass']);
+  ], ['sass'])
 
   // Watch JavaScript
-  gulp.watch(['./client/app.js', './client/components/**/*.js', './client/modules/**/*.js'], ['watch:js']);
+  gulp.watch(['./client/app.js', './client/components/**/*.js', './client/modules/**/*.js'], ['watch:js'])
 
   // Watch static files
   gulp.watch([
@@ -294,11 +334,11 @@ gulp.task('default', ['server'], function () {
     '!./client/**/*.{scss,js}',
     '!./client/assets/images/icons/*',
     '!./client/templates/**/*.*'
-    ], ['watch:static']);
+    ], ['watch:static'])
 
   // Watch app templates
-  gulp.watch(['./client/templates/**/*.html'], ['watch:templates']);
+  gulp.watch(['./client/templates/**/*.html'], ['watch:templates'])
 
   // Watch app templates
-  gulp.watch([paths.icons], ['watch:icons']);
-});
+  gulp.watch([paths.icons], ['watch:icons'])
+})

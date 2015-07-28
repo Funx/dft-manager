@@ -4,7 +4,7 @@ angular.module('fullSet.controller', [])
   '$scope',
   '$controller',
   function($scope, $controller){
-    angular.extend(this, $controller('DeckCtrl',{$scope: $scope}));
-    console.log(this);
+    angular.extend(this, $controller('DeckCtrl',{$scope: $scope}))
+    console.log(this)
   }
 ])

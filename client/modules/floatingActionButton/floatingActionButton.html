@@ -1,6 +1,6 @@
 <div ng-controller="FloatingActionButtonCtrl as fab" class="fab">
   <button class="fab__bubble bubble bubble--{{ actionName }}"
-    ng-repeat="actionName in fab.availableActions"
+    ng-repeat="actionName in fab.getAvailableActions()"
     ng-init="action = fab.actions[actionName]"
     ng-click="action.action()">
     <span class="bubble__title" ng-bind="$parent.$eval(action.expression)"></span>

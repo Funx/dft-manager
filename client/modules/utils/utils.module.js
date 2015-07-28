@@ -5,4 +5,4 @@ angular.module('dftm.utils', [
   'utils.debounce.service',
   'utils.throttle.service',
   'utils.liveEventBinding.service'
-]);
+])

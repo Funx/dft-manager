@@ -6,38 +6,36 @@ angular.module('families.service', [])
   'Deck',
   function($cacheFactory, slugify, Deck){
 
-    var families = $cacheFactory('families');
-    console.log(families);
+    var families = $cacheFactory('families')
+    console.log(families)
 
-    var getFamilies = function(done) {
+    var getFamilies = (done) => {
 
-      Deck.get(function(data){
+      Deck.get((data) => {
         data = _.unique(
-          data.map(function(card){
-            return slugify(card.category);
-          })
+          data.map((card) => slugify(card.category))
         )
-        .reduce(function(categories, categoryName, index, categoryNames){
+        .reduce((categories, categoryName, index, categoryNames) => {
           categories[categoryName] = {
             slug: categoryName,
             hue: Math.round(360 / categoryNames.length * index)
-          };
-          return categories;
-        }, {});
-        done(data);
+          }
+          return categories
+        }, {})
+        done(data)
 
-      });
+      })
     }
 
-    getFamilies(function(data){
-      families.put('data', data);
+    getFamilies((data) => {
+      families.put('data', data)
     })
 
     return {
-      get: function(familyName){
+      get: (familyName) => {
         familyName = slugify(familyName)
         return families.get('data') ? (families.get('data')[familyName] || families.get('data')[""]) : { hue: 0 }
       }
-    };
+    }
   }
 ])

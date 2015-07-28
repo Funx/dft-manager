@@ -8,10 +8,9 @@ angular.module('dftm.editor', [
   function($routeSegmentProvider){
 
     var editorSegmentConfig = {
-      templateUrl: 'modules/editor/editor.html',
+      templateUrl: '/modules/editor/editor.html',
       controller: 'EditorCtrl',
-      controllerAs: 'editor',
-      dependencies: ['id']
+      controllerAs: 'editor'
     }
 
     $routeSegmentProvider

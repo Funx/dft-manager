@@ -4,7 +4,7 @@
 
 angular
 	.module('txx.diacritics', [])
-	.service('removeDiacritics', function () {
+	.service('removeDiacritics', () => {
 		var MAP = [
 			{
 				'base': 'A',
@@ -188,30 +188,32 @@ angular
 				'base': 'z',
 				'letters': '\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763'
 			}
-		];
+		]
 
-		var diacriticsMap = {};
+		var diacriticsMap = {}
 		for (var i = 0; i < MAP.length; i++) {
-			var letters = MAP[i].letters.split("");
+			var letters = MAP[i].letters.split("")
 			for (var j = 0; j < letters.length; j++) {
-				diacriticsMap[letters[j]] = MAP[i].base;
+				diacriticsMap[letters[j]] = MAP[i].base
 			}
 		}
 
-		return {
-			replace: function (str) {
+		var api = {
+			replace: (str) => {
 				str = _.isString(str) ? str : ''
-				return str.replace(/[^\u0000-\u007E]/g, function (a) {
-					return diacriticsMap[a] || a;
-				});
+				return str.replace(/[^\u0000-\u007E]/g, (a) => {
+					return diacriticsMap[a] || a
+				})
 			},
-			seo: function (str, replace) {
-				if (typeof replace === "undefined") replace = "-";
-				str = this.replace(str);
-				str = angular.lowercase(str);
-				str = str.replace(/[^A-Z0-9]+/ig, replace);
-				return str;
+			seo: (str, replace) => {
+				if (typeof replace === "undefined") replace = "-"
+				str = api.replace(str)
+				str = angular.lowercase(str)
+				str = str.replace(/[^A-Z0-9]+/ig, replace)
+				return str
 			}
-		};
+		}
 
-	});
+		return api
+
+	})

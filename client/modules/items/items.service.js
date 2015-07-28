@@ -7,76 +7,62 @@ angular.module('items.service', [])
 
   return {
 
-    get: function() {
-      return $http.get('/api/items');
+    get: () => {
+      return $http.get('/api/items')
     },
 
-    create: function(itemData, done) {
-      $this = this;
-      itemData.recipe = itemData.recipe || [];
+    create: (itemData, done) => {
+      itemData.recipe = itemData.recipe || []
 
       $http.post('/api/items', itemData)
-      .success(function(data){
-        $this.list = data.list.map(function(item){
-          item.category = item.category || '';
-          item.className = item.category.toSlug();
-          return item;
-        });
-        $this.lastEdit = data.lastEdit;
-        if(done) return done(data.lastEdit);
+      .success((data) => {
+        this.list = data.list.map((item) => {
+          item.category = item.category || ''
+          item.className = item.category.toSlug()
+          return item
+        })
+        this.lastEdit = data.lastEdit
+        if(done) return done(data.lastEdit)
       })
 
-      .error(function(data) {
-        console.log('Error: ' + data);
-        if(done) return done(data);
-      });
+      .error((data) => {
+        console.log('Error: ' + data)
+        if(done) return done(data)
+      })
 
     },
 
-    delete: function(id, done) {
-      $this = this;
-
+    delete: (id, done) => {
       $http.delete('/api/items/' + id)
 
-      .success(function(data){
-        $this.list = data.map(function(item){
-          item.category = item.category || '';
-          item.className = item.category.toSlug();
-          return item;
-        });
-        if(!done) done = function(){}
-        return done(data);
+      .success((data) => {
+        this.list = data.map((item) => {
+          item.category = item.category || ''
+          item.className = item.category.toSlug()
+          return item
+        })
+        if(!done) done = () => {}
+        return done(data)
       })
 
-      .error(function(data) {
-        console.log('Error: ' + data);
-        if(!done) done = function(){}
-        return done(data);
-      });
+      .error((data) => {
+        console.log('Error: ' + data)
+        // if(!done) done = () => {}
+        return done(data)
+      })
 
     },
 
-    init: function(done){
-      $this = this;
-
+    init: (done) => {
       $http.get('/api/items')
-
-      .success(function(data) {
-        $this.list = data.map(function(item){
-          // item.category = item.category || '';
-          // item.className = item.category.toSlug();
-          return item;
-        });
-        console.log($this.list);
-        // $this.list.map(function(item){
-        //   $this.delete(item._id);
-        // });
-        return $this.list;
+      .success((data) => {
+        this.list = data
+        return this.list
       })
 
-      .error(function(data) {
-        console.log('Error: ' + data);
-      });
+      .error((data) => {
+        console.log('Error: ' + data)
+      })
 
 
 
@@ -84,4 +70,4 @@ angular.module('items.service', [])
     list: [],
     lastEdit: {}
   }
-}]);
+}])

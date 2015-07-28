@@ -1,10 +1,12 @@
 <div class="page-wrapper__wrapper--inner">
 
-  <div class="deck__amazingQuery amazingQuery [ fixed ]">
-    <input class="amazingQuery__input" type="text"
-      placeholder="Amazing query... search by 'keyword', 'key':'!value' and even by 'key.deepkey'<'value' !"
-      ng-model="deck.query"
-      ng-change="deck.filterCards()">
+  <div class="amazingQuery__wrapper--outer">
+    <div class="deck__amazingQuery amazingQuery [ fixed ]">
+      <input class="amazingQuery__input" type="text"
+        placeholder="Amazing query... search by 'keyword', 'key':'!value' and even by 'key.deepkey'<'value' !"
+        ng-model="deck.query"
+        ng-change="deck.filterCards()">
+    </div>
   </div>
 
     <div class="deck">

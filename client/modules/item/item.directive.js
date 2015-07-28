@@ -1,6 +1,6 @@
 angular.module('item.directive', [])
 
-.directive('item', ['Items', function(Items){
+.directive('item', ['Items', (Items) => {
   return {
     restrict: "AE",
     priority: 0,
@@ -10,74 +10,74 @@ angular.module('item.directive', [])
     },
     templateUrl: '/modules/item/item.html',
     link: function($scope, $element, $attributes, $ctrls){
-      $scope.model= $scope.model || {};
+      $scope.model= $scope.model || {}
 
-      $scope.model.category = $scope.model.category || '';
-      $scope.className = $scope.model.category.toSlug();
+      $scope.model.category = $scope.model.category || ''
+      $scope.className = $scope.model.category.toSlug()
 
-      $scope.$on('change', function(){
+      $scope.$on('change', () => {
         $scope.item.save()
-      });
+      })
 
-      $scope.selectItem = function(){
-        $scope.item.selected = true;
-        console.log('select');
+      $scope.selectItem = () => {
+        $scope.item.selected = true
+        console.log('select')
       }
 
-      $scope.openContextMenu = function(){
-        $scope.selectItem();
-        $scope.displayContextMenu = true;
+      $scope.openContextMenu = () => {
+        $scope.selectItem()
+        $scope.displayContextMenu = true
       }
 
-      $element.bind('click', function(event){
+      $element.bind('click', (event) => {
         if($scope.item.selected){
-          event.stopPropagation();
-          console.log('stop !');
+          event.stopPropagation()
+          console.log('stop !')
         }
-      });
+      })
 
-      document.body.addEventListener('click', function(event){
+      document.body.addEventListener('click', (event) => {
         if($scope.item.selected){
-          $scope.$apply(function(){
-            $scope.item.selected = false;
-          });
+          $scope.$apply(() => {
+            $scope.item.selected = false
+          })
         }
-      });
+      })
 
       $scope.item = {
-        delete: function(){
-          Items.delete($scope.model._id);
+        delete: () => {
+          Items.delete($scope.model._id)
         },
-        edit: function(){
-          Edit.setCurrentItem($scope.model);
-          $scope.model = Edit.currentItem;
+        edit: () => {
+          Edit.setCurrentItem($scope.model)
+          $scope.model = Edit.currentItem
         },
-        save: function(){
+        save: () => {
           if($scope.model.name){
-            Items.create($scope.model, function(data){});
+            Items.create($scope.model, (data) => {})
           }
         }
       }
     },
     controller: function($scope){
-      $scope.yo = "yooo" + Math.floor(Math.random()*100);
+      $scope.yo = "yooo" + Math.floor(Math.random()*100)
 
-      $scope.hideActionSheet = function() {
-        $scope.isActionSheetVisible = false;
+      $scope.hideActionSheet = () => {
+        $scope.isActionSheetVisible = false
       }
 
-      $scope.showActionSheet = function(){
-        $scope.isActionSheetVisible = true;
+      $scope.showActionSheet = () => {
+        $scope.isActionSheetVisible = true
       }
 
-      $scope.isVisible = function(){
-        var filter = $scope.filter || '';
-        var name = $scope.name || '';
-        var isSubstring = ( name.indexOf( filter ) !== -1 );
+      $scope.isVisible = () => {
+        var filter = $scope.filter || ''
+        var name = $scope.name || ''
+        var isSubstring = ( name.indexOf( filter ) !== -1 )
         // If the filter value is not a substring of the
         // name, we have to exclude it from view.
-        return isSubstring || !filter;
-      };
+        return isSubstring || !filter
+      }
     }
   }
 }])

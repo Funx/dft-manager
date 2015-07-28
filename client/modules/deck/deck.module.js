@@ -14,7 +14,7 @@ angular.module('dftm.deck', [
   function($routeSegmentProvider){
     $routeSegmentProvider
       .segment('fullSet',{
-        templateUrl: 'modules/deck/deck.html',
+        templateUrl: '/modules/deck/deck.html',
         controller: 'FullSetCtrl',
         controllerAs: 'deck'
       })

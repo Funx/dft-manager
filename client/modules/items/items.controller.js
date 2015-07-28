@@ -13,35 +13,35 @@ angular.module('items.controller', [
   'Query',
   function($scope, $timeout, $filter, $debounce, Items, Query) {
 
-  var orderBy = $filter('orderBy');
-  var filterBy = $filter('filter');
+  var orderBy = $filter('orderBy')
+  var filterBy = $filter('filter')
 
-  $scope.filter = '';
+  $scope.filter = ''
 
-  var filters = function(array){
-    array = orderBy(array, 'modified', true);
-    // array = filterBy(array, $scope.filter);
-    return array;
+  var filters = (array) => {
+    array = orderBy(array, 'modified', true)
+    // array = filterBy(array, $scope.filter)
+    return array
   }
 
   $scope.$watch(
-    function(){
-      return Query.value;
+    () => {
+      return Query.value
     },
-    function(){
-      $scope.filter = Query.value;
+    () => {
+      $scope.filter = Query.value
     }
-  );
+  )
 
   $scope.$watch(
-    function(){return Items.list.length},
-    function(){
-      $timeout(function(){
-        $scope.items = filters(Items.list);
-      });
-  });
+    () => {return Items.list.length},
+    () => {
+      $timeout(() => {
+        $scope.items = filters(Items.list)
+      })
+  })
 
   // when landing on the page, get all Items and show them
-  if(!Items.list.length){Items.init();}
+  if(!Items.list.length){Items.init()}
 
 }])

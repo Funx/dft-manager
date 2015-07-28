@@ -6,21 +6,21 @@ angular.module('formatAsCurrency.directive', [])
     return {
       restrict: 'A',
       require: 'ngModel',
-      link: function(scope, element, attrs, ngModelController) {
-        var currency = attrs.formatAsCurrency;
+      link: (scope, element, attrs, ngModelController) => {
+        var currency = attrs.formatAsCurrency
 
-        ngModelController.$parsers.push(function(input) {
+        ngModelController.$parsers.push((input) => {
           //convert data from view format to model format
           if (input) {
             input = input.toString()
-              .replace(/\s\D/g, '');
-            input = parseInt(input);
+              .replace(/\s\D/g, '')
+            input = parseInt(input)
           }
-          // console.log('model formatting :',input);
-          return input || null; //converted
-        });
+          // console.log('model formatting :',input)
+          return input || null //converted
+        })
 
-        ngModelController.$formatters.push(function(input) {
+        ngModelController.$formatters.push((input) => {
           //convert data from model format to view format
           if (input) {
             input =
@@ -28,26 +28,26 @@ angular.module('formatAsCurrency.directive', [])
               .replace(currency, '')
               .replace(/\s\D/g, '')
               .reverse().replace(/(.{3})/g, '$1 ').reverse()
-              .trim();
+              .trim()
             if(input){
-              input += ' ' + currency;
+              input += ' ' + currency
             }
           }
-          // console.log('view formatting :',input);
-          return input || null;
-        });
+          // console.log('view formatting :',input)
+          return input || null
+        })
 
-        element.bind('change', function() {
-          $debounce(function() {
-            var ctrl = ngModelController;
-            var viewValue = ctrl.$modelValue;
+        element.bind('change', () => {
+          $debounce(() => {
+            var ctrl = ngModelController
+            var viewValue = ctrl.$modelValue
             for (var i in ctrl.$formatters) {
-              viewValue = ctrl.$formatters[i](viewValue);
+              viewValue = ctrl.$formatters[i](viewValue)
             }
-            ctrl.$viewValue = viewValue;
-            ctrl.$render();
-          }, 50);
-        });
+            ctrl.$viewValue = viewValue
+            ctrl.$render()
+          }, 50)
+        })
       }
     }
   }

@@ -9,49 +9,49 @@ angular.module('ui.onKeyboardOpening.directive', [
     return {
       restrict: 'A',
       controller: function($scope) {
-        var height_old, height_new;
-        var focus = false;
-        var waiting = false;
-        var self = this;
-        self.keyBoardOpened = false;
+        var height_old, height_new
+        var focus = false
+        var waiting = false
+        var self = this
+        self.keyBoardOpened = false
 
-        document.body.addEventListener('focus', function(){
-          var focus = true;
+        document.body.addEventListener('focus', () => {
+          var focus = true
           if(!waiting){
-            height_old = window.innerHeight;
+            height_old = window.innerHeight
           }
-          window.addEventListener('resize', ifResize);
-        }, true);
+          window.addEventListener('resize', ifResize)
+        }, true)
 
-        document.body.addEventListener('blur', function(){
-          focus = false;
-          waiting = true;
-          $timeout(function(){
-            waiting = false;
+        document.body.addEventListener('blur', () => {
+          focus = false
+          waiting = true
+          $timeout(() => {
+            waiting = false
             if(!focus){
-              $scope.$apply(function(){
-                self.keyBoardOpened = false;
-              });
-              window.removeEventListener('resize', ifResize);
+              $scope.$apply(() => {
+                self.keyBoardOpened = false
+              })
+              window.removeEventListener('resize', ifResize)
             }
-          },500);
-        }, true);
+          },500)
+        }, true)
 
         function ifResize() {
-          $debounce(function(){
-            height_new = window.innerHeight;
-            var diff = Math.round(height_old - height_new);
-            var ratio = Math.round((diff / height_old) * 100);
+          $debounce(() => {
+            height_new = window.innerHeight
+            var diff = Math.round(height_old - height_new)
+            var ratio = Math.round((diff / height_old) * 100)
             if(ratio > 20){
-              $scope.$apply(function(){
-                self.keyBoardOpened = true;
-              });
+              $scope.$apply(() => {
+                self.keyBoardOpened = true
+              })
             }else{
-              $scope.$apply(function(){
-                self.keyBoardOpened = false;
-              });
+              $scope.$apply(() => {
+                self.keyBoardOpened = false
+              })
             }
-          }, 50);
+          }, 50)
         }
       }
     }
@@ -60,36 +60,36 @@ angular.module('ui.onKeyboardOpening.directive', [
 
 .directive('onKeyboardOpening', [
 
-  function() {
+  () => {
   return {
     restrict: 'A',
     require: '^watchKeyboardOpening',
     link: function($scope, $elem, $attrs, keyboardWatcher) {
-      $scope.$watch(function(){
-        return keyboardWatcher.keyBoardOpened;
-      },function(){
+      $scope.$watch(() => {
+        return keyboardWatcher.keyBoardOpened
+      },() => {
         if(keyboardWatcher.keyBoardOpened){
-          $scope.$eval($attrs.onKeyboardOpening);
+          $scope.$eval($attrs.onKeyboardOpening)
         }
-      });
+      })
     }
   }
 }])
 
 .directive('onKeyboardClosing', [
 
-  function() {
+  () => {
   return {
     restrict: 'A',
     require: '^watchKeyboardOpening',
     link: function($scope, $elem, $attrs, keyboardWatcher) {
-      $scope.$watch(function(){
-        return keyboardWatcher.keyBoardOpened;
-      },function(){
+      $scope.$watch(() => {
+        return keyboardWatcher.keyBoardOpened
+      },() => {
         if(!keyboardWatcher.keyBoardOpened){
-          $scope.$eval($attrs.onKeyboardClosing);
+          $scope.$eval($attrs.onKeyboardClosing)
         }
-      });
+      })
     }
   }
-}]);
+}])

@@ -4,4 +4,4 @@ angular.module('dftm.ui', [
   'ui.mouseTracking.directive',
   'ui.ngEnter.directive',
   'ui.onKeyboardOpening.directive',
-]);
+])

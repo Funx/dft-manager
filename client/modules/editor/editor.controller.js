@@ -5,12 +5,30 @@ angular.module('editor.controller', [])
 .controller('EditorCtrl', [
    '$timeout'
   ,'$http'
+  ,'$routeParams'
+  ,'$scope'
   ,'Utils'
   ,'Editor'
+  ,'Selection'
   ,'Collection'
   ,'slugifyFilter'
-  ,function EditorCtrl ($timeout, $http, Utils, Editor, Collection, slugify) {
-    this.newItem = {}
+  ,function EditorCtrl ($timeout, $http, $routeParams, $scope, Utils, Editor, Selection, Collection, slugify) {
+    if ($routeParams.id) {
+      switch ($routeParams.id) {
+        case 'selection':
+          console.log(Selection)
+          this.waitingLine = Selection.get()
+          Selection.empty()
+        break
+        default:
+          // get Item from id
+          this.waitingLine = []
+      }
+    } else {
+      this.waitingLine = []
+    }
+
+    this.currItem = this.waitingLine.length ? this.waitingLine.pop() : {}
     this.placeHolder = {
        name: "Nom de l'objet"
       ,type: "Type d'objet"
@@ -18,49 +36,68 @@ angular.module('editor.controller', [])
       ,ingredient: {
          name: "Ingrédients"
       }
-    };
+    }
     this.focus = 'name'
 
     this.savedItems = new Collection
     this.newDependencies = []
-    this.waitingLine = []
+
+    console.log(this)
+
+    var saveState = () => {
+      var editor = {
+        currItem: this.currItem
+        ,newDependencies: this.newDependencies
+        ,waitingLine: this.waitingLine
+      }
+      sessionStorage.editor = angular.toJson(editor)
+    }
+
+    var restoreState = function restoreSelectionState () {
+      var editor = angular.fromJson(sessionStorage.editor)
+      console.log("restored",editor)
+      this.currItem = editor.currItem
+      this.newDependencies = editor.newDependencies
+      this.waitingLine = editor.waitingLine
+    }
+
+    $scope.$on("savestate", saveState)
+    $scope.$on("restorestate", restoreState)
 
       // when submitting the add form, send the text to the node API
     this.save = function createItem () {
-      if (this.newItem.name) {
+      if (this.currItem.name) {
 
-        var newItem = Editor.save(this.newItem).$promise
-          .then(function (data) {
+        var currItem = Editor.save(this.currItem).$promise
+          .then((data) => {
             this.savedItems.push(data.saved)
             this.newDependencies = this.newDependencies.concat(data.newDependencies)
-          }.bind(this))
+          })
 
-        console.log(newItem)
+        console.log(currItem)
 
-        this.newItem = {
-          category: this.newItem.category,
-          type: this.newItem.type
+        this.currItem = {
+          category: this.currItem.category
+          ,type: this.currItem.type
         } // clear the form so our user is ready to enter another
 
         this.focus = 'false'
-        $timeout(function () {
+        $timeout(() => {
           this.focus = 'name'
         })
       }
     }
 
     this.addChildIngredient = function addChildIngredient () {
-      console.log(this.newItem);
+      console.log(this.currItem)
 
-      if (this.newItem.name && this.newItem.category && !this.newItem.recipe.length) {
-        var query = false;
-        switch (slugify(this.newItem.category)) {
-          case
-            'trophee-moyen':
+      if (this.currItem.name && this.currItem.category && !this.currItem.recipe.length) {
+        var query = false
+        switch (slugify(this.currItem.category)) {
+          case 'trophee-moyen':
             query = 'Trophée mineur/'
           break
-          case
-            'trophee-majeur':
+          case 'trophee-majeur':
             query = 'Trophée moyen/'
           break
           default :
@@ -68,17 +105,16 @@ angular.module('editor.controller', [])
         }
 
         if (query) {
-          var searchTerm = this.newItem.name
-            .replace(/moyen/gi, '')
-            .replace(/majeur/gi, '')
+          var searchTerm = this.currItem.name
+            .replace(/moyen|majeur/gi, '')
 
           query += searchTerm
 
           $http.get('/api/search/items/' + query)
-          .success(function (data) {
+          .success((data) => {
             if (data) {
-              this.newItem.recipe = []
-              this.newItem.recipe.push({
+              this.currItem.recipe = []
+              this.currItem.recipe.push({
                  _ingredient: data
                 ,quantity: 1
               })
@@ -94,24 +130,24 @@ angular.module('editor.controller', [])
 
                 var data = {name: ingredientName}
 
-                this.newItem.recipe.push({
-                  _ingredient: data,
-                  quantity: 1
+                this.currItem.recipe.push({
+                  _ingredient: data
+                  ,quantity: 1
                 })
               }
             }
 
-          }.bind(this))
+          })
         }
 
       }
     }
 
     // delete an Item after checking it
-    this.deleteItem = function (id, index) {
+    this.deleteItem = (id, index) => {
       Items.delete(id)
-        .success(function(data) {
-          this.items = data;
+        .success((data) => {
+          this.items = data
         })
     }
 

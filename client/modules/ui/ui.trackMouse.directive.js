@@ -4,14 +4,14 @@ angular.module('ui.mouseTracking.directive', [
 
 .directive('uiMouseTracking', [
   'Mouse',
-  function(Mouse){
+  (Mouse) => {
     return {
       restrict: 'A',
-      link: function(){
-        document.body.onmousemove = function(event){
-          Mouse.update(event);
+      link: () => {
+        document.body.onmousemove = (event) => {
+          Mouse.update(event)
         }
       }
-    };
+    }
   }
-]);
+])

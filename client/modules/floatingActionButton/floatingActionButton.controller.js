@@ -1,66 +1,79 @@
 angular.module('floatingActionButton.controller', [])
 
 .controller('FloatingActionButtonCtrl', [
-  '$rootScope',
-  '$location',
-  function($rootScope, $location){
+  '$rootScope'
+  ,'$location'
+  ,'Selection'
+  ,function($rootScope, $location, Selection){
     this.actions = {
       create: {
         icon: '',
         expression: '"Ajouter 1 objet"',
-        action: function () {
-          $rootScope.$broadcast('plzCreate');
-          $location.path( "/create" );
+        action: () => {
+          $rootScope.$broadcast('plzCreate')
+          $location.path( "/create" )
         }
-      },
-      edit: {
-        icon: '',
-        expression: '"Editer " + fab.selectedItemsLength + " objets"',
-        action: function () {
-          $rootScope.$broadcast('plzEdit');
-          $location.path( "/edit/selection" );
+      }
+      ,edit: {
+        icon: ''
+        ,expression: '"Editer " + fab.getSelectionLength() + " objets"'
+        ,action: () => {
+          $rootScope.$broadcast('plzEdit')
+          $location.path( "/edit/selection" )
         }
-      },
-      craft: {
-        icon: '',
-        expression: '"Crafter les " + fab.selectedItemsLength + " objets sélectionnés"',
-        action: function () {
-          $rootScope.$broadcast('plzCraft');
+      }
+      ,craft: {
+        icon: ''
+        ,expression: '"Crafter les " + fab.getSelectionLength() + " objets sélectionnés"'
+        ,action: () => {
+          $rootScope.$broadcast('plzCraft')
         }
-      },
-      sell: {
-        icon: '',
-        expression: '"Vendre les " + fab.selectedItemsLength + " objets sélectionnés"',
-        action: function () {
-          $rootScope.$broadcast('plzSell');
+      }
+      ,sell: {
+        icon: ''
+        ,expression: '"Vendre les " + fab.getSelectionLength() + " objets sélectionnés"'
+        ,action: () => {
+          $rootScope.$broadcast('plzSell')
         }
-      },
-      delete: {
-        icon: '',
-        expression: '"Supprimer la sélection (" + fab.selectedItemsLength + " objets)"',
-        action: function () {
-          $rootScope.$broadcast('plzDelete');
+      }
+      ,delete: {
+        icon: ''
+        ,expression: '"Supprimer la sélection (" + fab.getSelectionLength() + " objets)"'
+        ,action: () => {
+          $rootScope.$broadcast('plzDelete')
         }
-      },
-      selectVisible: {
-        icon: '',
-        expression: '"Sélectionner tous les éléments visibles"',
-        action: function () {
-          $rootScope.$broadcast('plzSelectAll');
+      }
+      ,selectVisible: {
+        icon: ''
+        ,expression: '"Ajouter visible à la sélection"'
+        ,action: () => {
+          $rootScope.$broadcast('plzSelectVisible')
         }
-      },
-      unselectVisible: {
-        icon: '',
-        expression: '"Désélectionner les éléments visibles"',
-        action: function () {
-          $rootScope.$broadcast('plzUnselectVisible');
+      }
+      ,unselectVisible: {
+        icon: ''
+        ,expression: '"Soustraire visible à la sélection"'
+        ,action: () => {
+          $rootScope.$broadcast('plzUnselectVisible')
+        }
+      }
+      ,unselectAll: {
+        icon: ''
+        ,expression: '"Vider la sélection"'
+        ,action: () => {
+          Selection.empty()
         }
       }
     }
 
-    this.selectedItemsLength = 10;
+    this.getSelectionLength = Selection.getLength
 
-    this.availableActions = ['create', 'edit', 'selectVisible', 'unselectVisible', 'delete', 'craft'];
+    this.getAvailableActions = function getAvailableActions () {
+      if (!Selection.getLength()) {
+        return ['create', 'selectVisible']
+      }
+      return ['craft', 'edit', 'create', 'delete', 'unselectVisible', 'selectVisible', ]
+    }
 
   }
 ])

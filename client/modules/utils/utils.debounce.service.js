@@ -4,72 +4,72 @@ angular.module('utils.debounce.service', [])
         function($rootScope,   $browser,   $q,   $exceptionHandler) {
             var deferreds = {},
                 methods = {},
-                uuid = 0;
+                uuid = 0
 
             function debounce(fn, delay, invokeApply) {
                 var deferred = $q.defer(),
                     promise = deferred.promise,
                     skipApply = (angular.isDefined(invokeApply) && !invokeApply),
                     timeoutId, cleanup,
-                    methodId, bouncing = false;
+                    methodId, bouncing = false
 
                 // check we dont have this method already registered
-                angular.forEach(methods, function(value, key) {
+                angular.forEach(methods, (value, key) => {
                     if(angular.equals(methods[key].fn, fn)) {
-                        bouncing = true;
-                        methodId = key;
+                        bouncing = true
+                        methodId = key
                     }
-                });
+                })
 
                 // not bouncing, then register new instance
                 if(!bouncing) {
-                    methodId = uuid++;
-                    methods[methodId] = {fn: fn};
+                    methodId = uuid++
+                    methods[methodId] = {fn: fn}
                 } else {
                     // clear the old timeout
-                    deferreds[methods[methodId].timeoutId].reject('bounced');
-                    $browser.defer.cancel(methods[methodId].timeoutId);
+                    deferreds[methods[methodId].timeoutId].reject('bounced')
+                    $browser.defer.cancel(methods[methodId].timeoutId)
                 }
 
-                var debounced = function() {
+                var debounced = () => {
                     // actually executing? clean method bank
-                    delete methods[methodId];
+                    delete methods[methodId]
 
                     try {
-                        deferred.resolve(fn());
+                        deferred.resolve(fn())
                     } catch(e) {
-                        deferred.reject(e);
-                        $exceptionHandler(e);
+                        deferred.reject(e)
+                        $exceptionHandler(e)
                     }
 
-                    if (!skipApply) $rootScope.$apply();
-                };
+                    if (!skipApply) $rootScope.$apply()
+                }
 
-                timeoutId = $browser.defer(debounced, delay);
+                timeoutId = $browser.defer(debounced, delay)
 
                 // track id with method
-                methods[methodId].timeoutId = timeoutId;
+                methods[methodId].timeoutId = timeoutId
 
-                cleanup = function(reason) {
-                    delete deferreds[promise.$$timeoutId];
-                };
+                cleanup = (reason) => {
+                    delete deferreds[promise.$$timeoutId]
+                }
 
-                promise.$$timeoutId = timeoutId;
-                deferreds[timeoutId] = deferred;
-                promise.then(cleanup, cleanup);
+                promise.$$timeoutId = timeoutId
+                deferreds[timeoutId] = deferred
+                promise.then(cleanup, cleanup)
 
-                return promise;
+                return promise
             }
 
 
             // similar to angular's $timeout cancel
-            debounce.cancel = function(promise) {
+            debounce.cancel = (promise) => {
                 if (promise && promise.$$timeoutId in deferreds) {
-                    deferreds[promise.$$timeoutId].reject('canceled');
-                    return $browser.defer.cancel(promise.$$timeoutId);
+                    deferreds[promise.$$timeoutId].reject('canceled')
+                    return $browser.defer.cancel(promise.$$timeoutId)
                 }
-                return false;
-            };
+                return false
+            }
 
-            return debounce;
-    }]);
+            return debounce
+    }])

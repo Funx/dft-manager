@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 angular.module("ngLocale", [], ["$provide", function($provide) {
-var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};
+var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"}
 $provide.value("$locale", {
   "DATETIME_FORMATS": {
     "AMPMS": [
@@ -105,6 +105,10 @@ $provide.value("$locale", {
     ]
   },
   "id": "fr-fr",
-  "pluralCat": function(n, opt_precision) {  var i = n | 0;  if (i == 0 || i == 1) {    return PLURAL_CATEGORY.ONE;  }  return PLURAL_CATEGORY.OTHER;}
-});
-}]);
+  "pluralCat": function(n, opt_precision) {
+    var i = n | 0
+    if (i == 0 || i == 1) { return PLURAL_CATEGORY.ONE  }
+    return PLURAL_CATEGORY.OTHER
+  }
+})
+}])

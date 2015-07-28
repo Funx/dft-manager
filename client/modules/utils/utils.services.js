@@ -3,28 +3,28 @@ angular.module('utils.services', [])
 
 // super simple service
 // each function returns a promise object
-.factory('Utils', [function() {
+.factory('Utils', [() => {
   return {
-    arrayObjectIndexOf: function(array, searchTerm, property) {
-      property = property.split('.');
+    arrayObjectIndexOf: (array, searchTerm, property) => {
+      property = property.split('.')
       for(var i = 0, len = array.length; i < len; i++) {
-        var value = array[i];
-        property.map(function(prop){
-          value = value[prop];
-        });
+        var value = array[i]
+        property.map((prop) => {
+          value = value[prop]
+        })
 
-        if (value && searchTerm && value.toString().toLowerCase() === searchTerm.toString().toLowerCase()) return i;
+        if (value && searchTerm && value.toString().toLowerCase() === searchTerm.toString().toLowerCase()) return i
       }
-      return -1;
+      return -1
     },
-    deepValue: function(obj, deepKey){
+    deepValue: (obj, deepKey) => {
         // get deep value in case of a param key like : item.deep.value
-        var deepKeys = deepKey.split('.');
-        var objValue = obj;
-        deepKeys.forEach(function(key){
-          objValue = objValue ? objValue[key] : '';
-        });
-        return objValue;
+        var deepKeys = deepKey.split('.')
+        var objValue = obj
+        deepKeys.forEach((key) => {
+          objValue = objValue ? objValue[key] : ''
+        })
+        return objValue
     }
   }
 

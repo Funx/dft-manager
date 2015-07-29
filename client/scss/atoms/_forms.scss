@@ -1,17 +1,16 @@
-.form {}
-
-.form--edit {
-
-}
 #{$text-input-selectors} {
-  &.input {
+  &.input.input {
     width: 100%;
+    background: transparent;
+    color: #fff;
+    border-bottom: 2px solid #fff;
+
+    &::-webkit-input-placeholder {
+      color: #fff;
+    }
+
   }
   &.input--text {}
-
-  &.input__price {
-    text-align: right;
-  }
 }
 
 .input {

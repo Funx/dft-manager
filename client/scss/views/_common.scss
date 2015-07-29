@@ -16,7 +16,6 @@ html, body {
 .layout__page-wrapper {
   height: 100%;
   overflow: auto;
-  position: relative;
 }
 
 .page-wrapper__wrapper--inner {
@@ -32,6 +31,7 @@ html, body {
 
 .layout__fab {
   position: fixed;
+  z-index: $fab-zindex;
   right: 1rem;
   bottom: 1rem;
 }

@@ -3,13 +3,14 @@
 }
 
 .card {
-  background: #fff;
+  position: relative;
+  background: #000;
   border: 0;
   color: #fff;
   padding: 0;
   margin: 0;
   font-size: 0.75rem; //scale
-  z-index: 1;
+  z-index: $card-zindex;
 
   &.bigger {
     padding: 1rem;

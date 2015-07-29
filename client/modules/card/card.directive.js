@@ -94,7 +94,7 @@ angular.module('card.directive', [])
           console.log.apply(console, arguments)
         }
 
-        this.model.category = this.model.category
+        this.model.category = this.model.category || ''
         this.family = Families.get(slugify(this.model.category))
         this.model.benefits = this.calcBenefits()
         this.model.benefitsRate = this.calcBenefitsRate()

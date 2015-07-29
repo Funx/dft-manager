@@ -26,18 +26,20 @@
     </p>
   </div>
 
-  <div class="card__recipe recipe" ng-if="card.expanded && card.model.recipe.length">
+  <div class="card__area" ng-if="card.expanded && card.model.recipe.length">
+    <div class="card__recipe recipe">
 
-    <div ng-repeat="dosage in card.model.recipe"
-      class="recipe__dosage dosage"
-      style="background: hsl(
-        {{ (dosage._ingredient.category | hue) || 0}},
-        70%,
-        45%
-      );">
-      <span class="dosage__ingredient ingredient">
-        {{ dosage.quantity }} {{ dosage._ingredient.name }}
-      </span>
+      <div ng-repeat="dosage in card.model.recipe"
+        class="recipe__dosage dosage"
+        style="background: hsl(
+          {{ (dosage._ingredient.category | hue) || 0}},
+          70%,
+          45%
+        );">
+        <span class="dosage__ingredient ingredient">
+          {{ dosage.quantity }} {{ dosage._ingredient.name }}
+        </span>
+      </div>
     </div>
   </div>
 

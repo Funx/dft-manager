@@ -13,7 +13,6 @@ angular.module('item.directive', [])
       $scope.model= $scope.model || {}
 
       $scope.model.category = $scope.model.category || ''
-      $scope.className = $scope.model.category.toSlug()
 
       $scope.$on('change', () => {
         $scope.item.save()

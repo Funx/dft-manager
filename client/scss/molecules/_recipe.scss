@@ -4,7 +4,7 @@
   position: relative;
   padding-right: 1.5rem;
   padding-left: 0.5rem;
-  line-height: 1rem;
+  line-height: 2rem;
   height: auto;
   font-size: 0.75rem;
 }
@@ -35,11 +35,12 @@
   display: inline-block;
 }
 
-.dosage__delete-button {
+.dosage__deleteButton {
   cursor: pointer;
   color: #f00;
-  position: absolute;
-  right: 0.5rem;
-  top: -0.25rem;
-  line-height: 2.5rem;
+  float: right;
+  position: relative;
+  left: 1rem;
+  top: .25rem;
+  line-height: 2rem;
 }

@@ -16,7 +16,7 @@ angular.module('editor.controller', [])
     if ($routeParams.id) {
       switch ($routeParams.id) {
         case 'selection':
-          console.log(Selection)
+          console.log(Selection.get())
           this.waitingLine = Selection.get()
           Selection.empty()
         break
@@ -28,7 +28,7 @@ angular.module('editor.controller', [])
       this.waitingLine = []
     }
 
-    this.currItem = this.waitingLine.length ? this.waitingLine.pop() : {}
+    this.currItem = this.waitingLine.length ? this.waitingLine.shift() : {}
     this.placeHolder = {
        name: "Nom de l'objet"
       ,type: "Type d'objet"
@@ -39,7 +39,7 @@ angular.module('editor.controller', [])
     }
     this.focus = 'name'
 
-    this.savedItems = new Collection
+    this.savedItems = []
     this.newDependencies = []
 
     console.log(this)
@@ -53,39 +53,51 @@ angular.module('editor.controller', [])
       sessionStorage.editor = angular.toJson(editor)
     }
 
-    var restoreState = function restoreSelectionState () {
+    var restoreState = () => {
       var editor = angular.fromJson(sessionStorage.editor)
-      console.log("restored",editor)
-      this.currItem = editor.currItem
-      this.newDependencies = editor.newDependencies
-      this.waitingLine = editor.waitingLine
+      if(editor) {
+        this.currItem = editor.currItem
+        this.newDependencies = this.newDependencies.concat(editor.newDependencies)
+        // this.waitingLine = this.waitingLine.concat(editor.waitingLine)
+      }
+
     }
 
     $scope.$on("savestate", saveState)
     $scope.$on("restorestate", restoreState)
 
       // when submitting the add form, send the text to the node API
-    this.save = function createItem () {
+    this.save = () => {
       if (this.currItem.name) {
 
         var currItem = Editor.save(this.currItem).$promise
           .then((data) => {
+            console.log(data)
             this.savedItems.push(data.saved)
             this.newDependencies = this.newDependencies.concat(data.newDependencies)
           })
 
-        console.log(currItem)
+        this.editNext()
 
+      }
+    }
+
+    this.editNext = (saveChanges) => {
+
+      if (this.waitingLine.length) {
+        this.currItem = this.waitingLine.shift()
+        console.log(this.currItem)
+      } else {
         this.currItem = {
           category: this.currItem.category
-          ,type: this.currItem.type
         } // clear the form so our user is ready to enter another
-
-        this.focus = 'false'
-        $timeout(() => {
-          this.focus = 'name'
-        })
       }
+
+
+      this.focus = 'false'
+      $timeout(() => {
+        this.focus = 'name'
+      })
     }
 
     this.addChildIngredient = function addChildIngredient () {

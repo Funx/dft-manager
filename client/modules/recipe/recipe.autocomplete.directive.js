@@ -45,7 +45,6 @@ angular.module('recipe.autocomplete.directive', [])
 
               data.map((suggestion) => {
                 suggestion.category = suggestion.category || ''
-                suggestion.className = suggestion.category.toSlug()
                 return suggestion
               })
 

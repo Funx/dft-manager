@@ -1,7 +1,50 @@
 .editor {
-  margin-bottom: 2rem
+  @extend .card;
+  margin-bottom: 2rem;
+  overflow: visible;
 }
 
 .editor__title {
   color: #fff
+}
+
+.editor__area {
+  @extend .card__area;
+}
+
+.input--price {
+  @extend .card__price;
+}
+
+.input--title {
+  @extend .card__title;
+}
+
+.editor__actionBar {
+  position: absolute;
+  right: 1rem;
+  bottom: 0;
+  transform: translateY(50%);
+}
+
+.actionBar {
+
+}
+
+.actionBar__button {
+  &, &:hover, &:active, &:focus {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    border: 0;
+    margin-left: .5rem;
+  }
+
+  &:last-child {
+    &, &:hover, &:active, &:focus {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 1.5rem;
+    }
+  }
 }

@@ -26,7 +26,6 @@ angular.module('recipe.directive', [
           if (!dosage._ingredient) return null
           else {
             dosage._ingredient.category = dosage._ingredient.category || ''
-            dosage._ingredient.className = dosage._ingredient.category.toSlug()
             return dosage
           }
         })

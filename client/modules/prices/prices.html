@@ -1,6 +1,6 @@
 <div ng-controller="PricesCtrl">
   <div
-    class="item item--inline {{item.className}}"
+    class="item item--inline"
     on-context-menu="item.displayContextMenu = true"
     ng-repeat="item in items track by item._id | orderBy:-item.modified"
     ng-show="

@@ -6,6 +6,7 @@ _ = require("underscore")
 // load the Item model
 var Item = require('./models/Item')
 
+
 // expose the routes to our app with module.exports
 module.exports = function(app) {
 
@@ -113,11 +114,10 @@ module.exports = function(app) {
             Item.update({_id: req.body._id}, req.body, {overwrite: true}, function(err,item){
               if (err) throw err
               Item
-              .findById(item._id)
+              .findById(req.body._id)
               .populate('recipe._ingredient')
               .exec(function (err, item) {
                 if (err) return handleError(err)
-                console.log(item)
                 data.saved = item
                 res.json(data)
               })
@@ -180,7 +180,7 @@ module.exports = function(app) {
     }
   })
 
-  // application -------------------------------------------------------------  
+  // application -------------------------------------------------------------
   app.get('*', function(req, res) {
     console.log("get *")
     // Item.remove({

@@ -18,7 +18,6 @@ angular.module('items.service', [])
       .success((data) => {
         this.list = data.list.map((item) => {
           item.category = item.category || ''
-          item.className = item.category.toSlug()
           return item
         })
         this.lastEdit = data.lastEdit
@@ -38,7 +37,6 @@ angular.module('items.service', [])
       .success((data) => {
         this.list = data.map((item) => {
           item.category = item.category || ''
-          item.className = item.category.toSlug()
           return item
         })
         if(!done) done = () => {}

@@ -16,7 +16,9 @@ angular.module('selection.service', [])
     }
 
     var restoreState = function restoreSelectionState () {
-      selection = angular.fromJson(sessionStorage.selection)
+      if (sessionStorage.selection) {
+        selection = angular.fromJson(sessionStorage.selection)
+      }
     }
 
     $rootScope.$on("savestate", saveState)

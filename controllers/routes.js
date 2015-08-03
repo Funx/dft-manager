@@ -61,8 +61,8 @@ module.exports = function(app) {
   app.post('/api/items', function(req, res) {
     // create a Item, information comes from AJAX request from Angular
     var data = {
-      saved: false
-      ,newDependencies: []
+        saved: false
+      , newDependencies: []
     }
     console.log("post")
 

@@ -3,15 +3,21 @@ var express = require('express')
   , Item = require('models/item')
   , Items = require('models/items')
 
-router.get('/items/collection/all', function(req, res) {
+// items/all
+router.get('/all', function(req, res) {
+  console.log('get /items/all')
   Item
     .find({})
     .populate('recipe._ingredient')
-    .exec()
-    .then((err, allItems) => res.send(allItems))
+    .exec((err, allItems) => {
+      console.log(`served ${allItems.length} items !`)
+      return res.send(allItems)
+    })
+
 })
 
-router.get('/items/collection/:collectionId', function(req, res) {
+// items/collection/:collectionId
+router.get('/collection/:collectionId', function(req, res) {
   Items.find({_id: req.params.collectionId }).exec((err, items) => {
     return res.send(items);
   })

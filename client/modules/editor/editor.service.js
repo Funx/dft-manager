@@ -5,7 +5,7 @@ angular.module('editor.service', [])
 .factory('Editor', [
    '$resource'
   ,function Editor ($resource) {
-    return $resource('/api/items', {}, {
+    return $resource('/item', {}, {
       save: { method: 'POST' }
     })
   }

@@ -1,8 +1,11 @@
 var express = require('express')
   , router = express.Router()
+  , Item = require('models/item')
+
 
 router.use('/item', require('controllers/itemCtrl'))
 router.use('/items', require('controllers/itemsCtrl'))
+
 
 router.get('*', (req, res) => {
   console.log("get *")

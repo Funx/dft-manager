@@ -283,7 +283,7 @@ gulp.task('server', ['build'], function() {
   , ext: 'js html'
   , env: { 'NODE_ENV': 'development' }
   , execMap: {
-      js: "babel-node"
+      js: "babel-node --stage 0 "
     }
   , ignore: [
       'node_modules/**'

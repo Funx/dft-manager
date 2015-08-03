@@ -27,11 +27,11 @@ angular.module('deck.service', [])
     //     }]
     //   }
     // }
-    return $resource('/api/items', {}, {
+    return $resource('/items/all', {}, {
       get: {
-        method: 'GET'
-        ,isArray: true
-        ,cache: true
+          method: 'GET'
+        , isArray: true
+        , cache: true
       }
     })
   }

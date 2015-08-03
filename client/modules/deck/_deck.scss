@@ -12,20 +12,20 @@ $amazingQuery-height: 6rem;
   // display: flex;
   // // flex-direction: row;
   // flex-wrap: wrap;
-  column-count: 2;
-  column-gap: 0;
-  // column-fill: balance;
-
-  @include breakpoint('medium'){
-    column-count: 3;
-  }
-  @include breakpoint('large'){
-    column-count: 5;
-  }
+  // column-count: 2;
+  // column-gap: 0;
+  // // column-fill: balance;
+  //
+  // @include breakpoint('medium'){
+  //   column-count: 3;
+  // }
+  // @include breakpoint('large'){
+  //   column-count: 5;
+  // }
 }
 
   .deck__card__wrapper--outer {
-    width: 100%;
+    width: 33%;
     padding: $gutter-width / 2;
     display: inline-block;
 

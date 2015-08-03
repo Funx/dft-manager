@@ -4,27 +4,27 @@ angular.module('families.service', [])
   '$cacheFactory',
   'slugifyFilter',
   'Deck',
-  function($cacheFactory, slugify, Deck){
+  function FamiliesFactory ($cacheFactory, slugify, Deck) {
 
     var families = $cacheFactory('families')
-    console.log(families)
 
     var getFamilies = (done) => {
 
-      Deck.get((data) => {
-        data = _.unique(
-          data.map((card) => slugify(card.category))
-        )
-        .reduce((categories, categoryName, index, categoryNames) => {
-          categories[categoryName] = {
-            slug: categoryName,
-            hue: Math.round(360 / categoryNames.length * index)
-          }
-          return categories
-        }, {})
-        done(data)
+      Deck.get().$promise
+        .then(rawData => done(processFamilies(rawData)))
 
-      })
+      function processFamilies (rawData) {
+        // gets all categories
+        return _.unique(rawData.map(card => slugify(card.category)))
+          // attributes a hue to each family
+          .reduce((categories, categoryName, index, categoryNames) => {
+            categories[categoryName] = {
+              slug: categoryName,
+              hue: Math.round(360 / categoryNames.length * index)
+            }
+            return categories
+          }, {})
+      }
     }
 
     getFamilies((data) => {

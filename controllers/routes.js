@@ -13,7 +13,6 @@ module.exports = function(app) {
   app.get('/api/items', function(req,res){
     console.log('get')
     getItems(function(err,items){
-      console.log('========')
       console.log('get item')
       res.json(items)
     })

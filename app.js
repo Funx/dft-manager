@@ -6,15 +6,17 @@ global.__base = __dirname + '/'
 
 // set up ========================
 var express = require('express')
-  , app = express() // create our app w/ express
   , mongoose = require('mongoose') // mongoose for mongodb
-  , port     = process.env.PORT || 8888                // set the port
   , morgan = require('morgan') // log requests to the console (express4)
   , bodyParser = require('body-parser') // pull information from HTML POST (express4)
   , methodOverride = require('method-override') // simulate DELETE and PUT (express4)
 
 // load the config
+var app = express() // create our app w/ express
+  , port = process.env.PORT || 8888 // set the port
+
 var database = require('config/database')
+
 mongoose.connect(database.url, function(err) {
   if (err) throw err
 }) // connect to mongoDB database
@@ -28,7 +30,6 @@ app.use(bodyParser.json())
 // parse application/vnd.api+json as json
 app.use(bodyParser.json({type: 'application/vnd.api+json'}))
 app.use(methodOverride())
-
 
 
 // set the static files location /public/img will be /img for users

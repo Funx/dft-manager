@@ -99,7 +99,7 @@ var paths = {
 
 // Cleans the build directory
 gulp.task('clean', function(cb) {
-  rimraf('./build', cb)
+  rimraf('./public', cb)
 })
 
 // Copies everything in the client folder except templates, Sass, and JS
@@ -107,7 +107,7 @@ gulp.task('copy', function() {
   return gulp.src(paths.assets, {
     base: './client/'
   })
-    .pipe(gulp.dest('./build'))
+    .pipe(gulp.dest('./public'))
 
 })
 
@@ -115,10 +115,10 @@ gulp.task('copy', function() {
 gulp.task('copy:templates', function() {
   return gulp.src('./client/templates/**/*.html')
     .pipe(router({
-      path: 'build/assets/js/routes.js',
+      path: 'public/assets/js/routes.js',
       root: 'client'
     }))
-    .pipe(gulp.dest('./build/templates'))
+    .pipe(gulp.dest('./public/templates'))
 
 })
 
@@ -132,12 +132,12 @@ gulp.task('copy:foundation', function(cb) {
   //   }))
   //   .pipe($.uglify())
   //   .pipe($.concat('templates.js'))
-  //   .pipe(gulp.dest('./build/assets/js'))
+  //   .pipe(gulp.dest('./public/assets/js'))
   //
   //
   // // Iconic SVG icons
   // gulp.src('./bower_components/foundation-apps/iconic/**/*')
-  //   .pipe(gulp.dest('./build/assets/img/iconic/'))
+  //   .pipe(gulp.dest('./public/assets/img/iconic/'))
 
   cb()
 })
@@ -153,7 +153,7 @@ gulp.task('sass', function () {
     .pipe($.autoprefixer({
       browsers: ['last 2 versions', 'ie 10']
     }))
-    .pipe(gulp.dest('./build/assets/css/'))
+    .pipe(gulp.dest('./public/assets/css/'))
     .pipe(reload({stream: true}))
 
 })
@@ -169,7 +169,7 @@ gulp.task('uglify:foundation', function(cb) {
   return gulp.src(paths.foundationJS)
     .pipe(uglify)
     .pipe($.concat('foundation.js'))
-    .pipe(gulp.dest('./build/assets/js/'))
+    .pipe(gulp.dest('./public/assets/js/'))
 
 })
 
@@ -189,7 +189,7 @@ gulp.task('uglify:app', function() {
   //   .pipe(browserified)
   //   .pipe(uglify)
   //   .pipe($.concat('app.js'))
-  //   .pipe(gulp.dest('./build/assets/js/'))
+  //   .pipe(gulp.dest('./public/assets/js/'))
   //
     // gulp expects tasks to return a stream, so we create one here.
     var bundledStream = through()
@@ -207,7 +207,7 @@ gulp.task('uglify:app', function() {
         // .on('error', gutil.log)
       .pipe(babel())
       .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest('./build/assets/js/'))
+      .pipe(gulp.dest('./public/assets/js/'))
 
     // "globby" replaces the normal "gulp.src" as Browserify
     // creates it's own readable stream.
@@ -242,7 +242,7 @@ gulp.task('uglify:app', function() {
   //       .pipe(buffer())
   //       .pipe(sourcemaps.init({ loadMaps: true }))
   //       .pipe(sourcemaps.write('./'))
-  //       .pipe(gulp.dest('./build'))
+  //       .pipe(gulp.dest('./public'))
   //   }
   //
   //   if (watch) {
@@ -279,13 +279,16 @@ gulp.task('glyphicons', function() {
 // Starts a test server, which you can view at http://localhost:3000
 gulp.task('server', ['build'], function() {
   nodemon({
-    script: 'bootstrap.js'
+    script: 'app.js'
   , ext: 'js html'
   , env: { 'NODE_ENV': 'development' }
+  , execMap: {
+      js: "node --harmony --use_strict"
+    }
   , ignore: [
       'node_modules/**'
     , 'bower_components/**'
-    , 'build/**'
+    , 'public/**'
     , 'client/**'
     ]
   })

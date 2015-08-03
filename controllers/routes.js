@@ -1,10 +1,10 @@
-// app/routes.js
+// controllers/index.js
 
-async = require("async")
-_ = require("underscore")
+var async = require("async")
+  , _ = require('lodash')
 
 // load the Item model
-var Item = require('/models/item')
+var Item = require('models/item')
 
 
 // expose the routes to our app with module.exports
@@ -186,6 +186,6 @@ module.exports = function(app) {
     // Item.remove({
     //   _id: '555e4e51977c5eea6b3c7dff'
     // })
-    res.sendFile(app.dir + '/public/index.html') // load the single view file (angular will handle the page changes on the front-end)
+    res.sendFile(__base + '/public/index.html') // load the single view file (angular will handle the page changes on the front-end)
   })
 }

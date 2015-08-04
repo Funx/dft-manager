@@ -23,50 +23,78 @@ var itemSchema = new Schema({
   .set('toJSON', { virtuals: true })
   .set('toObject', { virtuals: true })
 
-  .pre('save', true, function (next, done) {
-    var newDependencies = []
-    next()
+itemSchema.statics = {
+  // registerItem
+  register: function registerItem (toRegister, done) {
+    let Item = this.model('Item')
+    let newDependencies = []
 
-    async.map(this.recipe, registerRecipe, (error, result) => {
-      if (error) throw error
-      this.recipe = result
-      console.log(this)
-      return done(this)
-    })
-  })
-
-function registerRecipe (dosage, next) {
-  if(dosage._ingredient._id) {
-    registerExistingIngredient(dosage, next)
-  } else {
-    createAndRegisterIngredient(dosage, next)
-  }
-}
-
-function registerExistingIngredient (dosage, next) {
-  dosage._ingredient = dosage._ingredient._id
-  return next(null, dosage)
-}
-
-function createAndRegisterIngredient (dosage, next) {
-  Item
-    .find({'name': dosage._ingredient.name})
-    .exec((err, item) => {
-      // if already exists
-      if (item.length) {
-        dosage._ingredient = item[0]._id
-        return next(null, dosage)
+    function registerIngredient (dosage, next) {
+      if(dosage._ingredient._id) {
+        registerExistingIngredient(dosage, next)
       } else {
-        // else create it
-        var ingredient = new Item(dosage._ingredient)
-          .save((err,newItem) => {
+        createAndRegisterIngredient(dosage, next)
+      }
+    }
+
+    function registerExistingIngredient (dosage, next) {
+      dosage._ingredient = dosage._ingredient._id
+      return next(null, dosage)
+    }
+
+    function createAndRegisterIngredient (dosage, next) {
+      Item.find({
+        'name': dosage._ingredient.name
+      })
+      .exec((err, item) => {
+        // if already exists
+        if (item.length) {
+          dosage._ingredient = item[0]._id
+          return next(null, dosage)
+        } else {
+          // else create it
+          var ingredient = new Item(dosage._ingredient)
+          ingredient.register((err, data) => {
             if (err) throw (err)
-            dosage._ingredient = newItem._id
-            newDependencies.push(newItem)
+
+            dosage._ingredient = data.registered._id
+            newDependencies.push(data.registered)
+            newDependencies.concat(data.dependencies)
             return next(null, dosage)
           })
+        }
+      })
+    }
+
+    function saveRegisteredItem () {
+      if (toRegister._id) {
+        Item.update({_id: toRegister._id}, toRegister, {overwrite: true}, (err, item) => {
+          if (err) throw err
+
+          return done(null, {
+              registered: item
+            , dependencies: newDependencies
+          })
+        })
+      } else {
+        new Item(toRegister).save((err, item) => {
+          if(err) throw err
+
+          return done(null, {
+              registered: item
+            , dependencies: newDependencies
+          })
+        })
       }
+    }
+
+    async.map(toRegister.recipe, registerIngredient, (error, result) => {
+      if (error) throw error
+      toRegister.recipe = result
+      return saveRegisteredItem()
     })
+
+  }
 }
 
 module.exports = mongoose.model('Item', itemSchema)

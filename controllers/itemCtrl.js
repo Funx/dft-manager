@@ -43,9 +43,8 @@ router.get('/api/search/items/:category/:name', function(req, res){
 })
 
 router.post('/', function(req, res) {
-  console.log('save item')
-  var item = new Item(req.body)
-  return item.save(req.body)
+  console.log('register item')
+  Item.register(req.body, (err, data) => res.send(data))
 })
 
 module.exports = router

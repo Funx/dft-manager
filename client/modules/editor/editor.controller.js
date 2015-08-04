@@ -73,8 +73,8 @@ angular.module('editor.controller', [])
         var currItem = Editor.save(this.currItem).$promise
           .then((data) => {
             console.log(data)
-            this.savedItems.push(data.saved)
-            this.newDependencies = this.newDependencies.concat(data.newDependencies)
+            this.savedItems.push(data.registered)
+            this.newDependencies = this.newDependencies.concat(data.dependencies)
           })
 
         this.editNext()

@@ -23,14 +23,15 @@ var itemSchema = new Schema({
   .set('toJSON', { virtuals: true })
   .set('toObject', { virtuals: true })
 
-  .pre('save', function (next) {
+  .pre('save', true, function (next, done) {
     var newDependencies = []
+    next()
 
     async.map(this.recipe, registerRecipe, (error, result) => {
       if (error) throw error
       this.recipe = result
       console.log(this)
-      return next(this)
+      return done(this)
     })
   })
 

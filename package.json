@@ -55,6 +55,7 @@
     "collections": "^1.2.3",
     "es6-module-loader": "^0.16.6",
     "lodash": "^3.10.0",
+    "mongodb": "^2.0.39",
     "mongoose": "^4.0.2",
     "mongoose-createdmodified": "0.0.2",
     "underscore": "^1.8.3"

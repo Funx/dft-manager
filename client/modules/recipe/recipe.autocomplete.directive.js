@@ -31,7 +31,8 @@ angular.module('recipe.autocomplete.directive', [])
           $scope.suggestions[0] = {
             name: searchText
           }
-
+          console.log(attrs.url + '/' + searchText)
+          
           $http.get(attrs.url + '/' + searchText)
           .success((data) => {
             if(validated){

@@ -1,14 +1,16 @@
 // models/item.js
 var mongoose = require('mongoose')
   , createdModifiedPlugin = require('mongoose-createdmodified').createdModifiedPlugin
-  , async = require("async")
+  , async = require('async')
+  , _ = require('lodash')
 
 
 var Schema = mongoose.Schema
-  , ObjectId = mongoose.Schema.Types.ObjectId
+  , SchemaObjectId = mongoose.Schema.Types.ObjectId
+  , isValidObjectID = require('helpers/isValidObjectID')
 
 var dosageSchema = new Schema({
-      _ingredient: { type: ObjectId, ref: 'Item' }
+      _ingredient: { type: SchemaObjectId, ref: 'Item' }
     , quantity: Number
   })
 
@@ -17,126 +19,261 @@ var itemSchema = new Schema({
     , type: String
     , category: String
     , recipe: [dosageSchema]
+    , _parents: [{ type: SchemaObjectId, ref: 'Item' }]
     , price: Number
+    , cost: Number
   })
   .plugin(createdModifiedPlugin, { index: true })
   .set('toJSON', { virtuals: true })
   .set('toObject', { virtuals: true })
 
-itemSchema.statics = {
-    exists: function itemExists (toTest, done) {
+  .post('save', (item) => {
+    // item.updateCosts((err, updated) => {
+    //   console.log('updated', updated.length)
+    // })
+  })
 
+itemSchema.statics = {
+  /* ===================== //
+  // public static Item.exists
+  // toTest: ObjectId, {_id}, {name}
+  // done: callBack function(Item|false)
+  // ===================== */
+  exists: function itemExists (toTest, done) {
     let Item = this.model('Item')
 
 
     function testById (toTest, next) {
-      if (toTest._id) {
-        Item.findById(toTest._id)
-        .exec((err, result) => {
-          if(err) throw err
-          return next(result)
-        })
+      if (toTest) {
+        let id = isValidObjectID(toTest) ? toTest : toTest._id
+        return Item.findById(id).exec(next)
       } else {
-        return next(false)
+        return next(null, false)
       }
     }
 
     function testByName (toTest, next) {
-      if (toTest.name) {
-        Item.find({'name': toTest.name})
+      var name = toTest
+      if (toTest && _.isObject(toTest)) {
+        name = toTest.name
+      }
+      if (name) {
+        Item.find({'name': name})
         .exec((err, result) => {
           if(err) throw err
           result = result ? result[0] : false
-          return next(result)
+          return next(null, result)
         })
       } else {
-        return next(false)
+        return next(null, false)
       }
     }
 
 
-    testById(toTest, (response) => {
+    testById(toTest, (err, response) => {
       if(response) {
-        done(response)
+        done(err, response)
       } else {
-        testById(response, done)
+        testByName(toTest, done)
       }
     })
 
   }
-  // registerItem
-  , register: function registerItem (toRegister, done) {
-    let newDependencies = []
-
-    function registerIngredient (dosage, next) {
-      Item.exists(dosage._ingredient, (item) => {
-        if(item) {
-          registerExistingIngredient(item, next)
-        } else {
-          createAndRegisterIngredient(dosage._ingredient, next)
-        }
-      })
-
-      registerExistingIngredient(dosage, next)
-      createAndRegisterIngredient(dosage, next)
+  /* ===================== //
+  // public static Item.register
+  // freshModel: {}
+  // done: callBack function({
+  //  registered: Item,
+  //  dependencies: [Item] (newly created dependencies)
+  // })
+  // ===================== */
+  , register: function registerItem (rawModel, parent, done) {
+    if(!done) {
+      done = parent
+      parent = null
     }
 
-    function registerExistingIngredient (dosage, next) {
-      dosage._ingredient = dosage._ingredient._id
-      return next(null, dosage)
+    var newDependencies = []
+      , Item = this.model('Item')
+      , oldModel
+      , freshModel
+
+    function registerRelationships (next) {
+      return async.parallel([
+          registerRecipe
+        , registerParent
+      ], next)
     }
 
-    function createAndRegisterIngredient (dosage, next) {
-      Item.find({
-        'name': dosage._ingredient.name
-      })
-      .exec((err, item) => {
-        // if already exists
-        if (item.length) {
-          dosage._ingredient = item[0]._id
-          return next(null, dosage)
-        } else {
-          // else create it
-          Item.register(toRegister, (err, data) => {
-            if (err) throw (err)
-
-            dosage._ingredient = data.registered._id
-            newDependencies.push(data.registered)
-            newDependencies.concat(data.dependencies)
-            return next(null, dosage)
-          })
-        }
-      })
-    }
-
-    function saveRegisteredItem () {
-      if (toRegister._id) {
-        Item.update({_id: toRegister._id}, toRegister, {overwrite: true}, (err, item) => {
-          if (err) throw err
-
-          return done(null, {
-              registered: item
-            , dependencies: newDependencies
-          })
-        })
+    function registerParent (next) {
+      if(!parent) {
+        return next()
       } else {
-        new Item(toRegister).save((err, item) => {
+        Item.exists(parent, (err, _parent) => {
           if(err) throw err
-
-          return done(null, {
-              registered: item
-            , dependencies: newDependencies
-          })
+          // in parent found or if parent has an id (registering)
+          if(_parent || parent._id) {
+            _parent = _parent || parent
+            freshModel._parents.push(_parent._id)
+            freshModel._parents = _.unique(freshModel._parents, ObjectId => '' + ObjectId)
+          }
+          return next()
         })
       }
     }
 
-    async.map(toRegister.recipe, registerIngredient, (error, result) => {
-      if (error) throw error
-      toRegister.recipe = result
-      return saveRegisteredItem()
+    function registerRecipe (next) {
+      let recipe = rawModel.recipe || []
+      async.map(recipe, registerIngredient, (error, result) => {
+        if (error) throw error
+        freshModel.recipe = result
+        return next()
+      })
+    }
+
+    function registerIngredient (dosage, next) {
+      let ingredientsParent = freshModel
+      Item.register(dosage._ingredient, ingredientsParent, (err, data) => {
+        if (err) throw (err)
+        dosage._ingredient = data.registered._id
+        if(data.isNew) {
+          newDependencies.push(data.registered)
+        }
+        newDependencies = newDependencies.concat(data.dependencies)
+        return next(null, dosage)
+      })
+    }
+
+    function updateCosts (_item, next) {
+      if(!_item.cost || (oldModel && _item.price != oldModel.price)) {
+        return _item.updateCosts(next)
+      } else {
+        return next()
+      }
+    }
+
+    function save (next) {
+      freshModel.updateCosts((err, _item, updated) => {
+        Item.populate(_item, '_parents', (err, _item) => {
+          if(err) throw err
+          newDependencies = _.unique(newDependencies)
+          return next(null, {
+              registered: _item
+            , dependencies: newDependencies
+            , isNew: oldModel ? false : true
+          })
+        })
+      })
+    }
+
+    Item.exists(rawModel, (err, item) => {
+      if(err) throw err
+
+      // keep it before it gets destroyed when creating an new item
+      if(!item) {
+        oldModel = false
+        freshModel = new Item(freshModel)
+      } else {
+        oldModel = item
+        freshModel = _.assign(item, freshModel)
+      }
+
+      return async.series([
+        registerRelationships
+      ], () => save(done))
     })
 
+  }
+
+  /* ===================== //
+  // public static Item.searchByName
+  // query: String
+  // limit: Number?
+  // done: callBack function([Item])
+  // ===================== */
+  , searchByName: function searchItemByName (query, limit, done) {
+    let Item = this.model('Item')
+
+    if (!done) {
+      done = limit
+      limit = 50
+    }
+
+    Item.find({
+      'name': {
+        '$regex': query,
+        '$options': 'i'
+      }
+    })
+    .limit(limit)
+    .exec((err, items) => {
+      if(err) throw err
+      done(null, items)
+    })
+  }
+}
+
+itemSchema.methods = {
+  /* ===================== //
+  // public Item.updateCosts
+  // freshModel: {}
+  // done: callBack function({
+  //  registered: Item,
+  //  dependencies: [Item] (newly created dependencies)
+  // })
+  // ===================== */
+  updateCosts: function updateCosts (stackSize, done) {
+    if(!done) {
+      done = stackSize
+      stackSize = 5
+    }
+    if(stackSize <= 0) {
+      console.log('stackSize exceeded')
+      return done(true)
+    }
+    stackSize--;
+
+    let Item = mongoose.model('Item')
+
+    var update = (next) => {
+      this._parents = _.unique(this._parents, ObjectId => '' + ObjectId)
+      console.log(this.price)
+      updateParents(() => false)
+      return saveThis(next)
+    }
+
+    var saveThis = (next) => {
+      console.log('save | ', this.name)
+
+      var oldThis = _.assign({}, this)
+      this.save(next)
+    }
+
+    var updateParents = (next) => {
+      // console.log('updateParents')
+      var child = _.assign({},child)
+      var updated = [].push(child)
+
+      async.each(this._parents
+        , (parentId, _next) => {
+            Item.findById(parentId, (err, parent) => parent ? parent.updateCosts(stackSize, _next) : next())
+        }
+      )
+    }
+
+    if(!this.recipe.length) {
+      this.cost = this.price
+      return update(done)
+    } else {
+      Item.populate(this, 'recipe._ingredient', (err) => {
+        if(err) throw err
+
+        this.cost = this.recipe.reduce((cost, dosage) => {
+          return cost + dosage.quantity * dosage._ingredient.cost || dosage._ingredient.price
+        }, 0)
+        return update(done)
+      })
+    }
   }
 }
 

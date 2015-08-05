@@ -24,17 +24,61 @@ var itemSchema = new Schema({
   .set('toObject', { virtuals: true })
 
 itemSchema.statics = {
-  // registerItem
-  register: function registerItem (toRegister, done) {
+    exists: function itemExists (toTest, done) {
+
     let Item = this.model('Item')
+
+
+    function testById (toTest, next) {
+      if (toTest._id) {
+        Item.findById(toTest._id)
+        .exec((err, result) => {
+          if(err) throw err
+          return next(result)
+        })
+      } else {
+        return next(false)
+      }
+    }
+
+    function testByName (toTest, next) {
+      if (toTest.name) {
+        Item.find({'name': toTest.name})
+        .exec((err, result) => {
+          if(err) throw err
+          result = result ? result[0] : false
+          return next(result)
+        })
+      } else {
+        return next(false)
+      }
+    }
+
+
+    testById(toTest, (response) => {
+      if(response) {
+        done(response)
+      } else {
+        testById(response, done)
+      }
+    })
+
+  }
+  // registerItem
+  , register: function registerItem (toRegister, done) {
     let newDependencies = []
 
     function registerIngredient (dosage, next) {
-      if(dosage._ingredient._id) {
-        registerExistingIngredient(dosage, next)
-      } else {
-        createAndRegisterIngredient(dosage, next)
-      }
+      Item.exists(dosage._ingredient, (item) => {
+        if(item) {
+          registerExistingIngredient(item, next)
+        } else {
+          createAndRegisterIngredient(dosage._ingredient, next)
+        }
+      })
+
+      registerExistingIngredient(dosage, next)
+      createAndRegisterIngredient(dosage, next)
     }
 
     function registerExistingIngredient (dosage, next) {
@@ -53,8 +97,7 @@ itemSchema.statics = {
           return next(null, dosage)
         } else {
           // else create it
-          var ingredient = new Item(dosage._ingredient)
-          ingredient.register((err, data) => {
+          Item.register(toRegister, (err, data) => {
             if (err) throw (err)
 
             dosage._ingredient = data.registered._id

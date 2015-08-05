@@ -27,10 +27,17 @@ var itemSchema = new Schema({
   .set('toJSON', { virtuals: true })
   .set('toObject', { virtuals: true })
 
-  .post('save', (item) => {
-    // item.updateCosts((err, updated) => {
-    //   console.log('updated', updated.length)
-    // })
+  .pre('remove', (item, done) => {
+    function removeFromRecipes(parent, next) {
+      next()
+    }
+    function removeFromParents(ingredient, next) {
+      next()
+    }
+    async.parallel([
+        next => async.each(item._parents, removeFromRecipes, next)
+      , next => async.each(item.recipe, removeFromParents, next)
+    ], done)
   })
 
 itemSchema.statics = {
@@ -144,21 +151,34 @@ itemSchema.statics = {
       })
     }
 
-    function updateCosts (_item, next) {
-      if(!_item.cost || (oldModel && _item.price != oldModel.price)) {
-        return _item.updateCosts(next)
+    function updateCost (next) {
+      if(shouldUpdateCost()) {
+        return freshModel.calcCost((err, cost) => {
+          freshModel.cost = cost
+          next()
+        })
       } else {
         return next()
       }
     }
 
+    function shouldUpdateCost () {
+      return (!freshModel.cost || (oldModel && freshModel.price != oldModel.price))
+    }
+
     function save (next) {
-      freshModel.updateCosts((err, _item, updated) => {
-        Item.populate(_item, '_parents', (err, _item) => {
+      console.log(freshModel.price)
+
+      freshModel.save((err, _freshModel) => {
+        Item.populate(_freshModel, 'recipe._ingredient', (err) => {
           if(err) throw err
+          if(shouldUpdateCost) {
+            freshModel.updateCosts(() => false)
+          }
+          console.log(freshModel)
           newDependencies = _.unique(newDependencies)
           return next(null, {
-              registered: _item
+              registered: freshModel
             , dependencies: newDependencies
             , isNew: oldModel ? false : true
           })
@@ -175,7 +195,7 @@ itemSchema.statics = {
         freshModel = new Item(freshModel)
       } else {
         oldModel = item
-        freshModel = _.assign(item, freshModel)
+        freshModel = _.assign(item, rawModel)
       }
 
       return async.series([
@@ -211,18 +231,43 @@ itemSchema.statics = {
       done(null, items)
     })
   }
+  , updateCosts: function() {
+    var args = Array.prototype.slice.call(arguments);
+    mongoose.model('Item').prototype.updateCosts.apply(args.shift(), args)
+  }
 }
 
 itemSchema.methods = {
   /* ===================== //
-  // public Item.updateCosts
-  // freshModel: {}
+  // public item.updateCosts
   // done: callBack function({
-  //  registered: Item,
-  //  dependencies: [Item] (newly created dependencies)
   // })
   // ===================== */
-  updateCosts: function updateCosts (stackSize, done) {
+  calcCost: function getCost (done) {
+    let Item = mongoose.model('Item')
+
+    if(!this.recipe.length) {
+      return done(null, this.price)
+    } else {
+      Item.populate(this, 'recipe._ingredient', (err) => {
+        if(err) throw err
+
+        var cost = this.recipe.reduce((cost, dosage) => {
+          return cost + dosage.quantity * dosage._ingredient.cost || dosage._ingredient.price
+        }, 0)
+        return done(null, this.cost)
+      })
+    }
+  }
+  // ===================== */
+  /* ===================== //
+  // public item.updateCosts
+  // stackSize: Number
+  // done: callBack function({
+  // })
+  // ===================== */
+  , updateCosts: function updateCosts (stackSize, done) {
+    let Item = mongoose.model('Item')
     if(!done) {
       done = stackSize
       stackSize = 5
@@ -232,8 +277,6 @@ itemSchema.methods = {
       return done(true)
     }
     stackSize--;
-
-    let Item = mongoose.model('Item')
 
     var update = (next) => {
       this._parents = _.unique(this._parents, ObjectId => '' + ObjectId)
@@ -261,19 +304,12 @@ itemSchema.methods = {
       )
     }
 
-    if(!this.recipe.length) {
-      this.cost = this.price
-      return update(done)
-    } else {
-      Item.populate(this, 'recipe._ingredient', (err) => {
-        if(err) throw err
+    this.calcCost((err, cost) => {
+      this.cost = cost
+      update(done)
+    })
 
-        this.cost = this.recipe.reduce((cost, dosage) => {
-          return cost + dosage.quantity * dosage._ingredient.cost || dosage._ingredient.price
-        }, 0)
-        return update(done)
-      })
-    }
+
   }
 }
 

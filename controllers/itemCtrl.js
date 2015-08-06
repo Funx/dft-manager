@@ -42,4 +42,16 @@ router.post('/', function(req, res) {
   })
 })
 
+// delete a Item
+router.delete('/', function(req, res) {
+  console.log('removing...', req.body.name)
+
+  Item.remove({
+    _id: req.body._id
+  }, function(err) {
+    if (err) throw err
+    console.log('successFully removed', req.body.name)
+  })
+})
+
 module.exports = router

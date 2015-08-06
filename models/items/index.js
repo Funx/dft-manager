@@ -1,16 +1,26 @@
 // load mongoose since we need it to define a model
 var mongoose = require('mongoose')
+  // load plugins
   , createdModifiedPlugin = require('mongoose-createdmodified').createdModifiedPlugin
+  // load helpers
 
-var Schema = mongoose.Schema
-  , ObjectId = mongoose.Schema.Types.ObjectId
+  // load schema
+  , itemsSchema = require('models/items/items.schema')
 
-var itemsSchema = new Schema({
-      name: String
-    , content: [{type: ObjectId, ref: 'Item' }]
-  })
+
+// plugins
+itemsSchema
+  .plugin(createdModifiedPlugin, { index: true })
+
+// params
   .set('toObject', { virtuals: true })
   .set('toJSON', { virtuals: true })
-  .plugin(createdModifiedPlugin, { index: true })
+
+// hooks
+
+// static methods
+
+// methods
+
 
 module.exports = mongoose.model('Items', itemsSchema)

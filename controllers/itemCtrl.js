@@ -1,5 +1,6 @@
 var express = require('express')
   , router = express.Router()
+  , async = require('async')
   , Item = require('models/item')
 
 
@@ -40,6 +41,10 @@ router.post('/', function(req, res) {
     console.log(data)
     return res.send(data)
   })
+})
+
+router.delete('/:id', function(req, res) {
+  Item.findByIdAndRemove(req.params.id, (err, removed) => res.send())
 })
 
 module.exports = router

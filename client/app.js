@@ -27,7 +27,8 @@ angular.module('dftm', [
 	'dftm.sidebar',
 	'dftm.deck',
 	'dftm.floatingActionButton',
-	'dftm.amazingQuery'
+	'dftm.amazingQuery',
+	'dftm.selection'
 ])
 
 .config([

@@ -4,7 +4,8 @@ angular.module('floatingActionButton.controller', [])
   '$rootScope'
   ,'$location'
   ,'Selection'
-  ,function($rootScope, $location, Selection){
+  ,'Item'
+  ,function($rootScope, $location, Selection, Item){
     this.actions = {
       create: {
         icon: '',
@@ -40,7 +41,8 @@ angular.module('floatingActionButton.controller', [])
         icon: ''
         ,expression: '"Supprimer la sélection (" + fab.getSelectionLength() + " objets)"'
         ,action: () => {
-          $rootScope.$broadcast('plzDelete')
+          Selection.get().forEach(selected => Item.delete({id: selected._id}))
+          Selection.empty()
         }
       }
       ,selectVisible: {

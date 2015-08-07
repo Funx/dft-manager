@@ -43,8 +43,21 @@ router.post('/', function(req, res) {
   })
 })
 
+<<<<<<< HEAD
 router.delete('/:id', function(req, res) {
   Item.findByIdAndRemove(req.params.id, (err, removed) => res.send())
+=======
+// delete a Item
+router.delete('/', function(req, res) {
+  console.log('removing...', req.body.name)
+
+  Item.remove({
+    _id: req.body._id
+  }, function(err) {
+    if (err) throw err
+    console.log('successFully removed', req.body.name)
+  })
+>>>>>>> 6f0abb06c9c99ae97e9793b50076698b2bd35274
 })
 
 module.exports = router

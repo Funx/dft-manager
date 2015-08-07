@@ -2,38 +2,49 @@ angular.module('selection.service', [])
 
 .factory('Selection', [
   '$rootScope'
-  ,function Selection ($rootScope) {
+  ,'Item'
+  ,function Selection ($rootScope, Item) {
+    var api
+      , selection = []
 
-    var selection = []
-
-    var clean = function clean () {
+    function clean () {
       selection = _.unique(selection)
       saveState()
     }
 
-    var saveState = function saveState () {
+    function saveState () {
       sessionStorage.selection = angular.toJson(selection)
     }
 
-    var restoreState = function restoreSelectionState () {
+    function restoreState () {
       if (sessionStorage.selection) {
         selection = angular.fromJson(sessionStorage.selection)
       }
     }
 
+    function deleteSelected (done) {
+      if(selection.length) {
+        Item.delete(selection._id, selection, () => api.emptySelection(done))
+      }
+    }
+
+    $rootScope.$on("plzDelete", deleteSelected)
     $rootScope.$on("savestate", saveState)
     $rootScope.$on("restorestate", restoreState)
 
     restoreState()
 
-    return {
-      get: function getSelection () {
+    return api = {
+      get: function getSelection (done) {
         console.log('get selection', selection)
+
+        if(done) done(angular.copy(selection))
         return angular.copy(selection)
       }
-      ,set: function setSelection (givenSelection) {
+      ,set: function setSelection (givenSelection, done) {
         selection = givenSelection
         clean()
+        if(done) return done()
         console.log('set selection', selection)
       }
       ,add: function addToSelection (itemOrArray) {
@@ -42,21 +53,23 @@ angular.module('selection.service', [])
         clean()
         console.log('addToSelection', selection)
       }
-      ,remove: function removeFromSelection (itemOrArray) {
+      ,remove: function removeFromSelection (itemOrArray, done) {
         if(_.isArray(itemOrArray)) {
           itemOrArray.forEach((item) => {
             this.remove(item)
           })
+          if(done) return done()
         } else {
           var index = selection.indexOf(itemOrArray)
           if (index > -1) {
             selection.splice(index, 1)
             console.log('removeFromSelection', selection)
           }
+          if(done) return done()
         }
       }
-      ,empty: function emptySelection () {
-        this.set([])
+      ,empty: function emptySelection (done) {
+        this.set([], done)
       }
       ,isSelected: function isSelected (item) {
         return (_.any(selection, function (_item) {

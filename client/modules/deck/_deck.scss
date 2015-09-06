@@ -21,9 +21,9 @@ $amazingQuery-height: 6rem;
 
   .deck__amazingQuery {
     position: fixed;
-    left: 6 + 2rem;
-    right: 2rem;
-    top: 2rem;
+    left: 6 + 0rem;
+    right: 0;
+    top: 0;
     width: auto;
     z-index: 99;
   }
@@ -33,5 +33,7 @@ $amazingQuery-height: 6rem;
 
     input {
       width: 100%;
+      line-height: 1rem;
+      padding: 1rem;
     }
   }

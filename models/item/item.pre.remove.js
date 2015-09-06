@@ -22,11 +22,13 @@ module.exports = function preItemRemove (done) {
        (next) => Item.findById(dosage._ingredient, next)
       ,(ingredient, next) => {
         console.log('ingredient:', ingredient)
-
-        ingredient._parents = ingredient._parents.map(id => '' + id)
-        ingredient._parents = _.without(['' + ingredient._id])
-
-        ingredient.save(next)
+        if(ingredient && ingredient._parents) {
+          ingredient._parents = ingredient._parents.map(id => '' + id)
+          ingredient._parents = _.without(['' + ingredient._id])
+          ingredient.save(next)
+        } else {
+          next()
+        }
       }
     ], next)
   }

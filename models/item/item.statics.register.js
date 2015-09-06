@@ -15,7 +15,7 @@ module.exports = function registerItem (rawModel, parent, done) {
     parent = null
   }
 
-  var newDependencies = []
+  let newDependencies = []
     , Item = this.model('Item')
     , oldModel
     , freshModel
@@ -46,7 +46,7 @@ module.exports = function registerItem (rawModel, parent, done) {
   }
 
   function registerRecipe (next) {
-    let recipe = freshModel.recipe || []
+    let recipe = rawModel.recipe || []
     let recipeLength = freshModel.recipe.length
     // if(recipeLength) console.log('befor',freshModel.name,'|', recipe.length)
 
@@ -60,7 +60,7 @@ module.exports = function registerItem (rawModel, parent, done) {
 
   function registerIngredient (dosage, next) {
     let ingredientsParent = freshModel
-    // console.log('registering', dosage._ingredient ,'as ingredient of', freshModel.name)
+    console.log('registering', dosage ,'as dosage of', freshModel.name)
 
     Item.register(dosage._ingredient, ingredientsParent, (err, data) => {
       if (err) throw (err)
@@ -112,9 +112,12 @@ module.exports = function registerItem (rawModel, parent, done) {
     if(!item) {
       oldModel = false
       freshModel = new Item(rawModel)
+      console.log('new item', rawModel)
     } else {
       oldModel = item
       freshModel = _.assign(item, rawModel)
+      console.log('update item', freshModel.name)
+
     }
     // console.log('register | ', freshModel.name)
 

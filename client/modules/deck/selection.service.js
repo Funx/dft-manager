@@ -19,12 +19,17 @@ angular.module('selection.service', [])
     function restoreState () {
       if (sessionStorage.selection) {
         selection = angular.fromJson(sessionStorage.selection)
+        clean()
       }
     }
 
     function deleteSelected (done) {
       if(selection.length) {
-        Item.delete(selection._id, selection, () => api.emptySelection(done))
+        selection.forEach((selected) => {
+          console.log(selected._id)
+          Item.delete({id: selected._id}, (...args) => console.log(args))
+        })
+
       }
     }
 
@@ -45,27 +50,20 @@ angular.module('selection.service', [])
         selection = givenSelection
         clean()
         if(done) return done()
-        console.log('set selection', selection)
       }
       ,add: function addToSelection (itemOrArray) {
         _.isArray(itemOrArray) ?
           selection = selection.concat(itemOrArray) : selection.push(itemOrArray)
         clean()
-        console.log('addToSelection', selection)
       }
-      ,remove: function removeFromSelection (itemOrArray, done) {
+      ,remove: function removeFromSelection (itemOrArray) {
         if(_.isArray(itemOrArray)) {
           itemOrArray.forEach((item) => {
             this.remove(item)
           })
-          if(done) return done()
         } else {
-          var index = selection.indexOf(itemOrArray)
-          if (index > -1) {
-            selection.splice(index, 1)
-            console.log('removeFromSelection', selection)
-          }
-          if(done) return done()
+          selection = selection.filter((selected) => selected._id != itemOrArray._id)
+          // console.log('removeFromSelection', selection)
         }
       }
       ,empty: function emptySelection (done) {

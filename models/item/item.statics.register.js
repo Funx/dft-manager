@@ -38,6 +38,7 @@ module.exports = function registerItem (rawModel, parent, done) {
           _parent = _parent || parent
           freshModel._parents.push(_parent._id)
           freshModel._parents = _.unique(freshModel._parents, ObjectId => '' + ObjectId)
+          // console.log('new parent:', freshModel._parents.length, '|', freshModel.name)
         }
         return next()
       })
@@ -45,16 +46,22 @@ module.exports = function registerItem (rawModel, parent, done) {
   }
 
   function registerRecipe (next) {
-    let recipe = rawModel.recipe || []
-    async.map(recipe, registerIngredient, (error, result) => {
-      if (error) throw error
-      freshModel.recipe = result
+    let recipe = freshModel.recipe || []
+    let recipeLength = freshModel.recipe.length
+    // if(recipeLength) console.log('befor',freshModel.name,'|', recipe.length)
+
+    async.map(recipe, registerIngredient, () => {
+      // if(recipeLength) console.log('after',freshModel.name,'|', recipe.length)
+      // freshModel.recipe = result
+      // console.log('recipe:', freshModel.recipe.length, '|', freshModel.name)
       return next()
     })
   }
 
   function registerIngredient (dosage, next) {
     let ingredientsParent = freshModel
+    // console.log('registering', dosage._ingredient ,'as ingredient of', freshModel.name)
+
     Item.register(dosage._ingredient, ingredientsParent, (err, data) => {
       if (err) throw (err)
       dosage._ingredient = data.registered._id
@@ -62,7 +69,8 @@ module.exports = function registerItem (rawModel, parent, done) {
         newDependencies.push(data.registered)
       }
       newDependencies = newDependencies.concat(data.dependencies)
-      return next(null, dosage)
+      // console.log('registered', data.registered._id ,'as ingredient of', freshModel.name)
+      return next(dosage)
     })
   }
 
@@ -78,24 +86,20 @@ module.exports = function registerItem (rawModel, parent, done) {
   }
 
   function shouldUpdateCost () {
-    return (!freshModel.cost || (oldModel && freshModel.price != oldModel.price))
+    return (!freshModel.cost || (!!oldModel && freshModel.price != oldModel.price))
   }
 
   function save (next) {
-    console.log(freshModel.price)
-
     freshModel.save((err, _freshModel) => {
       Item.populate(_freshModel, 'recipe._ingredient', (err) => {
         if(err) throw err
-        if(shouldUpdateCost) {
-          freshModel.updateCosts(() => false)
-        }
-        console.log(freshModel)
-        newDependencies = _.unique(newDependencies)
-        return next(null, {
-            registered: freshModel
-          , dependencies: newDependencies
-          , isNew: oldModel ? false : true
+        freshModel.updateCosts(() => {
+          newDependencies = _.unique(newDependencies)
+          return next(null, {
+              registered: freshModel
+            , dependencies: newDependencies
+            , isNew: oldModel ? false : true
+          })
         })
       })
     })
@@ -107,11 +111,12 @@ module.exports = function registerItem (rawModel, parent, done) {
     // keep it before it gets destroyed when creating an new item
     if(!item) {
       oldModel = false
-      freshModel = new Item(freshModel)
+      freshModel = new Item(rawModel)
     } else {
       oldModel = item
       freshModel = _.assign(item, rawModel)
     }
+    // console.log('register | ', freshModel.name)
 
     return async.series([
       registerRelationships

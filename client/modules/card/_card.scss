@@ -1,7 +1,3 @@
-.card__wrapper--outer {
-  // transition: all .5s ease-in-out;
-}
-
 .card {
   position: relative;
   background: #000;
@@ -11,6 +7,9 @@
   margin: 0;
   font-size: 0.75rem; //scale
   z-index: $card-zindex;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
 
   &.bigger {
     padding: 1rem;
@@ -32,6 +31,7 @@
   .card__area {
     margin: 0;
     padding: 1rem;
+    flex: 10 1 auto;
 
     .selected &:first-child {
       padding-bottom: 1rem;
@@ -45,8 +45,11 @@
   }
 
   .area--benef {
+    flex: 1 1 auto;
+
     text-align: center;
     background: rgba(0,0,0,.2) !important;
+    padding: 0;
   }
 
   .card__title, .card__price  {
@@ -54,6 +57,9 @@
     font-size: .75rem;
   }
 
+  .card__benef {
+    font-size: .75rem
+  }
     .card__title {
       font-weight: bolder;
     }

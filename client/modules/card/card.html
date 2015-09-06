@@ -48,11 +48,11 @@
     background: hsla({{ ::card.category | hue }}, 27%, 44%, {{ !card.model.selected }});
     font-size: {{ card.getPonderedValue({ min: 1.2, max: 1.5, disabled: 1 }) }}em";
     class="card__area area--benef"
-    ng-if="card.model.recipe.length && card.price">
+    ng-if="card.model.recipe.length && card.model.price &&card.calcBenefits() > 0">
       <span class="card__benef benef benef--taux">
         <span ng-if="card.calcBenefitsRate() > 0">+</span>{{ card.calcBenefitsRate()|number:0 }}%
       </span>
-      |
+
       <span class="card__benef benef benef--fixe">
         <span ng-if="card.calcBenefits() > 0">+</span>{{ card.calcBenefits()|currency:'k':0 }}
       </span>

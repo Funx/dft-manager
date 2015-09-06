@@ -8,7 +8,7 @@ angular.module('floatingActionButton.controller', [])
     this.actions = {
       create: {
         icon: '',
-        expression: '"Ajouter 1 objet"',
+        expression: '"Créer"',
         action: () => {
           $rootScope.$broadcast('plzCreate')
           $location.path( "/create" )
@@ -38,21 +38,23 @@ angular.module('floatingActionButton.controller', [])
       }
       ,delete: {
         icon: ''
-        ,expression: '"Supprimer la sélection (" + fab.getSelectionLength() + " objets)"'
+        ,expression: '"!!!!!!! Supprimer les (" + fab.getSelectionLength() + " objets sélectionnés)"'
         ,action: () => {
-          $rootScope.$broadcast('plzDelete')
+          if(confirm('Êtes-vous sûr de vouloir supprimer les '+ this.getSelectionLength() +'objets sélectionnés ?')) {
+            $rootScope.$broadcast('plzDelete')
+          }
         }
       }
       ,selectVisible: {
         icon: ''
-        ,expression: '"Ajouter visible à la sélection"'
+        ,expression: '"Sélectionner visible"'
         ,action: () => {
           $rootScope.$broadcast('plzSelectVisible')
         }
       }
       ,unselectVisible: {
         icon: ''
-        ,expression: '"Soustraire visible à la sélection"'
+        ,expression: '"Désélectionner visible"'
         ,action: () => {
           $rootScope.$broadcast('plzUnselectVisible')
         }
@@ -72,7 +74,7 @@ angular.module('floatingActionButton.controller', [])
       if (!Selection.getLength()) {
         return ['create', 'selectVisible']
       }
-      return ['craft', 'edit', 'create', 'delete', 'unselectVisible', 'selectVisible', ]
+      return ['craft', 'edit', 'create', 'delete', 'unselectVisible', 'selectVisible', 'unselectAll']
     }
 
   }

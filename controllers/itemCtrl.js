@@ -1,6 +1,7 @@
 var express = require('express')
   , router = express.Router()
   , Item = require('models/item')
+  , async = require('async')
 
 
 router.get('/id/:itemId', function(req, res) {
@@ -43,15 +44,21 @@ router.post('/', function(req, res) {
 })
 
 // delete a Item
-router.delete('/', function(req, res) {
-  console.log('removing...', req.body.name)
-
-  Item.remove({
-    _id: req.body._id
-  }, function(err) {
-    if (err) throw err
-    console.log('successFully removed', req.body.name)
-  })
+router.delete('/:id', function(req, res) {
+  console.log('removing...', req.params.id)
+  async.waterfall([
+    (next) => Item.findById(req.params.id, next)
+    ,(item, next) => item ? item.remove(next) : next(item)
+    ,(item) => {
+      // if (err) throw err
+      // console.log('successFully removed', item ? item.name : item)
+      res.send( )
+    }
+  ])
+  // Item.findByIdAndRemove(req.params.id, function(err, item) {
+  //   if (err) throw err
+  //   console.log('successFully removed', item ? item.name: item)
+  // })
 })
 
 module.exports = router

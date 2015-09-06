@@ -46,12 +46,13 @@ angular.module('deck.controller', [])
       })
     }
 
+    var visible = null
     this.yo = 'hey'
     this.deck = Deck.get(() => {
-      console.log('hey')
+      visible = this.cards
     })
-    console.log(this.deck)
     this.cards = this.deck
+    console.log(this.deck)
 
     var ravageur = 'ravageur terre'
     var iterator = 0
@@ -60,10 +61,14 @@ angular.module('deck.controller', [])
       this.cards = this.deck
 
       var query = transformRequest(this.query)
-      query.forEach((request) => {
-        this.cards = filter(this.cards, request)
-      })
+      this.cards = query.reduce((acc, request) => {
+        let filtered = filter(acc, request)
+        console.log(filtered)
+        return filtered
+      }, this.cards)
 
+      visible = angular.copy(this.cards)
+      console.log(this.cards.length)
     }
 
     $scope.$on('selected', (evt, element) => {
@@ -73,11 +78,10 @@ angular.module('deck.controller', [])
       Selection.remove(element)
     })
     $scope.$on('plzUnselectVisible', () => {
-      Selection.remove(this.cards)
+      Selection.remove(visible)
     })
     $scope.$on('plzSelectVisible', () => {
-      console.log(this.cards.length)
-      Selection.add(this.cards)
+      Selection.add(visible)
     })
     $scope.$on('plzCreate', () => {
       // create a new item

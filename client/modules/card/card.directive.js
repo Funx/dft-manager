@@ -1,11 +1,10 @@
 angular.module('card.directive', [])
 
 .directive('card', [
-  'Isotope'
-  ,'Families'
+  'Families'
   ,'Selection'
   ,'slugifyFilter'
-  ,(Isotope, Families, Selection, slugify) => {
+  ,(Families, Selection, slugify) => {
     return {
       restrict: 'AE',
       templateUrl: '/modules/card/card.html',
@@ -111,7 +110,15 @@ angular.module('card.directive', [])
 
         if(!this.hasPrice()) this.model.keyWords.push('no price', '!price')
 
-        if(!this.model.recipe || !this.model.recipe.length) this.model.keyWords.push('no recipe')
+        if(!this.model.recipe || !this.model.recipe.length) {
+          this.model.keyWords.push('no recipe')
+        } else {
+          let i = 0;
+          while(i < this.model.recipe.length) {
+            this.model.keyWords.push('recipe>' + i + 'ingredients')
+            i++
+          }
+        }
 
       }]
     }

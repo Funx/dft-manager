@@ -10,9 +10,10 @@ var mongoose = require('mongoose')
 // ===================== */
 module.exports = function updateCosts (stackSize, done) {
   let Item = mongoose.model('Item')
+
   if(!done) {
     done = stackSize
-    stackSize = 5
+    stackSize = 10
   }
   if(stackSize <= 0) {
     console.log('stackSize exceeded')
@@ -21,16 +22,16 @@ module.exports = function updateCosts (stackSize, done) {
   stackSize--;
 
   var update = (next) => {
-    this._parents = _.unique(this._parents, ObjectId => '' + ObjectId)
-    console.log(this.price)
     updateParents(() => false)
-    return saveThis(next)
+    return async.series([
+      updateParents
+      ,saveThis
+    ], next)
   }
 
   var saveThis = (next) => {
-    console.log('save | ', this.name)
-
-    var oldThis = _.assign({}, this)
+    this._parents = _.unique(this._parents, ObjectId => '' + ObjectId)
+    this._parents = _.filter(this._parents, ObjectId => !('' + ObjectId == this._id))
     this.save(next)
   }
 
@@ -38,18 +39,29 @@ module.exports = function updateCosts (stackSize, done) {
     // console.log('updateParents')
     var child = _.assign({},child)
     var updated = [].push(child)
-
+    this._parents
     async.each(this._parents
       , (parentId, _next) => {
-          Item.findById(parentId, (err, parent) => parent ? parent.updateCosts(stackSize, _next) : next())
+          Item.findById(parentId, (err, parent) =>
+            parent ? parent.updateCosts(stackSize, _next) : _next()
+          )
       }
+      , next
     )
   }
 
-  this.calcCost((err, cost) => {
-    this.cost = cost
-    update(done)
-  })
+  // console.log('update cost |', this.name)
+  return async.series([
+    (next) => this.calcCost((err, cost) => {
+      this.cost = cost
+      if(this.recipe.length && this.cost) console.log(this.name, '|', this.cost, this.price)
+      next()
+    })
+    , saveThis
+    , updateParents
+  ]
+  , done)
+
 
 
 }

@@ -1,5 +1,6 @@
 var express = require('express')
   , router = express.Router()
+  , async = require('async')
   , Item = require('models/item')
   , Items = require('models/items')
 
@@ -13,6 +14,21 @@ router.get('/all', function(req, res) {
       console.log(`served ${allItems.length} items !`)
       return res.send(allItems)
     })
+
+})
+
+router.get('/register/all', function(req, res) {
+  Item
+  .find({})
+  .exec((err, allItems) => {
+    async.forEach(
+      allItems
+    , (item, next) => Item.register(item, next)
+    , () => {
+        console.log('updated everything'), res.send()
+      }
+    )
+  })
 
 })
 

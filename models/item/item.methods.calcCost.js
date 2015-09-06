@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+  , _ = require('lodash')
 
 
 /* ===================== //
@@ -15,9 +16,13 @@ module.exports = function getCost (done) {
     Item.populate(this, 'recipe._ingredient', (err) => {
       if(err) throw err
 
-      var cost = this.recipe.reduce((cost, dosage) => {
+      this.recipe = _.filter(this.recipe, dosage => !!dosage && !!dosage._ingredient)
+      // console.log(this.name, '|', this.recipe)
+      this.cost = this.recipe.reduce((cost, dosage) => {
         return cost + dosage.quantity * dosage._ingredient.cost || dosage._ingredient.price
       }, 0)
+
+      if(!this.cost) console.log('!!!!', this.name, 'has no cost')
       return done(null, this.cost)
     })
   }

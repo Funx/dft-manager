@@ -8,10 +8,7 @@ angular.module('item.service', [])
     return $resource('/item/:id', {}, {
       remove: {
         method: 'DELETE'
-      , transformRequest: (data) => {
-          console.log(data)
-          return data
-        }
+        ,url: '/item/:id'
       }
     })
   }

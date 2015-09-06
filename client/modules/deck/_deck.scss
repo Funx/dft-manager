@@ -1,4 +1,4 @@
-$gutter-width: 1rem;
+$gutter-width: 4px;
 $amazingQuery-height: 6rem;
 
 .page-wrapper__wrapper--inner {
@@ -8,33 +8,15 @@ $amazingQuery-height: 6rem;
 .deck {
   margin: auto;
   width: auto;
-  // // margin: - $gutter-width / 2;
-  // display: flex;
-  // // flex-direction: row;
-  // flex-wrap: wrap;
-  // column-count: 2;
-  // column-gap: 0;
-  // // column-fill: balance;
-  //
-  // @include breakpoint('medium'){
-  //   column-count: 3;
-  // }
-  // @include breakpoint('large'){
-  //   column-count: 5;
-  // }
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
 }
 
-  .deck__card__wrapper--outer {
-    width: 33%;
-    padding: $gutter-width / 2;
-    display: inline-block;
-
-
-    &.bigger {
-      width: 100%;
-      padding: 0;
-      column-span: all;
-    }
+  .deck__card {
+    flex: 1 1 auto;
+    display: flex;
+    margin: $gutter-width / 2;
   }
 
   .deck__amazingQuery {
@@ -43,8 +25,13 @@ $amazingQuery-height: 6rem;
     right: 2rem;
     top: 2rem;
     width: auto;
+    z-index: 99;
   }
 
   .amazingQuery__wrapper--outer {
     height: $amazingQuery-height;
+
+    input {
+      width: 100%;
+    }
   }

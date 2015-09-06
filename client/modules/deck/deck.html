@@ -10,11 +10,7 @@
   </div>
 
     <div class="deck">
-      <div class="deck__card__wrapper--outer card__wrapper--outer"
-        ng-class="{bigger: card.bigger}"
-        ng-repeat="card in deck.cards track by card._id">
-        <div card="card"></div>
-      </div>
+      <div class="deck__card" ng-repeat="card in deck.cards track by card._id" card="card"></div>
     </div>
 
 </div>

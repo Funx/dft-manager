@@ -106,6 +106,12 @@ angular.module('card.directive', [])
           i++
         }
 
+        var i = 1
+        while(this.calcBenefits() > 100000 * i) {
+          this.model.keyWords.push('>' + i + '00000k')
+          i++
+        }
+
         if(this.isLucrative()) this.model.keyWords.push('lucrative')
 
         if(!this.hasPrice()) this.model.keyWords.push('no price', '!price')

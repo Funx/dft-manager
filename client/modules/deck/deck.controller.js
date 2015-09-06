@@ -52,7 +52,6 @@ angular.module('deck.controller', [])
       visible = this.cards
     })
     this.cards = this.deck
-    console.log(this.deck)
 
     var ravageur = 'ravageur terre'
     var iterator = 0
@@ -63,12 +62,10 @@ angular.module('deck.controller', [])
       var query = transformRequest(this.query)
       this.cards = query.reduce((acc, request) => {
         let filtered = filter(acc, request)
-        console.log(filtered)
         return filtered
       }, this.cards)
 
       visible = angular.copy(this.cards)
-      console.log(this.cards.length)
     }
 
     $scope.$on('selected', (evt, element) => {

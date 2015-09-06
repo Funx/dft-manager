@@ -5,7 +5,7 @@ angular.module('item.service', [])
 .factory('Item', [
   '$resource'
 , function($resource, $rootScope) {
-    return $resource('/item/:id', {}, {
+    return $resource('/item/:id', {id: '@id'}, {
       remove: {
         method: 'DELETE'
         ,url: '/item/:id'

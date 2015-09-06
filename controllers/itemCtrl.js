@@ -1,5 +1,6 @@
 var express = require('express')
   , router = express.Router()
+  , async = require('async')
   , Item = require('models/item')
   , async = require('async')
 
@@ -43,7 +44,6 @@ router.post('/', function(req, res) {
   })
 })
 
-// delete a Item
 router.delete('/:id', function(req, res) {
   console.log('removing...', req.params.id)
   async.waterfall([

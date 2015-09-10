@@ -28,7 +28,8 @@ angular.module('dftm', [
 	'dftm.deck',
 	'dftm.floatingActionButton',
 	'dftm.amazingQuery',
-	'dftm.selection'
+	'dftm.selection',
+	'dftm.stocks'
 ])
 
 .config([
@@ -46,6 +47,7 @@ angular.module('dftm', [
 			.when('/create', 'create')
 			.when('/edit', 'edit')
 			.when('/edit/:id', 'edit')
+			.when('/stocks/', 'stocks')
 
 
 	  if(window.history && window.history.pushState){

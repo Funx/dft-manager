@@ -1,0 +1,3 @@
+<div ng-repeat="deck in stocks.decks" class="deck">
+    <div class="deck__card" ng-repeat="card in deck.cards track by card._id" card="card"></div>
+</div>

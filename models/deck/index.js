@@ -5,9 +5,9 @@ var mongoose = require('mongoose')
   // load helpers
   , makeStatic = require('helpers/makeStatic')
   // load schema
-  , itemSchema = require('models/deck/deck.schema')
+  , deckSchema = require('models/deck/deck.schema')
 
-itemSchema
+deckSchema
   // plugins
   .plugin(createdModifiedPlugin, { index: true })
 
@@ -18,12 +18,13 @@ itemSchema
   // hooks
 
 // static methods
-itemSchema.statics = {
-
+deckSchema.statics = {
+  addItems: require('./deck.statics.addItems.js')
+  ,removeItems: require('./deck.statics.removeItems.js')
 }
 
 // methods
-itemSchema.methods = {
+deckSchema.methods = {
 
 }
 

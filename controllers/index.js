@@ -5,6 +5,7 @@ var express = require('express')
 
 router.use('/item', require('controllers/itemCtrl'))
 router.use('/items', require('controllers/itemsCtrl'))
+router.use('/deck', require('controllers/deckCtrl'))
 
 
 router.get('*', (req, res) => {

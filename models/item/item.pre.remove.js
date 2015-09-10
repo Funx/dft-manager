@@ -9,13 +9,25 @@ module.exports = function preItemRemove (done) {
     console.log('item to remove :', item.name)
 
   }
-  function removeFromRecipes(parent, next) {
+  let removeFromParentsRecipes = (parent, next) => {
     console.log('remove this from :', parent, '\'s recipes')
+    async.waterfall([
+       (next) => Item.findById(parent, next)
+      ,(parent, next) => {
+        console.log('parent:', parent)
+        if(parent && parent.recipe) {
+          parent.recipe = _.filter((dosage) => {
+            return '' + dosage._ingredient != '' + this._id
+          })
+          parent.save(next)
+        } else {
+          next()
+        }
+      }
+    ], next)
 
-
-    return next()
   }
-  function removeFromParents(dosage, next) {
+  let removeFromIngredientsParents = (dosage, next) => {
     console.log('remove this from :', dosage._ingredient, '\'s parents')
 
     async.waterfall([
@@ -23,8 +35,9 @@ module.exports = function preItemRemove (done) {
       ,(ingredient, next) => {
         console.log('ingredient:', ingredient)
         if(ingredient && ingredient._parents) {
-          ingredient._parents = ingredient._parents.map(id => '' + id)
-          ingredient._parents = _.without(['' + ingredient._id])
+          ingredient._parents = _.filter((parent) => {
+            return '' + parent != '' + this._id
+          })
           ingredient.save(next)
         } else {
           next()
@@ -36,7 +49,7 @@ module.exports = function preItemRemove (done) {
   console.log(this)
 
   async.parallel([
-      next => async.each(this._parents, removeFromRecipes, next)
-    , next => async.each(this.recipe, removeFromParents, next)
+      next => async.each(this._parents, removeFromParentsRecipe, next)
+    , next => async.each(this.recipe, removeFromIngredientsParents, next)
   ], done)
 }

@@ -71,7 +71,7 @@
 <div class="deck">
   <div class="deck__card__wrapper--outer card__wrapper--outer"
     ng-repeat="card in editor.waitingLine track by card._id">
-    <div card="card"></div>
+    <div card="card" expanded="true"></div>
   </div>
 </div>
 
@@ -79,7 +79,7 @@
 <div class="deck">
   <div class="deck__card__wrapper--outer card__wrapper--outer"
     ng-repeat="card in editor.newDependencies.reverse() track by card._id">
-    <div card="card"></div>
+    <div card="card" expanded="true"></div>
   </div>
 </div>
 

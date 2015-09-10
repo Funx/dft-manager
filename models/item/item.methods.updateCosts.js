@@ -54,7 +54,6 @@ module.exports = function updateCosts (stackSize, done) {
   return async.series([
     (next) => this.calcCost((err, cost) => {
       this.cost = cost
-      if(this.recipe.length && this.cost) console.log(this.name, '|', this.cost, this.price)
       next()
     })
     , saveThis

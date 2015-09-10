@@ -50,9 +50,8 @@ module.exports = function registerItem (rawModel, parent, done) {
     let recipeLength = freshModel.recipe.length
     // if(recipeLength) console.log('befor',freshModel.name,'|', recipe.length)
 
-    async.map(recipe, registerIngredient, () => {
-      // if(recipeLength) console.log('after',freshModel.name,'|', recipe.length)
-      // freshModel.recipe = result
+    async.map(recipe, registerIngredient, (err, result) => {
+      freshModel.recipe = result
       // console.log('recipe:', freshModel.recipe.length, '|', freshModel.name)
       return next()
     })
@@ -63,14 +62,16 @@ module.exports = function registerItem (rawModel, parent, done) {
     console.log('registering', dosage ,'as dosage of', freshModel.name)
 
     Item.register(dosage._ingredient, ingredientsParent, (err, data) => {
-      if (err) throw (err)
-      dosage._ingredient = data.registered._id
+      if (err) {throw (err);}
+
       if(data.isNew) {
         newDependencies.push(data.registered)
       }
       newDependencies = newDependencies.concat(data.dependencies)
-      // console.log('registered', data.registered._id ,'as ingredient of', freshModel.name)
-      return next(dosage)
+      dosage._ingredient = data.registered._id
+      // console.log(data.registered)
+      console.log('registered', data.registered._id ,'as ingredient of', freshModel.name)
+      return next(err, dosage)
     })
   }
 

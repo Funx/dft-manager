@@ -93,11 +93,12 @@ angular.module('editor.controller', [])
         } // clear the form so our user is ready to enter another
       }
 
-
-      this.focus = 'false'
-      $timeout(() => {
-        this.focus = 'name'
-      })
+      if(!this.currItem._id) {
+        this.focus = 'false'
+        $timeout(() => {
+          this.focus = 'name'
+        })
+      }
     }
 
     this.addChildIngredient = function addChildIngredient () {

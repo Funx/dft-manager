@@ -9,7 +9,7 @@ module.exports = new Schema({
   , category: String
   , recipe: [dosageSchema]
   , _parents: [{ type: ObjectId, ref: 'Item' }]
-  , _deck: { type: ObjectId, ref: 'Deck' }
+  , deck: String
   , price: Number
   , cost: Number
 })

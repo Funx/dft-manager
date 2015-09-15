@@ -3,7 +3,39 @@
 }
 
 .sidebar__wrapper--inner {
-  padding: 2rem;
+  padding: 1rem;
+}
+
+.logo {
+  &, & a {
+    color: #fff;
+    line-height: 75%;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.sidebar__links {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  &, & a {
+    color: #000;
+  }
+}
+
+.sidebar__link {
+  margin: 0;
+
+  &::before {
+    content: ">";
+    display: inline;
+    margin-right: .5rem;
+    font-size: 75%;
+  }
 }
 
   .sidebar__swaps {

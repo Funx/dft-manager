@@ -72,7 +72,6 @@ angular.module('dftm', [
 
 		//let everthing know that we need to save state now.
 		window.onbeforeunload = (event) => {
-			window.confirm('yo')
 			sessionStorage.restorestate = true
 		  $rootScope.$broadcast('savestate')
 		}

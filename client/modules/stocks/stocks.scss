@@ -1,0 +1,18 @@
+.deck--vertical {
+  width: 33%;
+  float: left;
+  padding: 1rem;
+}
+
+.deck__head {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  button, p {
+
+  }
+  p {
+    flex: 1;
+    text-align: center;
+  }
+}

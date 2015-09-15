@@ -32,6 +32,7 @@ app.use(bodyParser.json({type: 'application/vnd.api+json'}))
 app.use(methodOverride())
 
 
+
 // set the static files location /public/img will be /img for users
 app.use(express.static(__dirname + '/public'))
 

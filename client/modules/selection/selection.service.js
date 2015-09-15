@@ -3,7 +3,8 @@ angular.module('selection.service', [])
 .factory('Selection', [
   '$rootScope'
   ,'Item'
-  ,function Selection ($rootScope, Item) {
+  ,'Stocks'
+  ,function Selection ($rootScope, Item, Stocks) {
     var api
       , selection = []
 
@@ -33,7 +34,39 @@ angular.module('selection.service', [])
       }
     }
 
+    function watchSelected (done) {
+      if(selection.length) {
+        let toWatch = selection
+          .filter((selected) => !selected.deck)
+
+        let toWatchIds = toWatch.map((selected) => selected._id)
+        Stocks.addItems(toWatchIds)
+
+        selection = toWatch.map((selected) => {
+          selected.deck = 'watching'
+        })
+      }
+
+      return true
+    }
+
+    function unwatchSelected (done) {
+      if(selection.length) {
+        let ids = selection.map((selected) => selected._id)
+        Stocks.removeItems(ids)
+
+        selection = selection.map((selected) => {
+          selected.deck = null
+          return selected
+        })
+      }
+
+      return true
+    }
+
     $rootScope.$on("plzDelete", deleteSelected)
+    $rootScope.$on("plzWatch", watchSelected)
+    $rootScope.$on("plzUnwatch", unwatchSelected)
     $rootScope.$on("savestate", saveState)
     $rootScope.$on("restorestate", restoreState)
 

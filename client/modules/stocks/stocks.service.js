@@ -3,14 +3,21 @@ angular.module('stocks.controller', [])
 .factory('Stocks', [
   '$http'
   ,function($http){
-    let baseUrl = '/deck'
+    let baseUrl = '/deck/'
 
     return {
-      get: () => $http.get(baseUrl)
-      ,addItems: (name = 'watching', items) => {
+      get: (query) => {
+        if(query.name) {
+          return $http.get(baseUrl + query.name)
+        } else {
+          return $http.get(baseUrl)
+        }
       }
-      ,removeItems: (name, items) => {
-
+      ,addItems: (items, name = 'watching') => {
+        $http.post(baseUrl + 'addItems/' + name, items)
+      }
+      ,removeItems: (items, name = 'all') => {
+        $http.post(baseUrl + 'removeItems/' + name, items)
       }
     }
   }

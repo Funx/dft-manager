@@ -105,7 +105,6 @@ angular.module('card.directive', [])
           this.model.keyWords.push('>' + i + '0%')
           i++
         }
-
         var i = 1
         while(this.calcBenefits() > 100000 * i) {
           this.model.keyWords.push('>' + i + '00000k')

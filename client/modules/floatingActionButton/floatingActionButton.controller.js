@@ -8,7 +8,7 @@ angular.module('floatingActionButton.controller', [])
   ,function($rootScope, $location, Selection, Item){
     this.actions = {
       create: {
-        icon: '',
+        icon: '+',
         expression: '"Créer"',
         action: () => {
           $rootScope.$broadcast('plzCreate')
@@ -16,29 +16,31 @@ angular.module('floatingActionButton.controller', [])
         }
       }
       ,edit: {
-        icon: ''
+        icon: '<=='
         ,expression: '"Editer " + fab.getSelectionLength() + " objets"'
         ,action: () => {
           $rootScope.$broadcast('plzEdit')
           $location.path( "/edit/selection" )
         }
       }
-      ,craft: {
-        icon: ''
-        ,expression: '"Crafter les " + fab.getSelectionLength() + " objets sélectionnés"'
+      ,watch: {
+        icon: '< o >'
+        ,expression: '"Observer sélection (" + fab.getSelectionLength() + ")"'
         ,action: () => {
-          $rootScope.$broadcast('plzCraft')
+          $rootScope.$broadcast('plzWatch')
+          $rootScope.$broadcast('plzWatch:fu')
         }
       }
-      ,sell: {
-        icon: ''
-        ,expression: '"Vendre les " + fab.getSelectionLength() + " objets sélectionnés"'
+      ,unwatch: {
+        icon: '< / >'
+        ,expression: '"Ne plus observer sélection (" + fab.getSelectionLength() + ")"'
         ,action: () => {
-          $rootScope.$broadcast('plzSell')
+          $rootScope.$broadcast('plzUnwatch')
+          $rootScope.$broadcast('plzUnwatch:fu')
         }
       }
       ,delete: {
-        icon: ''
+        icon: 'x'
         ,expression: '"!!!!!!! Supprimer les (" + fab.getSelectionLength() + " objets sélectionnés)"'
         ,action: () => {
           if(confirm('Êtes-vous sûr de vouloir supprimer les '+ this.getSelectionLength() +'objets sélectionnés ?')) {
@@ -49,21 +51,21 @@ angular.module('floatingActionButton.controller', [])
         }
       }
       ,selectVisible: {
-        icon: ''
+        icon: '|+|'
         ,expression: '"Sélectionner visible"'
         ,action: () => {
           $rootScope.$broadcast('plzSelectVisible')
         }
       }
       ,unselectVisible: {
-        icon: ''
+        icon: '|-|'
         ,expression: '"Désélectionner visible"'
         ,action: () => {
           $rootScope.$broadcast('plzUnselectVisible')
         }
       }
       ,unselectAll: {
-        icon: ''
+        icon: '|x|'
         ,expression: '"Vider la sélection"'
         ,action: () => {
           Selection.empty()
@@ -77,7 +79,7 @@ angular.module('floatingActionButton.controller', [])
       if (!Selection.getLength()) {
         return ['create', 'selectVisible']
       }
-      return ['craft', 'edit', 'create', 'delete', 'unselectVisible', 'selectVisible', 'unselectAll']
+      return ['watch', 'unwatch', 'edit', 'create', 'delete', 'unselectVisible', 'selectVisible', 'unselectAll']
     }
 
   }

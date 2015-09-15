@@ -3,6 +3,7 @@
     ng-repeat="actionName in fab.getAvailableActions()"
     ng-init="action = fab.actions[actionName]"
     ng-click="action.action()">
+    <span class="bubble__icon">{{action.icon}}</span>
     <span class="bubble__title" ng-bind="$parent.$eval(action.expression)"></span>
   </button>
 </div>

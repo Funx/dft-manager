@@ -1,9 +1,11 @@
 #{$text-input-selectors} {
   &.input.input {
     width: 100%;
-    background: transparent;
+    background: rgba(0,0,0,.2);
     color: #fff;
     border-bottom: 2px solid #fff;
+    padding: .5rem;
+    margin-top: 1rem;
 
     &::-webkit-input-placeholder {
       color: #fff;
@@ -32,7 +34,7 @@
   @extend .low;
 
   position: absolute;
-  top: 2.5rem;
+  top: 3rem;
   left: 0;
   right: 0;
   list-style: none;
@@ -43,8 +45,13 @@
 
 .suggestion {
   position: relative;
-  color: #fff;
+  color: #444;
   padding: 0.25rem 0.5rem;
+}
+
+.suggestion.suggestion--highlighted {
+  color: #000;
+  // border: 1px solid #000;
 }
 
 .suggestion.active::after{

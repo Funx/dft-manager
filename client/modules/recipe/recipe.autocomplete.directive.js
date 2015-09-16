@@ -32,7 +32,7 @@ angular.module('recipe.autocomplete.directive', [])
             name: searchText
           }
           console.log(attrs.url + '/' + searchText)
-          
+
           $http.get(attrs.url + '/' + searchText)
           .success((data) => {
             if(validated){
@@ -126,9 +126,14 @@ angular.module('recipe.autocomplete.directive', [])
 
       elem.find('input').bind('blur', () => {
         $timeout(() => {
-          $scope.suggestions = []
-          $scope.searchText = ''
-        }, 200)
+          $scope.showSuggestions = false
+        })
+      })
+
+      elem.find('input').bind('focus', () => {
+        $timeout(() => {
+          $scope.showSuggestions = true
+        })
       })
 
       $scope.removeTag = (index) => {

@@ -1,7 +1,9 @@
 .editor {
   @extend .card;
   margin-bottom: 2rem;
+  padding-bottom: 1rem;
   overflow: visible;
+  position: relative;
 }
 
 .editor__title {

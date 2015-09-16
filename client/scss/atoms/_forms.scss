@@ -28,11 +28,12 @@
 
 .tags-wrapper {
   position: relative;
+  z-index: 1;
 }
 
 .suggestions-list {
-  @extend .low;
-
+  // @extend .low;
+  z-index: 100;
   position: absolute;
   top: 3rem;
   left: 0;
@@ -40,15 +41,17 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  margin-top: -2px;
   background: $primary-color;
-
+  border: .25rem solid #fff;
+  border-top: 0;
   box-shadow: 0 5px 5px rgba(0,0,0,.5);
 }
 
 .suggestion {
   position: relative;
   color: #444;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem;
 }
 
 .suggestion.suggestion--highlighted {

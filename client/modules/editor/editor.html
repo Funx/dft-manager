@@ -1,16 +1,16 @@
 <div class="page-wrapper__wrapper--inner">
 
 
-<h2 class="editor__title">Récemments édités</h2>
+<h2 class="editor__title">Récemments édités ({{editor.savedItems.length}})</h2>
 
 <div class="deck">
   <div class="deck__card__wrapper--outer card__wrapper--outer"
     ng-repeat="card in editor.savedItems track by card._id">
     <div card="card" expanded="true"></div>
   </div>
-  <div class="deck__card__wrapper--outer card__wrapper--outer">
+  <!-- <div class="deck__card__wrapper--outer card__wrapper--outer">
     <div card="editor.currItem" expanded="true"></div>
-  </div>
+  </div> -->
 </div>
 
 <form
@@ -67,7 +67,7 @@
 </form>
 
 
-<h2 class="editor__title" ng-if="editor.waitingLine.length">File d'attente</h2>
+<h2 class="editor__title" ng-if="editor.waitingLine.length">File d'attente ({{editor.waitingLine.length}})</h2>
 <div class="deck">
   <div class="deck__card__wrapper--outer card__wrapper--outer"
     ng-repeat="card in editor.waitingLine track by card._id">
@@ -75,10 +75,10 @@
   </div>
 </div>
 
-<h2 class="editor__title" ng-if="editor.newDependencies.length">Nouvelles dépendances</h2>
+<h2 class="editor__title" ng-if="editor.newDependencies.length">Nouvelles dépendances ({{editor.newDependencies.length}})</h2>
 <div class="deck">
   <div class="deck__card__wrapper--outer card__wrapper--outer"
-    ng-repeat="card in editor.newDependencies.reverse() track by card._id">
+    ng-repeat="card in editor.newDependencies track by card._id">
     <div card="card" expanded="true"></div>
   </div>
 </div>

@@ -25,8 +25,8 @@ module.exports = function preItemRemove (done) {
         }
       }
     ], next)
-
   }
+
   let removeFromIngredientsParents = (dosage, next) => {
     console.log('remove this from :', dosage._ingredient, '\'s parents')
 
@@ -49,7 +49,7 @@ module.exports = function preItemRemove (done) {
   console.log(this)
 
   async.parallel([
-      next => async.each(this._parents, removeFromParentsRecipe, next)
+      next => async.each(this._parents, removeFromParentsRecipes, next)
     , next => async.each(this.recipe, removeFromIngredientsParents, next)
   ], done)
 }

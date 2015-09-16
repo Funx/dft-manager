@@ -68,12 +68,13 @@ angular.module('dftm.stocks', [
     }
 
     this.getDeckPrice = (deckName) => {
-      return self[deckName].cards.reduce((acc, card) => acc + card.price)
+      return this[deckName] ? this[deckName].cards.reduce((acc, card) => acc + card.price, 0) : 0
     }
     this.getDeckCost = (deckName) => {
-      return self[deckName].cards.reduce((acc, card) => acc + card.cost)
+      return this[deckName] ? this[deckName].cards.reduce((acc, card) => acc + card.cost, 0) : 0
     }
     this.getDeckBenef = (deckName) => {
+      console.log(deckName)
       return this.getDeckPrice(deckName) - this.getDeckCost(deckName)
     }
     this.getDeckBenefPercentage = (deckName) => {

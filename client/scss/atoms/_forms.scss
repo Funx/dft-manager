@@ -8,7 +8,7 @@
     margin-top: 1rem;
 
     &::-webkit-input-placeholder {
-      color: #fff;
+      color: #777;
     }
 
   }
@@ -41,6 +41,8 @@
   padding: 0;
   margin: 0;
   background: $primary-color;
+
+  box-shadow: 0 5px 5px rgba(0,0,0,.5);
 }
 
 .suggestion {

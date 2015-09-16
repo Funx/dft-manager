@@ -11,7 +11,7 @@ angular.module('floatingActionButton.controller', [])
         icon: '+',
         expression: '"Créer"',
         action: () => {
-          $rootScope.$broadcast('plzCreate')
+          $rootScope.$emit('plzCreate')
           $location.path( "/create" )
         }
       }
@@ -19,7 +19,7 @@ angular.module('floatingActionButton.controller', [])
         icon: '<=='
         ,expression: '"Editer " + fab.getSelectionLength() + " objets"'
         ,action: () => {
-          $rootScope.$broadcast('plzEdit')
+          $rootScope.$emit('plzEdit')
           $location.path( "/edit/selection" )
         }
       }
@@ -27,16 +27,16 @@ angular.module('floatingActionButton.controller', [])
         icon: '< o >'
         ,expression: '"Observer sélection (" + fab.getSelectionLength() + ")"'
         ,action: () => {
-          $rootScope.$broadcast('plzWatch')
-          $rootScope.$broadcast('plzWatch:fu')
+          $rootScope.$emit('plzWatch')
+          $rootScope.$emit('plzWatch:fu')
         }
       }
       ,unwatch: {
         icon: '< / >'
         ,expression: '"Ne plus observer sélection (" + fab.getSelectionLength() + ")"'
         ,action: () => {
-          $rootScope.$broadcast('plzUnwatch')
-          $rootScope.$broadcast('plzUnwatch:fu')
+          $rootScope.$emit('plzUnwatch')
+          $rootScope.$emit('plzUnwatch:fu')
         }
       }
       ,delete: {
@@ -44,7 +44,7 @@ angular.module('floatingActionButton.controller', [])
         ,expression: '"!!!!!!! Supprimer les (" + fab.getSelectionLength() + " objets sélectionnés)"'
         ,action: () => {
           if(confirm('Êtes-vous sûr de vouloir supprimer les '+ this.getSelectionLength() +'objets sélectionnés ?')) {
-            $rootScope.$broadcast('plzDelete')
+            $rootScope.$emit('plzDelete')
           }
           // Selection.get().forEach(selected => Item.delete({id: selected._id}))
           // Selection.empty()
@@ -54,14 +54,14 @@ angular.module('floatingActionButton.controller', [])
         icon: '|+|'
         ,expression: '"Sélectionner visible"'
         ,action: () => {
-          $rootScope.$broadcast('plzSelectVisible')
+          $rootScope.$emit('plzSelectVisible')
         }
       }
       ,unselectVisible: {
         icon: '|-|'
         ,expression: '"Désélectionner visible"'
         ,action: () => {
-          $rootScope.$broadcast('plzUnselectVisible')
+          $rootScope.$emit('plzUnselectVisible')
         }
       }
       ,unselectAll: {

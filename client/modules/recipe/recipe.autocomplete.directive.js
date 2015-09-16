@@ -53,6 +53,8 @@ angular.module('recipe.autocomplete.directive', [])
               $scope.selectedIndex = 0
             }
           })
+        } else {
+          $scope.suggestions = []
         }
       }
 

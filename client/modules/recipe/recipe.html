@@ -1,5 +1,12 @@
 <div
   class="recipe">
+  <div class="ingredient__name small-12">
+    <auto-complete
+      class="input input--text input--autocomplete"
+      url="/item/name"
+      placeholder="Ajouter ingrédient">
+    </auto-complete>
+  </div>
   <div ng-repeat="dosage in model track by dosage._ingredient.name"
     class="dosage"
     style="background: hsl(
@@ -17,12 +24,5 @@
     <button type="button" class="dosage__deleteButton deleteButton"
       ng-click="removeIngredient($index)">
     </button>
-  </div>
-  <div class="ingredient__name small-12">
-    <auto-complete
-      class="input input--text input--autocomplete"
-      url="/item/name"
-      placeholder="Ingrédient">
-    </auto-complete>
   </div>
 </div>

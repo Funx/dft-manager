@@ -103,8 +103,9 @@ angular.module('selection.service', [])
         this.set([], done)
       }
       ,isSelected: function isSelected (item) {
+        if(!item) {return false}
         return (_.any(selection, function (_item) {
-          return _item._id == item._id
+          return _item ? _item._id == item._id : false
         })) ? true : false
       }
       ,getLength: function getSelectionLength () {

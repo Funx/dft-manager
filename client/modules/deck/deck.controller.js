@@ -9,6 +9,9 @@ angular.module('deck.controller', [])
   'Selection',
   'Utils',
   function($rootScope, $scope, filter, slugify, Deck, Selection, Utils){
+    let not = (fn) => (...args) => !fn(...args)
+    let {isSelected} = Selection
+    let isNotSelected = not(isSelected)
 
     // map through the amazing query request
     var transformRequest = function transformRequest (request) {
@@ -85,6 +88,10 @@ angular.module('deck.controller', [])
     })
     $scope.$on('plzEdit', () => {
       // edit selected items
+    })
+    $rootScope.$on('plzDelete', () => {
+      this.deck = this.deck.filter(isNotSelected)
+      this.cards = this.cards.filter(isNotSelected)
     })
 
 

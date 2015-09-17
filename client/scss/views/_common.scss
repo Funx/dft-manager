@@ -20,9 +20,11 @@ html, body {
 
 .page-wrapper__wrapper--inner {
   padding: 2.5rem;
+  padding-bottom: 20rem;
 
   @include breakpoint(medium) {
     padding: 2rem 6rem;
+    padding-bottom: 20rem;
   }
   @include breakpoint(large) {
     // padding: 9rem;

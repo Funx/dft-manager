@@ -19,6 +19,10 @@ $amazingQuery-height: 6rem;
     margin: $gutter-width / 2;
   }
 
+  .deck__card__wrapper--outer {
+    z-index: 0;
+  }
+
   .deck__amazingQuery {
     position: fixed;
     left: 8 + 0rem;

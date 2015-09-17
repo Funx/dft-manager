@@ -1,7 +1,15 @@
+.recipe {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .dosage {
   @include color-code();
   color: #fff;
   position: relative;
+  margin: 1px;
   padding-right: 1.5rem;
   padding-left: 0.5rem;
   line-height: 2rem;

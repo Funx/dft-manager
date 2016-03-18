@@ -1,0 +1,10 @@
+.content {
+  z-index: 1;
+
+  width: auto;
+  height: auto;
+  padding: 0.5em;
+
+  order: 1;
+  flex-grow: 1;
+}

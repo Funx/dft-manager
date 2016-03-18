@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"dft-manager-backup.items"},{"v":1,"key":{"created":1},"name":"created_1","ns":"dft-manager-backup.items","background":true,"safe":null},{"v":1,"key":{"modified":1},"name":"modified_1","background":true,"safe":null,"ns":"dft-manager-backup.items"}]}

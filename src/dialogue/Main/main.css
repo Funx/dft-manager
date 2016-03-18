@@ -1,0 +1,55 @@
+/* - */
+
+body {
+  background-color: whitesmoke;
+
+  font-size: calc(12px + 9 * (100vw - 420px) / 860);
+
+  @media screen and (max-width: 420px){
+    font-size: 12px;
+  }
+
+  @media screen and (min-width: 1280px){
+    font-size: 21px;
+  }
+}
+
+.app{
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: row;
+
+  color: rgba(0,120,255, 1);
+  background-color: #dedede;
+}
+
+
+  .contentContainer{
+    z-index: 1;
+
+    display: flex;
+    overflow: hidden;
+    overflow-y: auto;
+    flex-direction: column;
+
+    transition: all 0.3s ease-in-out;
+
+    background-color: transparent;
+
+    order: 1;
+    flex-grow: 1;
+    justify-content: flex-start;
+  }
+
+    .contentContainer:nth-child(1) {
+      order: 0;
+    }
+    .contentContainer:nth-child(2) {
+      order: 1;
+    }

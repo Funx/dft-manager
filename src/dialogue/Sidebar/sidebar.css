@@ -1,0 +1,95 @@
+$primaryColor = rgb(0, 120, 255)
+$white = #efefef
+$iconHeight = 0.2em
+$iconWidth = 1.25em
+$iconDistance = 0.5em
+$iconColor = $primaryColor
+
+.sidebar{
+  z-index: 1;
+  background-color: #676767;
+  width: 2em;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset -4px 0px 10px 0px rgba(0,0,0, 0.2);
+}
+.menuIcon{
+  order: 0;
+  position: relative;
+  opacity: 1;
+  background-color: $iconColor;
+  width: $iconWidth;
+  max-height: $iconHeight;
+  border-radius: 0.1em;
+  margin: .375em;
+  margin-top: 2em;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  tranform: translate3d(0, 0, 0);
+
+  &:before{
+    position: absolute;
+    top: -($iconDistance);
+    left: 0;
+    content: "";
+    background-color: $iconColor;
+    width: $iconWidth;
+    height: $iconHeight;
+    border-radius: 0.1em;}
+
+  &:after{
+    position: absolute;
+    top: $iconDistance;
+    left: 0;
+    content: "";
+    background-color: $iconColor;
+    width: $iconWidth;
+    height: $iconHeight;
+    border-radius: 0.1em;}
+}
+.list{
+  opacity: 0.2;
+  order: 1;
+  list-style-type: none;
+  padding: 0;
+  margin: 1em;
+  margin-top: 2em;
+  background-color: #666666;
+  transition: all 0.3s ease-in-out;
+  transform: translate3d(-25rem, 0, 0) rotateY(-90deg);
+}
+.item{
+  display: inline-flex;
+  width: 100%;
+  line-height: 2em;
+}
+.link{
+  text-align: center;
+  padding: 0;
+  width: 100%;
+  height: 2em;
+  margin-top: .25em;
+  margin-bottom: .25em;
+  text-decoration: none;
+  color: $primaryColor;
+  font-size: 1.2em;
+
+
+  &:hover, &.pinned{
+    box-shadow: inset 0px 0px 10px 0px rgba(34,34,34,0.2);
+    transform: rotateY(-15deg);}
+}
+.pinned{
+  composes: sidebar;
+  width: 10em;
+}
+  .menuIcon{
+    transform: translate3d(-1.25em, 0, 0);
+}
+  .list{
+    transition-delay: 0.1s;
+    display: block;
+    opacity: 1;
+    background-color: #666;
+    transform: translate3d(0, 0, 0) rotateY(0);}

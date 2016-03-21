@@ -1,13 +1,7 @@
-const { makeDOMDriver } = require(`@cycle/dom`)
-const { makeHistoryDriver } = require(`cycle-history`)
+// const { makeDOMDriver } = require(`@cycle/dom`)
+// const { makeHistoryDriver } = require(`cycle-history`)
 
-const drivers = {
-  DOM: makeDOMDriver(`.app`),
-  History: makeHistoryDriver({
-    hash: false,
-    queries: true,
-  }),
-}
+const drivers = {}
 
 export default drivers
 export { drivers }

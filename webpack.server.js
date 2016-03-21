@@ -1,16 +1,16 @@
-var Extract = require('extract-text-webpack-plugin');
-var Webpack = require('webpack');
-var path = require('path');
-var fs = require('fs');
+var Extract = require('extract-text-webpack-plugin')
+// var Webpack = require('webpack');
+var path = require('path')
+var fs = require('fs')
 
-var nodeModules = {};
+var nodeModules = {}
 fs.readdirSync('node_modules')
   .filter(function(x) {
-    return ['.bin'].indexOf(x) === -1;
+    return ['.bin'].indexOf(x) === -1
   })
   .forEach(function(mod) {
-    nodeModules[mod] = 'commonjs ' + mod;
-  });
+    nodeModules[mod] = 'commonjs ' + mod
+  })
 
 var webpackConfig = {
   entry: './src/server.js',
@@ -19,7 +19,7 @@ var webpackConfig = {
 
   output: {
     filename: 'server.js',
-    path: path.resolve('./dist/')
+    path: path.resolve('./dist/'),
   },
 
   module: {
@@ -27,29 +27,30 @@ var webpackConfig = {
       { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/},
       {
         test: /\.css$/,
-        loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
-      }
-    ]
+        loader: Extract.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'),
+      },
+    ],
   },
 
   externals: nodeModules,
 
   resolve: {
     alias: {
-      "utils": path.resolve('./src/utils'),
-      "dialogue": path.resolve('./src/dialogue'),
-    }
+      'utils': path.resolve('./src/utils'),
+      'dialogue': path.resolve('./src/dialogue'),
+      'test': path.resolve('./test'),
+    },
   },
   postcss: function () {
-    return [require('postcss-cssnext')];
+    return [require('postcss-cssnext')]
   },
 
   plugins: [
-    new Extract('styles.css', {allChunks: true})
+    new Extract('styles.css', {allChunks: true}),
     //new Webpack.NormalModuleReplacementPlugin(/\.styl$/, 'node-noop'),
     //new Webpack.IgnorePlugin(/\.styl$/),
   ],
 
-};
+}
 
-module.exports = webpackConfig;
+module.exports = webpackConfig

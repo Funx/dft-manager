@@ -59,6 +59,8 @@
     "express": "^4.13.3",
     "gsap": "^1.18.0",
     "hyperscript-helpers": "^2.0.0",
+    "ramda": "^0.19.1",
+    "rx": "^4.1.0",
     "rx-combine-latest-obj": "^1.0.2",
     "switch-path": "^1.1.0",
     "virtual-dom": "^2.1.1"

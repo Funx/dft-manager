@@ -1,23 +1,14 @@
-import { Rx } from '@cycle/core'
-import { h } from '@cycle/dom'
-const {
-  div,
-} = require(`hyperscript-helpers`)(h)
+import { Observable } from 'rx'
 
+const intent = () => ({})
+const model = () => ({})
+const view = () => Observable.of(`Editor`)
 
-const intent = ({ DOM }) => ({})
-const model = ({ intent$ }) => ({})
-const view = (state$) => Rx.Observable.just(`Editor`)
-
-const Dashboard = (responses: Object) => {
-  const actions: Object = intent(responses)
-  const state$: Rx.Observable = model(actions)
-  const view$: Rx.Observable = view(state$)
+export const Editor = (responses) => {
   return {
-    title$: Rx.Observable.just(`Editor`),
-    DOM: view$,
+    title$: Observable.of(`Editor`),
+    DOM: view(model(intent(responses))),
   }
 }
 
-export default Dashboard
-export { Dashboard }
+export default Editor

@@ -1,10 +1,8 @@
-import { Rx } from '@cycle/core'
+import { Observable } from 'rx'
 import { h } from '@cycle/dom'
 import latestObj from 'rx-combine-latest-obj'
 import switchPath from 'switch-path'
-import { GSAP } from 'utils/gsap-widget'
 import routes from './routes'
-import styles from './content.css'
 
 const {
   div,
@@ -24,10 +22,9 @@ const model = (responses) => {
     .map(createRouteValue(responses))
 
   const routeValue$ = childView$
-    .flatMap(value => value.DOM || Rx.Observable.just(value))
-    .startWith(null)
+    .flatMap(value => value.DOM || Observable.just(value))
   const routeTitle$ = childView$
-    .flatMap(value => value.title$ || Rx.Observable.just(`Cycle-Starter`))
+    .flatMap(value => value.title$ || Observable.just(`Cycle-Starter`))
 
   return latestObj({
     routeValue$,
@@ -37,22 +34,18 @@ const model = (responses) => {
 }
 
 const view = state$ => state$
-  .map(({ routeValue }) =>
-    div(
-      { className: styles.content },
-      routeValue,
-    )
-  )
+  .pluck(`routeValue`)
+  .startWith('loading')
+  .map(x => div(x))
   .distinctUntilChanged()
 
-const Content = (responses) => {
+export const Content = (responses) => {
   const state$ = model(responses)
-  const view$ = view(state$)
+
   return {
-    DOM: view$,
+    DOM: view(state$),
     title$: state$.pluck(`routeTitle`),
   }
 }
 
 export default Content
-export { Content }

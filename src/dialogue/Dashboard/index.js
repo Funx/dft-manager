@@ -1,19 +1,14 @@
-import { Rx } from '@cycle/core'
-import { h } from '@cycle/dom'
+import { Observable } from 'rx'
 
-const intent = ({ DOM }) => ({})
-const model = ({ scroll$ }) => ({})
-const view = (state$) => Rx.Observable.just(`Dashboard`)
+const intent = () => ({})
+const model = () => ({})
+const view = () => Observable.of(`Dashboard`)
 
-const Dashboard = (responses: Object) => {
-  const actions: Object = intent(responses)
-  const state$: Rx.Observable = model(actions)
-  const view$: Rx.Observable = view(state$)
+export const Dashboard = (responses) => {
   return {
-    title$: Rx.Observable.just(`Home`),
-    DOM: view$,
+    title$: Observable.of(`Dashboard`),
+    DOM: view(model(intent(responses))),
   }
 }
 
 export default Dashboard
-export { Dashboard }

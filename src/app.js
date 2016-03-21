@@ -11,4 +11,11 @@ function clientSideApp(responses) {
   return requests
 }
 
-run(clientSideApp, drivers)
+run(clientSideApp, {
+  ...drivers,
+  DOM: makeDOMDriver(`.app`),
+  History: makeHistoryDriver({
+    hash: false,
+    queries: true,
+  }),
+})

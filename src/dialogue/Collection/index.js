@@ -1,30 +1,16 @@
-import { Rx } from '@cycle/core'
-import { h } from '@cycle/dom'
-const {
-  div,
-} = require(`hyperscript-helpers`)(h)
+import { Observable } from 'rx'
 
-const intent = ({ DOM }) => ({ intent$: '' })
+const intent = () => ({})
+const model = ( _, filter) => ({ filter })
+const view = ({ filter }) => Observable.of(`Home ${filter}`)
 
-const model = ({ intent$ }) => ({})
-
-const view = (state$) => Rx.Observable.just(
-    div(dot(styles.home), [
-      `Welcome Home`,
-    ])
-  )
-
-const MakeCollection = (params) => (responses) => {
-  const actions: Object = intent(responses)
-  const state$: Rx.Observable = model(actions)
-  const view$: Rx.Observable = view(state$)
+export const MakeCollection = (params = { filter: 'SHOW_ALL' }) => (responses) => {
   return {
-    title$: Rx.Observable.just(`Home`),
-    DOM: view$,
+    title$: Observable.of(`Home ${params.filter}`),
+    DOM: view(model(intent(responses), params.filter)),
   }
 }
 
-const Collection = MakeCollection()
+export const Collection = MakeCollection()
 
-export default Collection
-export { MakeCollection, Collection }
+export default { MakeCollection, Collection }

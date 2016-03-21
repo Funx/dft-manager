@@ -1,9 +1,20 @@
+/*
+// BOOUUUUUGGGGH
+// related: because of webpack style loader
+*/
+// GLOBAL.window = GLOBAL
+// GLOBAL.navigator = {
+//   userAgent: '',
+// }
+// GLOBAL.DOMParser = require('xmldom').DOMParser
+
 let {Rx, run} = require(`@cycle/core`)
 let express = require(`express`)
 let {h, makeHTMLDriver} = require(`@cycle/dom`)
 let {makeServerHistoryDriver} = require(`cycle-history`)
 let {Main} = require(`dialogue/Main`)
 let {drivers} = require(`./drivers`)
+drivers.DOM = ''
 
 function wrapVTreeWithHTMLBoilerplate(vtree) {
   return h(`html`, [

@@ -3,13 +3,16 @@ var path = require('path')
 
 var webpackConfig = {
   watch: false,
-  devtool: 'eval-source-map',
+  devtool: 'inline-source-map',
+  cache: true,
+  debug: true,
   entry: './src/app.dev.js',
   map: true,
 
   output: {
     filename: 'app.js',
     path: path.resolve('./dist/dev/'),
+    sourceMapFilename: '[file].map',
   },
 
   module: {
@@ -34,18 +37,20 @@ var webpackConfig = {
   resolve: {
     alias: {
       'utils': path.resolve('./src/utils'),
-      'dialogue': path.resolve('./src/dialogue'),
+      'components': path.resolve('./src/components'),
+      'pages': path.resolve('./src/pages'),
       'test': path.resolve('./test'),
     },
   },
   postcss: function () {
-    return [require('postcss-cssnext')]
+    return [require('postcss-cssnext'), require('lost')]
   },
 
   devServer: {
     host: '0.0.0.0',
     port: 3000,
     historyApiFallback: true,
+    contentBase: 'dist/dev/',
   },
 
 }

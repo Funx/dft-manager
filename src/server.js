@@ -1,20 +1,45 @@
-/*
-// BOOUUUUUGGGGH
-// related: because of webpack style loader
-*/
-// GLOBAL.window = GLOBAL
-// GLOBAL.navigator = {
-//   userAgent: '',
-// }
-// GLOBAL.DOMParser = require('xmldom').DOMParser
+import {Rx, run} from '@cycle/core'
+import express from 'express'
+import {h, makeHTMLDriver} from '@cycle/dom'
+import {makeHistoryDriver, createServerHistory, createLocation} from '@cycle/history'
+import {Main} from 'main'
+import {drivers} from './drivers'
 
-let {Rx, run} = require(`@cycle/core`)
-let express = require(`express`)
-let {h, makeHTMLDriver} = require(`@cycle/dom`)
-let {makeServerHistoryDriver} = require(`cycle-history`)
-let {Main} = require(`dialogue/Main`)
-let {drivers} = require(`./drivers`)
-drivers.DOM = ''
+let server = express()
+// In production you should allow a web server
+// like NGINX handle static files.
+server.use(`/dist`, express.static(`dist`))
+server.use(`/static`, express.static(`static`))
+
+server.use(function cycleServer(req, res) {
+  // Ignore favicon requests
+  if (req.url === `/favicon.ico`) {
+    res.writeHead(200, {'Content-Type': `image/x-icon`})
+    res.end()
+    return
+  }
+  console.log(`req: ${req.method} ${req.url}`) // eslint-disable-line no-console
+
+  const history = createServerHistory()
+  let wrappedAppFn = wrapAppResultWithBoilerplate(Main)
+  /*eslint-disable */
+  let [requests, responses] = run(wrappedAppFn, {
+  /*eslint-enable */
+    ...drivers,
+    DOM: makeHTMLDriver(),
+    History: makeHistoryDriver(history),
+  })
+
+  history.push(createLocation(req.url))
+  responses.DOM
+    .map(prependHTML5Doctype)
+    .subscribe(html => res.send(html))
+})
+
+let port = process.env.PORT || 3000
+server.listen(port, `0.0.0.0`)
+console.log(`Listening on port ${port}`) // eslint-disable-line no-console
+
 
 function wrapVTreeWithHTMLBoilerplate(vtree) {
   return h(`html`, [
@@ -46,38 +71,3 @@ function wrapAppResultWithBoilerplate(appFn) {
     }
   }
 }
-
-let server = express()
-// In production you should allow a web server
-// like NGINX handle static files.
-server.use(`/dist`, express.static(`dist`))
-server.use(`/static`, express.static(`static`))
-
-server.use(function cycleServer(req, res) {
-  // Ignore favicon requests
-  if (req.url === `/favicon.ico`) {
-    res.writeHead(200, {'Content-Type': `image/x-icon`})
-    res.end()
-    return
-  }
-  console.log(`req: ${req.method} ${req.url}`)
-
-  let wrappedAppFn = wrapAppResultWithBoilerplate(Main)
-  /*eslint-disable */
-  let [requests, responses] = run(wrappedAppFn, {
-  /*eslint-enable */
-    ...drivers,
-    DOM: makeHTMLDriver(),
-    History: makeServerHistoryDriver({
-      pathname: req.url,
-    }),
-  })
-  let html$ = responses.DOM.map(prependHTML5Doctype)
-  html$
-    .do(x => console.log(x))
-    .subscribe(html => res.send(html))
-})
-
-let port = process.env.PORT || 3000
-server.listen(port, `0.0.0.0`)
-console.log(`Listening on port ${port}`)

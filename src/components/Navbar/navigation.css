@@ -1,0 +1,24 @@
+.container {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  padding: 0;
+}
+
+.link {
+  color: #fff;
+}
+.link:not(last-child) {
+  margin-right: 2rem;
+}
+.link a {
+  color: #fff;
+}
+
+.active {
+  border-bottom: 2px solid #fff;
+}
+.active a {
+  text-decoration: none;
+}

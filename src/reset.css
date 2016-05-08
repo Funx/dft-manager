@@ -1,0 +1,25 @@
+@import "cssrecipes-defaults/lib/background.css";
+@import "cssrecipes-defaults/lib/border-collapse.css";
+@import "cssrecipes-defaults/lib/box-sizing.css";
+@import "cssrecipes-defaults/lib/document-remove-margin-padding.css";
+@import "cssrecipes-defaults/lib/hidden.css";
+
+html,
+body {
+  background: #eee;
+  font-family: sans-serif;
+}
+
+html {
+  font-size: 0.625em; /* 10px */
+}
+body {
+  font-size: 1.6rem; /* 16px */
+}
+
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}

@@ -1,0 +1,17 @@
+.contentWrapper {
+  padding: 2rem;
+}
+
+.statusBar {
+  background: #000;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  font-size: 1rem;
+  font-family: consolas, monospace;
+  color: #fff;
+
+  padding: .5rem 1rem;
+}

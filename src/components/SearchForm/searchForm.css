@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+  display: flex;
+}
+
+.inputSearch {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #aaa;
+  line-height: 3.2rem;
+  height: 3rem;
+  font-size: 1.6rem;
+  font-family: consolas;
+}
+
+.inputSearch:focus {
+  outline: none;
+}

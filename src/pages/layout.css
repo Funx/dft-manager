@@ -1,0 +1,15 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  min-height: 100vh;
+}
+
+.grow {
+  flex: 1 0 auto;
+}
+
+.shrink {
+  flex: 0 1 auto;
+}

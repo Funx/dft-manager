@@ -1,21 +1,6 @@
-const { run } = require(`@cycle/core`)
-const { Main } = require(`dialogue/Main`)
-const { drivers } = require(`./drivers`)
-const { makeDOMDriver } = require(`@cycle/dom`)
-const { makeHistoryDriver } = require(`cycle-history`)
+const {run} = require(`@cycle/core`)
 
-function clientSideApp(responses) {
-  let requests = Main(responses)
-  requests.History = requests.History.skip(1)
+const {main} = require(`./main`)
+const {drivers} = require(`./drivers`)
 
-  return requests
-}
-
-run(clientSideApp, {
-  ...drivers,
-  DOM: makeDOMDriver(`.app`),
-  History: makeHistoryDriver({
-    hash: false,
-    queries: true,
-  }),
-})
+run(main, drivers)

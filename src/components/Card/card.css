@@ -1,0 +1,24 @@
+.container {
+  background: #111;
+  color: #eee;
+  cursor: pointer;
+  transition: .2s ease-out;
+  box-shadow: 1px 1px 2px color(#111 alpha(40%));
+  transform: 0;
+}
+.container:matches(:hover,:focus,:active) {
+  box-shadow: 4px 4px 16px color(#111 alpha(20%));
+  transform: translateY(-2px) scale(1.01);
+}
+.container::before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+
+.innerWrapper {
+  position: relative;
+  margin-top: -100%;
+  float:left;
+  padding: 1rem;
+}

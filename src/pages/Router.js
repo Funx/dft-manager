@@ -32,7 +32,7 @@ export const Router = (responses) => {
 
   return {
     DOM: DOM,
-    mod$: mod$,
+    M: mod$,
   }
 }
 export default Router

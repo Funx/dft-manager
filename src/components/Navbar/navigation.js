@@ -11,6 +11,7 @@ export const navigation = ({route, items}) => (ul(dot(css.container), [
   navLink(route.pathname, '/stocks', [`Stocks`]),
   navLink(route.pathname, '/craft', [`Crafts`]),
   navLink(route.pathname, '/editor', [`Editor`]),
+  navLink(route.pathname, '/console', [`Open console`]),
 ]))
 export default navigation
 

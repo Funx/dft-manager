@@ -38,6 +38,7 @@
     "eslint": "^1.0.0",
     "eslint-config-cycle": "^3.0.0",
     "eslint-plugin-cycle": "^1.0.1",
+    "eslint-plugin-immutable": "^1.0.0",
     "eslint-plugin-no-class": "^0.1.0",
     "extract-text-webpack-plugin": "^0.8.2",
     "jade": "^1.11.0",

@@ -1,5 +1,5 @@
 import {Observable as O} from 'rx'
-import {div, input} from '@cycle/dom'
+import {div, input, button} from '@cycle/dom'
 
 import css from './searchForm.css'
 import dot from 'utils/dot'
@@ -23,6 +23,7 @@ function view (M) {
         placeholder: 'type query here',
         value: query,
       }),
+      query ? button('╳') : '',
     ])
   )
 }
@@ -32,9 +33,9 @@ function intent (DOM) {
   return {
     query: O.merge(
         $input.events('change'),
-        $input.events('keyup').debounce(80),
+        $input.events('keyup').debounce(50),
       )
-      .map(evt => evt.target.value)
+      .pluck('target', 'value')
       .distinctUntilChanged(),
   }
 }

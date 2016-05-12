@@ -47,13 +47,3 @@ button.positive {
 i {
   font-style: normal;
 }
-select {
-  border-radius: 0;
-  border: 1px solid #333;
-  background: transparent;
-  color: #333;
-  appearance: none;
-  padding: .5rem 1rem;
-  margin-left: 1rem;
-  cursor: pointer;
-}

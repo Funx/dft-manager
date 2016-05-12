@@ -1,6 +1,7 @@
 .container {
   width: 100%;
   display: flex;
+  position: relative;
 }
 
 .inputSearch {
@@ -15,5 +16,17 @@
 }
 
 .inputSearch:focus {
+  outline: none;
+}
+
+.container button {
+  position: absolute;
+  right: 0;
+  height: 3rem;
+  display: block;
+  background: transparent;
+  line-height: 3rem;
+}
+.container button:focus {
   outline: none;
 }

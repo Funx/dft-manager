@@ -7,8 +7,10 @@ import dot from 'utils/dot'
 export const SearchForm = ({DOM, M}) => {
 
   const intents = intent(DOM)
-  const mod$ = M.set(intents.query)
-
+  const mod$ = O.merge(
+    M.set(intents.query),
+    M.set(intents.clear.map(() => '')),
+  )
   return {
     DOM: view(M),
     M: mod$,
@@ -23,10 +25,12 @@ function view (M) {
         placeholder: 'type query here',
         value: query,
       }),
-      query ? button('╳') : '',
+      query ? button('.i-clear', '╳') : '',
     ])
   )
 }
+
+const ESC_KEY = 27
 
 function intent (DOM) {
   const $input = DOM.select('.i-query')
@@ -37,5 +41,11 @@ function intent (DOM) {
       )
       .pluck('target', 'value')
       .distinctUntilChanged(),
+    clear: O.merge(
+      $input.events('keyup')
+        .filter(x => x.keyCode == ESC_KEY),
+      DOM.select('.i-clear')
+        .events('click')
+    ),
   }
 }

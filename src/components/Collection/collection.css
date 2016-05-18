@@ -10,6 +10,18 @@
 }
 
 .children {
-  flex: 1 1 20rem;
+  box-sizing: border-box;
+  flex: 1 1 24rem;
   padding: 1rem;
+  max-width: 100%;
+
+  @media screen and (min-width: 32rem) {
+    max-width: 50%;
+  }
+  @media screen and (min-width: 64rem) {
+    max-width: 33.33333%;
+  }
+  @media screen and (min-width: 96rem) {
+    max-width: 25%;
+  }
 }

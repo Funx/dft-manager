@@ -9,10 +9,11 @@
   left: 0;
   right: 0;
 
-  font-size: 1rem;
+  font-size: 1.2rem;
+  line-height: 100%;
   font-family: consolas, monospace;
   color: #fff;
 
-  padding: .5rem 1rem;
+  padding: 1rem 1rem;
   margin-top: 2rem;
 }

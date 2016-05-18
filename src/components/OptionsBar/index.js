@@ -10,8 +10,8 @@ import css from './options.css'
 import dot from 'utils/dot'
 
 const sortProps = {
-  'fixedBenefits': 'Bénéfices (k)',
-  'percentageBenefits': 'Bénéfices (%)',
+  'benefits': 'Bénéfices (k)',
+  'benefitsRate': 'Bénéfices (%)',
   'price': 'Prix de vente',
   'cost': 'Coût de revient',
   'alphabetical': 'Alphabétique',

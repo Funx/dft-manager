@@ -5,6 +5,7 @@
   transition: .2s ease-out;
   box-shadow: 1px 1px 2px color(#111 alpha(40%));
   transform: 0;
+  position: relative;
 }
 .container:matches(:hover,:focus,:active) {
   box-shadow: 4px 4px 16px color(#111 alpha(20%));
@@ -17,8 +18,41 @@
 }
 
 .innerWrapper {
-  position: relative;
-  margin-top: -100%;
-  float:left;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.identity {
+  margin-top: auto;
+  max-height: calc((1 * 1.2 * 1.8rem) + (1 * 1.2 * 1.4rem));
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.name {
+  margin: 0;
+  font-size: 1.8rem;
+}
+.type {
+  font-size: 1.4rem;
+}
+.priceInfos, .mainInfo {
+  font-family: consolas, monospace;
+  font-size: 1rem;
+}
+.mainInfo {
+  font-family: consolas, monospace;
+  font-size: 4rem;
+  width: 100%;
+  text-align: center;
+  flex: 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

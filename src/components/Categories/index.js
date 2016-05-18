@@ -1,7 +1,6 @@
 import {Observable as O} from 'rx'
 import view from './view'
-import {toggleAll} from './actions'
-import {L} from 'stanga'
+import {toggleAll, toggleProp} from './actions'
 import {identity, every} from 'ramda'
 
 const availableCategories = {
@@ -17,12 +16,10 @@ const availableCategories = {
 }
 
 export const Categories = ({DOM, M}) => {
-  const state$ = M.lens(L.augment({
-    all: dict => mapObjKeys(identity, dict).every(identity),
-  }))
+  const state$ = M
   const intents = intent(DOM)
   const reflect = propName =>
-    M.lens(propName).set(intents.getToggle(propName))
+    M.mod(intents.getToggle(propName).map(toggleProp(propName)))
 
   const mod$ = O.merge(
     M.mod(intents.getToggle('all').map(toggleAll)),
@@ -47,5 +44,3 @@ const intent = DOM => {
       .pluck('target', 'checked'),
   }
 }
-
-const mapObjKeys = (fn, obj) => Object.keys(obj).map(key => fn(obj[key], key))

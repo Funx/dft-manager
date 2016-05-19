@@ -5,8 +5,6 @@ import {k, percent as perc, sign} from 'utils/currency'
 import {toggleBenefitsPrintMode} from './actions'
 
 export const Card = ({M, viewParam$, DOM}) => {
-  // viewParam$.subscribe(x => console.log(Date.now(), x))
-  // M.subscribe(x => console.log(Date.now(), x))
   const state$ = O.combineLatest(
     M, viewParam$.distinctUntilChanged(),
     (card, param) => ({
@@ -36,7 +34,8 @@ export const Card = ({M, viewParam$, DOM}) => {
 function intent (DOM) {
   const mainInfo = DOM.select('.mainInfo')
   return {
-    toggleBenefitsPrintMode: mainInfo.events('click'),
+    toggleBenefitsPrintMode: mainInfo.events('click')
+      .debounce(10),
   }
 }
 

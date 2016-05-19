@@ -1,6 +1,6 @@
 import {L} from 'stanga'
 import {Observable as O} from 'rx'
-import {identity, pipe} from 'ramda'
+import {uniqBy, prop, pipe} from 'ramda'
 
 import OptionsBar from 'components/OptionsBar'
 import VirtualList from 'components/VirtualList'
@@ -20,7 +20,11 @@ export const Dashboard = ({DOM, M, Screen}) => {
               // map(merge(__, {benefitsViewMode})),
             )(items),
         }),
-        (obj, model) => ({...model, ...obj})
+        (obj, model) => ({
+          ...model,
+          ...obj,
+          items: uniqBy(prop('id'), model.items.concat(obj.items)),
+        })
     ))
 
   const optionsBar = OptionsBar({DOM, M})

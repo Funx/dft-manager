@@ -1,11 +1,11 @@
-import {ul, li} from '@cycle/dom'
 import {L} from 'stanga'
 import {Observable as O} from 'rx'
+import {uniqBy, prop} from 'ramda'
 
 import {Collection} from 'components/collection'
 
 const EXTRA_BLEED = 3
-const DEBOUNCE = 50
+const THROTTLE = 50
 export function VirtualList (sources_) {
   const {M, Screen} = sources_
 
@@ -57,8 +57,7 @@ export function VirtualList (sources_) {
         Math.ceil(items.length / rowLength) * height,
     )
     .distinctUntilChanged()
-  rowLength$.subscribe(x => console.log('rowLength', x))
-  height$.subscribe(x => console.log('height', x))
+
   // const visibleCount$ = O.of(9)
   const visibleRange$ = O.combineLatest(
     offset$, visibleCount$,
@@ -73,14 +72,17 @@ export function VirtualList (sources_) {
 
   const visibleItems$ = M.lens(L.lens(
     ({items, visibleRange = [0, 21]}) => items.slice(...visibleRange),
-    (items, model) => ({...model, items})
+    (items, model) => ({
+      ...model,
+      items: uniqBy(prop('id'), model.items.concat(items)),
+    })
   ))
 
   const sources = {...sources_, M: visibleItems$}
   const collection = Collection(sources)
   const vtree$ = collection.DOM
     .let(transformVtree(height$, paddingTop$))
-    .debounce(DEBOUNCE)
+    .debounce(THROTTLE)
 
   return {
     M: O.merge(collection.M, mod$),

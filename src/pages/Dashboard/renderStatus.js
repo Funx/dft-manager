@@ -13,7 +13,7 @@ export const renderStatus = (list) => {
   return div(dot(css.statusBar), [
     div('.left', []),
     div('.right', [
-      `${list.length} resultats`,
+      `${list.length} résultat${list.length > 1 ? 's' : ''}`,
       ' | ',
       `${k(totalCost)} -> ${k(totalPrice)}`,
       ' | ',

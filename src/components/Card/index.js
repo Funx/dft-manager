@@ -48,4 +48,4 @@ const prettyPrint = (signFn, formatFn, x) =>
 const printBenefits = x =>
   prettyPrint(sign('-', '+'), k, benefits(x))
 const printBenefitsRate = x =>
-  prettyPrint(sign('', '↑'), x => perc(x + 1), benefitsRate(x))
+  prettyPrint(sign('⨉', '⨉'), x => perc(x + 1), benefitsRate(x))

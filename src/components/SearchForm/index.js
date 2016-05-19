@@ -22,7 +22,7 @@ function view (M) {
   return M.map(query =>
     div(dot(css.container), [
       input(dot(css.inputSearch) + '.i-query', {
-        placeholder: 'type query here',
+        placeholder: 'filtrer par mot-clés',
         value: query,
       }),
       query ? button('.i-clear', '╳') : '',

@@ -3,35 +3,36 @@ import {Observable as O} from 'rx'
 import {identity, pipe} from 'ramda'
 
 import OptionsBar from 'components/OptionsBar'
-import Collection from 'components/Collection'
+import VirtualList from 'components/VirtualList'
 
 import {filterFn} from './filterFn'
 import {view} from './view'
 
-export const Dashboard = ({DOM, M}) => {
+export const Dashboard = ({DOM, M, Screen}) => {
   const searchResults$ = M
-    .lens(L.props('items', 'query', 'currentCategories'))
+    .lens(L.props('items', 'query', 'currentCategories', 'visibleRange'))
     .lens(L.lens(
-        ({items, query, currentCategories}) =>
-          pipe(
-            filterFn({query, currentCategories}),
-            // map(merge(__, {benefitsViewMode})),
-          )(items),
-        (items, model) => ({...model, items})
+        ({items, query, currentCategories, visibleRange}) => ({
+          visibleRange,
+          items: pipe(
+              filterFn({query, currentCategories}),
+              // sortFn(),
+              // map(merge(__, {benefitsViewMode})),
+            )(items),
+        }),
+        (obj, model) => ({...model, ...obj})
     ))
 
   const optionsBar = OptionsBar({DOM, M})
 
-  const limitedSearchResults$ = searchResults$.lens(
-    L.lens(xs => xs.slice(0, 20), identity))
-  const collection = Collection({
-    DOM,
-    M: limitedSearchResults$,
+  const collection = VirtualList({
+    DOM, Screen,
+    M: searchResults$,
     viewParam$: M.lens('benefitsViewMode'),
   })
 
   return {
-    DOM: view(searchResults$, optionsBar, collection),
+    DOM: view(searchResults$.lens('items'), optionsBar, collection),
     M: O.merge(optionsBar.M, collection.M),
   }
 }

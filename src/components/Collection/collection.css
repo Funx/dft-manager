@@ -3,10 +3,13 @@
   margin: 1rem -1rem;
 
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   padding: 0;
   list-style: none;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-content: flex-start;
+  height: auto;
 }
 
 .children {
@@ -14,6 +17,10 @@
   flex: 1 1 24rem;
   padding: 1rem;
   max-width: 100%;
+  opacity: 1;
+  /*animation-name: appear;
+  animation-duration: .2s;
+  animation-fill-mode: forwards;*/
 
   @media screen and (min-width: 32rem) {
     max-width: 50%;
@@ -24,4 +31,9 @@
   @media screen and (min-width: 96rem) {
     max-width: 25%;
   }
+}
+
+@keyframes appear {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }

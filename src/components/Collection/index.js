@@ -6,12 +6,12 @@ import dot from 'utils/dot'
 import FLIP from 'utils/FLIP'
 import liftComponentAsList from 'utils/liftComponentAsList'
 
-export function Collection(responses) {
-  const cards = liftComponentAsList(Card, responses.M, responses)
+export function Collection(sources) {
+  const cards = liftComponentAsList(Card, sources.M, sources)
 
   return {
     M: cards.M,
-    DOM: wrap(cards.DOM),
+    DOM: cards.DOM.let(wrap),
   }
 }
 export default Collection
@@ -21,10 +21,9 @@ function wrap(cards$) {
     .map(cards => cards.map(card =>
       li(dot(css.children),
         {key: card.key},
-        card
+        card,
       )
     ))
-    .let(FLIP)
-    .map(cards => ul(dot(css.collection), cards),
-  )
+    // .let(FLIP)
+    .map(cards => ul(dot(css.collection), cards))
 }

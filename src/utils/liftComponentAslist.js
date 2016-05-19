@@ -8,8 +8,9 @@ export function liftComponentAsList (Component, M, responses) {
     return isolatedCard({...responses, M: item$})
   })
 
+
   return {
-    DOM: flatCombine(list$, 'DOM').DOM,
+    DOM: flatCombine(list$, 'DOM').DOM.debounce(1),
     M: flatMerge(list$, 'M').M,
   }
 }

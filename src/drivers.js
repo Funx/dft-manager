@@ -3,6 +3,7 @@ import {makeDOMDriver} from '@cycle/dom'
 import {makeHistoryDriver} from '@cycle/history'
 import {createHistory} from 'history'
 import {makeHTTPDriver} from '@cycle/http'
+import {makeScreenDriver} from './drivers/screen'
 
 import {initialState} from './initialState'
 
@@ -12,6 +13,7 @@ export const drivers = {
   DOM: makeDOMDriver(`.app`),
   History: makeHistoryDriver(createHistory(), {capture: true}),
   HTTP: makeHTTPDriver(),
+  Screen: makeScreenDriver(),
 }
 
 export default drivers

@@ -6,18 +6,23 @@ import OptionsBar from 'components/OptionsBar'
 import VirtualList from 'components/VirtualList'
 
 import {filterFn} from './filterFn'
+import {sortFn} from './sortFn'
 import {view} from './view'
 
 export const Dashboard = ({DOM, M, Screen}) => {
   const searchResults$ = M
-    .lens(L.props('items', 'query', 'currentCategories', 'visibleRange'))
+    .lens(L.props(
+      'items',
+      'filters',
+      'sortOptions',
+      'vList'
+    ))
     .lens(L.lens(
-        ({items, query, currentCategories, visibleRange}) => ({
-          visibleRange,
+        ({items = [], filters = {}, sortOptions = {}, vList = {}}) => ({
+          vList,
           items: pipe(
-              filterFn({query, currentCategories}),
-              // sortFn(),
-              // map(merge(__, {benefitsViewMode})),
+              filterFn(filters),
+              sortFn(sortOptions),
             )(items),
         }),
         (obj, model) => ({
@@ -27,12 +32,18 @@ export const Dashboard = ({DOM, M, Screen}) => {
         })
     ))
 
-  const optionsBar = OptionsBar({DOM, M})
+  const optionsBar = OptionsBar({
+    DOM,
+    M: M.lens(L.props(
+      'sortOptions',
+      'filters',
+    )),
+  })
 
   const collection = VirtualList({
     DOM, Screen,
     M: searchResults$,
-    viewParam$: M.lens('benefitsViewMode'),
+    viewParam$: M.lens('display').lens('benefits'),
   })
 
   return {

@@ -4,10 +4,11 @@ import {uniqBy, prop} from 'ramda'
 
 import {Collection} from 'components/collection'
 
-const EXTRA_BLEED = 3
-const THROTTLE = 50
+const EXTRA_BLEED = 2 // the bigger the number, the bigger the impact in DOM perf on huge screens (it makes a lot more of elements)
+const THROTTLE = 34
 export function VirtualList (sources_) {
   const {M, Screen} = sources_
+  const vList$ = M.lens('vList')
 
   const scrollTop$ = Screen.events('scroll', 'body').map(x => x[0])
     .pluck('scrollTop')
@@ -58,20 +59,18 @@ export function VirtualList (sources_) {
     )
     .distinctUntilChanged()
 
-  // const visibleCount$ = O.of(9)
   const visibleRange$ = O.combineLatest(
     offset$, visibleCount$,
     (offset, visibleCount) => [offset, offset + visibleCount]
   )
 
-  const mod$ = M.lens('visibleRange').set(visibleRange$)
   const paddingTop$ = O.combineLatest(
     offset$, rowLength$, itemHeight$,
     (offset, rowLength, itemHeight) => offset / rowLength * itemHeight
   ).distinctUntilChanged()
 
   const visibleItems$ = M.lens(L.lens(
-    ({items, visibleRange = [0, 21]}) => items.slice(...visibleRange),
+    ({items, vList}) => items.slice(...(vList.visibleRange || [0, 1])),
     (items, model) => ({
       ...model,
       items: uniqBy(prop('id'), model.items.concat(items)),
@@ -81,20 +80,27 @@ export function VirtualList (sources_) {
   const sources = {...sources_, M: visibleItems$}
   const collection = Collection(sources)
   const vtree$ = collection.DOM
-    .let(transformVtree(height$, paddingTop$))
+    .let(transformVtree(vList$))
     .debounce(THROTTLE)
 
+  const mod$ = O.merge(
+    vList$.lens('visibleRange').set(visibleRange$),
+    vList$.lens('height').set(height$),
+    vList$.lens('paddingTop').set(paddingTop$),
+  )
+
   return {
+    ...collection,
     M: O.merge(collection.M, mod$),
     DOM: vtree$,
   }
 }
 export default VirtualList
 
-function transformVtree (height$, paddingTop$) {
+function transformVtree (vList$) {
   return vtree$ => O.combineLatest(
-    vtree$, height$, paddingTop$,
-    (ul, height, paddingTop) => {
+    vtree$, vList$,
+    (ul, {height, paddingTop}) => {
       const style = {
         'height': `${height}px`,
         // 'padding-top': `${paddingTop}px`,

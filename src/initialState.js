@@ -10,18 +10,24 @@ const normalizeBdd = pipe(
 )
 
 export const initialState = {
-  query: '',
   route: {pathname: '/'},
   items: normalizeBdd(bdd),
-  sortProp: 'fixed-benefits',
-  sortOrder: 'descending',
-  benefitsViewMode: '%',
-  currentCategories: {
-    all: true,
-    favorites: false,
-    stocks: false,
-    crafts: false,
-    outdated: false,
+  sortOptions: {
+    property: 'benefits',
+    order: 'descending',
+  },
+  filters: {
+    query: '',
+    currentCategories: {
+      all: true,
+      favorites: false,
+      stocks: false,
+      crafts: false,
+      outdated: false,
+    },
+  },
+  display: {
+    benefits: '%',
   },
 }
 

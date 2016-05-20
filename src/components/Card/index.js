@@ -2,7 +2,6 @@ import {Observable as O} from 'rx'
 
 import view from './view'
 import {k, percent as perc, sign} from 'utils/currency'
-import {logFnArgs} from 'utils/debug'
 import {toggleBenefitsPrintMode} from './actions'
 
 export const Card = ({M, viewParam$, DOM}) => {

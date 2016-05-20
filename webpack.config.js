@@ -27,10 +27,16 @@ var webpackConfig = {
       },
       {
         test: /.*\.(gif|png|jpe?g|svg)$/i,
+        exclude: /icons/,
         loaders: [
           'file?hash=sha512&digest=hex&name=[hash].[ext]',
           'image-webpack',
         ],
+      },
+      {
+        test: /\.svg$/,
+        include: /icons/,
+        loader: 'svg-inline',
       },
     ],
   },

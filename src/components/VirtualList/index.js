@@ -19,6 +19,7 @@ export function VirtualList (sources_) {
     .filter(x => x)
     .startWith(300)
     .distinctUntilChanged()
+
   const itemHeight$ = item$.pluck('clientHeight')
     .filter(x => x)
     .startWith(300)
@@ -33,16 +34,17 @@ export function VirtualList (sources_) {
     .startWith(900)
     .distinctUntilChanged()
   const rowLength$ = O.combineLatest(
-    containerWidth$, itemWidth$,
-    (available, width) => Math.round(available / width)
-  )
+      containerWidth$, itemWidth$,
+      (available, width) => Math.round(available / width)
+    )
+
 
   const screenHeight$ = Screen.height()
   const visibleCount$ = O.combineLatest(
-    screenHeight$, itemHeight$, rowLength$,
-    (screenH, itemH, rowLength) =>
-      (Math.round(screenH / itemH) + EXTRA_BLEED * 2) * rowLength
-  ).startWith(21)
+      screenHeight$, itemHeight$, rowLength$,
+      (screenH, itemH, rowLength) =>
+        (Math.round(screenH / itemH) + EXTRA_BLEED * 2) * rowLength
+    )
 
   const offset$ = O.combineLatest(
     scrollTop$, containerTop$, itemHeight$, rowLength$,

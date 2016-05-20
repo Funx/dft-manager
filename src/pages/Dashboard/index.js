@@ -4,7 +4,6 @@ import {pipe} from 'ramda'
 
 import OptionsBar from 'components/OptionsBar'
 import VirtualList from 'components/VirtualList'
-import {logFnArgs} from 'utils/debug'
 
 import {fromMapToArray, mergeMaps} from 'utils/iterable'
 
@@ -24,11 +23,11 @@ export const Dashboard = ({DOM, M, Screen}) => {
   const virtualListM = M.lens(L.props('db', 'items', 'vList'))
     .lens(L.lens(
       x => x,
-      logFnArgs('write', ({db, items, vList}, model) => ({
+      ({db, items, vList}, model) => ({
         ...model,
         vList,
         db: mergeMaps(model.db, db),
-      }))
+      })
     ))
   const collection = VirtualList({
     DOM, Screen,

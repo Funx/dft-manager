@@ -5,7 +5,7 @@ import {rerunner, restartable} from 'cycle-restart'
 import {drivers} from './drivers'
 
 const {main} = require('./main')
-let rerun = rerunner(run, isolate)
+const rerun = rerunner(run, isolate)
 rerun(main, makeRestartable(drivers))
 
 if (module.hot) {

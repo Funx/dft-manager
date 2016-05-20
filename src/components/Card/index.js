@@ -2,11 +2,12 @@ import {Observable as O} from 'rx'
 
 import view from './view'
 import {k, percent as perc, sign} from 'utils/currency'
+import {logFnArgs} from 'utils/debug'
 import {toggleBenefitsPrintMode} from './actions'
 
 export const Card = ({M, viewParam$, DOM}) => {
   const state$ = O.combineLatest(
-    M, viewParam$.distinctUntilChanged(),
+    M, viewParam$,
     (card, param) => ({
       ...card,
       benefits: benefits(card),
@@ -25,7 +26,7 @@ export const Card = ({M, viewParam$, DOM}) => {
   const mod$ = O.merge(
     viewParam$.mod(
       intents.toggleBenefitsPrintMode$.map(toggleBenefitsPrintMode)),
-    M.lens('lol').set(intents.toggleFavorites$),
+    M.lens('favorites').set(intents.toggleFavorites$),
   )
   return {
     DOM: vtree$,

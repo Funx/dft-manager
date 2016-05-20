@@ -1,12 +1,12 @@
 import {prop, pipe, filter} from 'ramda'
 import db from './bdd'
 import {attachMeta} from './attachMetadata'
-import {arrayToMap} from 'utils/iterable'
+import {fromArrayToMap} from 'utils/iterable'
 
 const normalizeDB = pipe(
   filter(prop('name')),
   attachMeta,
-  arrayToMap,
+  fromArrayToMap,
 )
 
 export const initialState = {

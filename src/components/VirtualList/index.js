@@ -1,8 +1,8 @@
 import {L} from 'stanga'
 import {Observable as O} from 'rx'
-import {uniqBy, prop} from 'ramda'
 
 import {Collection} from 'components/collection'
+import {mergeArrayInMap} from 'utils/iterable'
 
 const EXTRA_BLEED = 2 // the bigger the number, the bigger the impact in DOM perf on huge screens (it makes a lot more of elements)
 const THROTTLE = 17
@@ -73,7 +73,7 @@ export function VirtualList (sources_) {
     ({items, vList}) => items.slice(...(vList.visibleRange || [0, 1])),
     (items, model) => ({
       ...model,
-      items: uniqBy(prop('id'), model.items.concat(items)),
+      db: mergeArrayInMap(model.db, items),
     })
   ))
 
@@ -88,7 +88,6 @@ export function VirtualList (sources_) {
     vList$.lens('height').set(height$),
     vList$.lens('paddingTop').set(paddingTop$),
   )
-
   return {
     ...collection,
     M: O.merge(collection.M, mod$),
@@ -101,10 +100,7 @@ function transformVtree (vList$) {
   return vtree$ => O.combineLatest(
     vtree$, vList$,
     (ul, {height, paddingTop}) => {
-      const style = {
-        'height': `${height}px`,
-        // 'padding-top': `${paddingTop}px`,
-      }
+      const style = {'height': `${height}px`}
       const children = ul.children.map(li => Object.assign(li, {
         properties: {
           ...li.properties,

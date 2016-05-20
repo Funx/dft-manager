@@ -1,11 +1,12 @@
 import {L} from 'stanga'
 import {Observable as O} from 'rx'
-import {uniqBy, prop, pipe} from 'ramda'
+import {pipe} from 'ramda'
 
 import OptionsBar from 'components/OptionsBar'
 import VirtualList from 'components/VirtualList'
+import {logFnArgs} from 'utils/debug'
 
-import {mapToArray, mergeArrayInMap, mergeMaps} from 'utils/iterable'
+import {fromMapToArray, mergeMaps} from 'utils/iterable'
 
 import {filterFn} from './filterFn'
 import {sortFn} from './sortFn'
@@ -20,18 +21,14 @@ export const Dashboard = ({DOM, M, Screen}) => {
     )),
   })
 
-  const virtualListM = M.lens(L.props(
-      'db',
-      'items',
-      'vList',
-    ))
+  const virtualListM = M.lens(L.props('db', 'items', 'vList'))
     .lens(L.lens(
       x => x,
-      ({db, items, vList}, model) => ({
+      logFnArgs('write', ({db, items, vList}, model) => ({
         ...model,
         vList,
-        db: mergeArrayInMap(mergeMaps(model.db, db), items),
-      })
+        db: mergeMaps(model.db, db),
+      }))
     ))
   const collection = VirtualList({
     DOM, Screen,
@@ -47,7 +44,7 @@ export const Dashboard = ({DOM, M, Screen}) => {
     ))
     .map(({db, filters = {}, sortOptions = {}}) =>
       pipe(
-        mapToArray,
+        fromMapToArray,
         filterFn(filters),
         sortFn(sortOptions),
       )(db)

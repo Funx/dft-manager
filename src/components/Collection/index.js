@@ -8,7 +8,6 @@ import liftComponentAsList from 'utils/liftComponentAsList'
 
 export function Collection(sources) {
   const cards = liftComponentAsList(Card, sources.M, sources)
-
   return {
     M: cards.M,
     DOM: cards.DOM.let(wrap),

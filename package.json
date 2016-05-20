@@ -41,6 +41,7 @@
     "eslint-plugin-immutable": "^1.0.0",
     "eslint-plugin-no-class": "^0.1.0",
     "extract-text-webpack-plugin": "^0.8.2",
+    "image-webpack-loader": "^1.8.0",
     "jade": "^1.11.0",
     "mocha": "^2.4.5",
     "nodemon": "^1.7.1",

@@ -7,8 +7,8 @@ const availableCategories = {
   all: 'tous',
   leftSide: {
     favorites: 'favoris',
-    stocks: 'en vente',
     crafts: 'en cours de craft',
+    stocks: 'en vente',
   },
   rightSide: {
     outdated: 'à mettre à jour (3)',

@@ -22,9 +22,11 @@ export const Card = ({M, viewParam$, DOM}) => {
 
   const vtree$ = view(state$)
   const intents = intent(DOM)
-  const mod$ = viewParam$.mod(intents.toggleBenefitsPrintMode
-    .map(toggleBenefitsPrintMode))
-
+  const mod$ = O.merge(
+    viewParam$.mod(
+      intents.toggleBenefitsPrintMode$.map(toggleBenefitsPrintMode)),
+    M.lens('lol').set(intents.toggleFavorites$),
+  )
   return {
     DOM: vtree$,
     M: mod$,
@@ -34,7 +36,11 @@ export const Card = ({M, viewParam$, DOM}) => {
 function intent (DOM) {
   const mainInfo = DOM.select('.mainInfo')
   return {
-    toggleBenefitsPrintMode: mainInfo.events('click')
+    toggleBenefitsPrintMode$: mainInfo.events('click')
+      .debounce(10),
+    toggleFavorites$: DOM.select('.m-favorites')
+      .events('change')
+      .pluck('target', 'checked')
       .debounce(10),
   }
 }

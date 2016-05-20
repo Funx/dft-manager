@@ -1,17 +1,18 @@
-import {sortBy, compose, prop, pipe, filter} from 'ramda'
-import bdd from './bdd'
+import {prop, pipe, filter} from 'ramda'
+import db from './bdd'
 import {attachMeta} from './attachMetadata'
+import {arrayToMap} from 'utils/iterable'
 
-const sortByNameCaseInsensitive = sortBy(compose(prop('name')))
-const normalizeBdd = pipe(
+const normalizeDB = pipe(
   filter(prop('name')),
-  sortByNameCaseInsensitive,
   attachMeta,
+  arrayToMap,
 )
 
 export const initialState = {
   route: {pathname: '/'},
-  items: normalizeBdd(bdd),
+  db: normalizeDB(db),
+  items: [],
   sortOptions: {
     property: 'benefits',
     order: 'descending',
@@ -21,14 +22,15 @@ export const initialState = {
     currentCategories: {
       all: true,
       favorites: false,
-      stocks: false,
       crafts: false,
+      stocks: false,
       outdated: false,
     },
   },
   display: {
     benefits: '%',
   },
+  vList: {},
 }
 
 export default initialState

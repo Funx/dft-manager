@@ -5,7 +5,7 @@ import {uniqBy, prop} from 'ramda'
 import {Collection} from 'components/collection'
 
 const EXTRA_BLEED = 2 // the bigger the number, the bigger the impact in DOM perf on huge screens (it makes a lot more of elements)
-const THROTTLE = 34
+const THROTTLE = 17
 export function VirtualList (sources_) {
   const {M, Screen} = sources_
   const vList$ = M.lens('vList')

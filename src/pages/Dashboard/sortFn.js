@@ -7,10 +7,13 @@ export const sortFn = curry(({property, order}, list) => {
 })
 export default sortFn
 
+import {remove as removeDiacritics} from 'diacritics'
+
+
 const sortFnDict = {
   'benefits': ({price, cost}) => price - cost,
   'benefitsRate': ({price, cost}) => (price - cost) / cost,
   'price': prop('price'),
   'cost': prop('cost'),
-  'alphabetical': compose(toLower, prop('name')),
+  'alphabetical': compose(removeDiacritics, prop('name')),
 }

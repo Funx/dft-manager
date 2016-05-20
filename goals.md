@@ -1,9 +1,7 @@
 CURRENT GOAL
 ============
 
-* switcher entre les 2 modes d'affichage des bénéfices `k <-> %`
-
-* trier les éléments à l'aide du menu déroulant
+* permettre de merger les portions de tableau lensés
 
 Optimisations
 * lenser chaque M par composants

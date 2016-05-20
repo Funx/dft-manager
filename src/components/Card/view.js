@@ -1,8 +1,10 @@
-import {div, h2, small} from '@cycle/dom'
+import {div, h2, small, img} from '@cycle/dom'
 import {k} from 'utils/currency'
 
 import css from './card.css'
 import dot from 'utils/dot'
+import iconFavorites from 'icons/icon-eye.svg'
+import {renderCheckbox} from 'components/Checkbox'
 
 export const view = (M) => {
   return M.map(card =>
@@ -15,6 +17,9 @@ export const view = (M) => {
         div(dot(css.innerWrapper), [
           div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
             `${k(card.cost)} -> ${k(card.price)} | ${card.secondaryInfo}`,
+            renderCheckbox(card)
+              (dot(css.favorites), img({src: iconFavorites}))
+              ('favorites'),
           ]),
           renderMainInfo(card),
           div(dot(css.identity), [

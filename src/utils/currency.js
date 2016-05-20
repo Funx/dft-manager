@@ -8,7 +8,7 @@ export function k (val) {
   }
   let formatted = humanize(val)
   if (isBigNumber) {
-    formatted.replace(',', 'M')
+    formatted = formatted.replace(',', 'M')
     if(formatted.indexOf('M') == -1) formatted += 'M'
   }
   return `${formatted}k`

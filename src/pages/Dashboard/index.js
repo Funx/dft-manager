@@ -5,33 +5,13 @@ import {uniqBy, prop, pipe} from 'ramda'
 import OptionsBar from 'components/OptionsBar'
 import VirtualList from 'components/VirtualList'
 
+import {mapToArray, mergeArrayInMap, mergeMaps} from 'utils/iterable'
+
 import {filterFn} from './filterFn'
 import {sortFn} from './sortFn'
 import {view} from './view'
 
 export const Dashboard = ({DOM, M, Screen}) => {
-  const searchResults$ = M
-    .lens(L.props(
-      'items',
-      'filters',
-      'sortOptions',
-      'vList'
-    ))
-    .lens(L.lens(
-        ({items = [], filters = {}, sortOptions = {}, vList = {}}) => ({
-          vList,
-          items: pipe(
-              filterFn(filters),
-              sortFn(sortOptions),
-            )(items),
-        }),
-        (obj, model) => ({
-          ...model,
-          ...obj,
-          items: uniqBy(prop('id'), model.items.concat(obj.items)),
-        })
-    ))
-
   const optionsBar = OptionsBar({
     DOM,
     M: M.lens(L.props(
@@ -40,15 +20,44 @@ export const Dashboard = ({DOM, M, Screen}) => {
     )),
   })
 
+  const virtualListM = M.lens(L.props(
+      'db',
+      'items',
+      'vList',
+    ))
+    .lens(L.lens(
+      x => x,
+      ({db, items, vList}, model) => ({
+        ...model,
+        vList,
+        db: mergeArrayInMap(mergeMaps(model.db, db), items),
+      })
+    ))
   const collection = VirtualList({
     DOM, Screen,
-    M: searchResults$,
+    M: virtualListM,
     viewParam$: M.lens('display').lens('benefits'),
   })
 
+  const searchResults$ = M
+    .lens(L.props(
+      'db',
+      'filters',
+      'sortOptions',
+    ))
+    .map(({db, filters = {}, sortOptions = {}}) =>
+      pipe(
+        mapToArray,
+        filterFn(filters),
+        sortFn(sortOptions),
+      )(db)
+    )
+
+  const mod$ = M.lens('items').set(searchResults$)
+
   return {
-    DOM: view(searchResults$.lens('items'), optionsBar, collection),
-    M: O.merge(optionsBar.M, collection.M),
+    DOM: view(virtualListM.lens('items'), optionsBar, collection),
+    M: O.merge(optionsBar.M, collection.M, mod$),
   }
 }
 export default Dashboard

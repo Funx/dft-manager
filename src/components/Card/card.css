@@ -1,7 +1,6 @@
 .container {
   background: #111;
   color: #eee;
-  cursor: pointer;
   transition: .2s ease-out;
   box-shadow: 1px 1px 2px color(#111 alpha(40%));
   transform: 0;
@@ -55,4 +54,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+}
+.priceInfos {
+  display: flex;
+  flex-flow: row;
+}
+.favorite {
+  height: 1.5rem;
+  margin-left: auto;
+  cursor: pointer;
 }

@@ -6,7 +6,8 @@ import Dashboard from 'pages/Dashboard'
 
 import './reset.css'
 import layout from 'pages/layout.css'
-import {dot} from './utils/dot'
+import {dot} from 'utils/dot'
+import {mapToArray} from 'utils/iterable'
 
 export const main = (responses) => {
   responses.M.subscribe(x => console.log(x))
@@ -22,6 +23,9 @@ export const main = (responses) => {
 
 export default main
 
+// const mapToArray = (map) => {
+  // Object.keys(map).
+// }
 
 const view = (navbar, dashboard) => O.combineLatest(
   navbar, dashboard,

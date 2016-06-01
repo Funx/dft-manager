@@ -1,11 +1,12 @@
-import { createGroup, assert } from 'painless'
-import { getValues } from '../../test/testUtils'
-import { mockDOMResponse } from '@cycle/dom'
-import { Observable } from 'rx'
+import {createGroup, assert} from 'painless'
+import {getValues} from '../../test/testUtils'
+import {mockDOMSource} from '@cycle/dom'
+import {Observable} from 'rx'
+import {events} from './index'
 
 
 const test = createGroup()
-const domSource = mockDOMResponse({
+const domSource = mockDOMSource({
   '.tested': {
     'event1': Observable.of('event1'),
     'event2': Observable.of('event2'),
@@ -16,7 +17,6 @@ const domSource = mockDOMResponse({
   },
 })
 
-import { events } from './index'
 test('utils/events with an array of event names', function testEvents () {
   const expected$ = Observable.from(['event1', 'event2'])
   const test$ = events(

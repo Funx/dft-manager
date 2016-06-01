@@ -7,8 +7,7 @@ export function attachMeta (list) {
     .map(obj => ({
       ...obj,
       hue: hueMap[obj.type],
-      price: randomInterval(1000, 1500000),
-      cost: randomInterval(1000, 1500000),
+      price: randomInterval(...piceInterval(obj.type)),
       favorites: proba(1/5),
       stocks: proba(1/10),
       crafts: proba(1/20),
@@ -17,6 +16,15 @@ export function attachMeta (list) {
 }
 
 export default attachMeta
+
+function piceInterval (type) {
+  const intervals = {
+    'Trophée': [50000, 4000000],
+    'Idole': [50000, 4000000],
+    'default': [1000, 15000],
+  }
+  return intervals[type] || intervals.default
+}
 
 function proba (proba) {
   return (Math.random() < proba)

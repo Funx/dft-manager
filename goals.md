@@ -1,7 +1,7 @@
 CURRENT GOAL
 ============
 
-* permettre de merger les portions de tableau lensés
+* calculer de manière adéquat le coût de chaque élément en fonction de ses dépendances
 
 Optimisations
 * lenser chaque M par composants

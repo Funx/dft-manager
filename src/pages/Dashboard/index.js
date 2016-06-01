@@ -9,6 +9,7 @@ import {fromMapToArray, mergeMaps} from 'utils/iterable'
 
 import {filterFn} from './filterFn'
 import {sortFn} from './sortFn'
+import {calcCosts} from './calcCosts'
 import {view} from './view'
 
 export const Dashboard = ({DOM, M, Screen}) => {
@@ -43,6 +44,7 @@ export const Dashboard = ({DOM, M, Screen}) => {
     ))
     .map(({db, filters = {}, sortOptions = {}}) =>
       pipe(
+        calcCosts,
         fromMapToArray,
         filterFn(filters),
         sortFn(sortOptions),

@@ -1,10 +1,9 @@
-import {fromMapToArray} from 'utils/iterable'
-
 export function calcCosts (db) {
   return new Map(
-    fromMapToArray(db)
-      .map(x => ({
+    [...db.entries()]
+      .map(([id, x]) => ({
         ...x,
+        id,
         cost: cost(db, x),
       }))
       .map(x => [x.id, x])
@@ -14,16 +13,21 @@ export function calcCosts (db) {
 export default calcCosts
 
 function cost (db, x) {
-  // if (!x) return 'invalid'
-  if (!x) return 0
+  if (!isRecipeValid(db, x.recipe)) return x.price
+  return x.recipe.reduce(sum, 0)
 
-  const sum = (acc, {id, quantity}) => {
-    // if (typeof acc == 'string' && acc.indexOf('invalid') != -1) return acc
+  function sum (acc, {id, quantity}) {
     const itemCost = cost(db, db.get(id))
-    // if (typeof itemCost == 'string' && itemCost.indexOf('invalid') != -1) return itemCost + id
     return acc + Number(quantity) * itemCost
   }
-  return (!x.recipe || !x.recipe.length)
-    ? Number(x.price)
-    : x.recipe.reduce(sum, 0)
+}
+
+export function isRecipeValid (db, recipe) {
+  return Array.isArray(recipe)
+    && recipe.length > 0
+    && recipe.every(x => isIngredientValid(db, db.get(x.id)))
+}
+
+export function isIngredientValid (db, ingr) {
+  return ingr && (ingr.price || isRecipeValid(db, ingr.recipe))
 }

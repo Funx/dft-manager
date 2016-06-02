@@ -4,25 +4,25 @@ import {remove as removeDiacritics} from 'diacritics'
 export const sortFn = curry(({property, order}, list) => {
   return pipe(
     makeSortPropFn(property),
-    // makeSortOrderFn(property, order),
+    makeSortOrderFn(property, order),
   )(list)
-  // return compose(
-  //   makeOrderFn(property, order),
-  //   makeSortFn(property),
-  // )(list)
 })
 export default sortFn
 
 export const makeSortPropFn = (propName) => {
+  const validEmptyPriceIsMax = ({price, cost}) => (price == 0 && cost > 0) ? 2 : 1
   const sortFns = {
-    'benefits': compose(
-      sortBy(({price, cost}) => (price == 0 && cost > 0) ? 2 : 1), // put them first
-      sortBy(({price, cost}) => price - cost),
-    ),
-    'benefitsRate': sortBy(({price, cost}) => (price - cost) / cost),
     'price': sortBy(prop('price')),
     'cost': sortBy(prop('cost')),
     'alphabetical': sortBy(compose(removeDiacritics, toLower, prop('name'))),
+    'benefits': compose(
+      sortBy(validEmptyPriceIsMax), //valid items without price first
+      sortBy(({price, cost}) => price - cost),
+    ),
+    'benefitsRate': compose(
+      sortBy(validEmptyPriceIsMax),
+      sortBy(({price, cost}) => (price - cost) / cost),
+    ),
   }
   return sortFns[propName]
 }
@@ -38,12 +38,7 @@ export const makeSortOrderFn = (prop, order) => {
   return compose(orderFn, maybeReverse)
 }
 
-export const putEmptyRecipesLast = (x) => {
-  const {withRecipes, withoutRecipes} = groupByRecipeLength(x)
-  return concat(withRecipes, withoutRecipes)
-}
-
-export const groupByRecipeLength = (list) => {
-  const emptyRecipe = x => x.recipe.length ? 'withRecipes' : 'withoutRecipes'
-  return groupBy(emptyRecipe, list)
+export const putEmptyRecipesLast = (list) => {
+  const emptyRecipe = x => x.recipe.length ? 1 : 2
+  return sortBy(emptyRecipe, list)
 }

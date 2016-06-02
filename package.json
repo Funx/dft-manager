@@ -16,7 +16,7 @@
     "preprod-server": "npm run build-prod && npm run build-prod-server",
     "prod-server": "node ./dist/server.js",
     "server": "npm run prod-server",
-    "start": "npm run dev-server",
+    "start": "npm run watch-jade & npm run dev-server",
     "test": "NODE_PATH=./src && babel-node ./node_modules/.bin/painless src/{**,**/**}/*.test.js",
     "autotest": "supervisor -q -n exit -x npm run test"
   },

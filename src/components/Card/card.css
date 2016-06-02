@@ -1,41 +1,51 @@
 .container {
-  background: #111;
-  color: #eee;
-  transition: .2s ease-out;
-  box-shadow: 1px 1px 2px color(#111 alpha(40%));
-  transform: 0;
   position: relative;
+
+  transition: .2s ease-out;
+  transform: 0;
+
+  color: #eee;
+  background: #111;
+  box-shadow: 1px 1px 2px color(#111 alpha(40%));
 }
 .container:matches(:hover,:focus,:active) {
-  box-shadow: 4px 4px 16px color(#111 alpha(20%));
   transform: translateY(-2px) scale(1.01);
+
+  box-shadow: 4px 4px 16px color(#111 alpha(20%));
 }
 .container::before {
-  content: "";
   display: block;
+
   padding-top: 100%;
+
+  content: "";
 }
 
 .innerWrapper {
   position: absolute;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
-  padding: 1rem;
+  left: 0;
+
   display: flex;
   flex-direction: column;
+
+  padding: 1rem;
 }
 .identity {
-  margin-top: auto;
-  max-height: calc((1 * 1.2 * 1.8rem) + (1 * 1.2 * 1.4rem));
-  overflow: visible;
   display: flex;
+  overflow: visible;
   flex-direction: column;
+
+  max-height: calc((1 * 1.2 * 1.8rem) + (1 * 1.2 * 1.4rem));
+  margin-top: auto;
+
   justify-content: flex-end;
 }
 .name {
   margin: 0;
+
   font-size: 1.8rem;
 }
 .type {
@@ -46,31 +56,38 @@
   font-size: 1rem;
 }
 .mainInfo {
+  display: flex;
+
+  width: 100%;
+
+  cursor: pointer;
+  text-align: center;
+
   font-family: consolas, monospace;
   font-size: 4rem;
-  width: 100%;
-  text-align: center;
+
   flex: 1 0;
-  display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 .priceInfos {
   display: flex;
+
   flex-flow: row;
 }
 .favorite {
   height: 1.5rem;
   margin-left: auto;
+
   cursor: pointer;
 }
 
 .favorite input[type='checkbox'] {
-  opacity: 0;
-  margin: 0;
   width: 0;
   height: 0;
+  margin: 0;
+
+  opacity: 0;
 }
 
 .favorite .icon-eye {
@@ -79,9 +96,12 @@
 
 .favorite input[type='checkbox'] + span svg {
   display: inline-block;
+
   height: 1.5rem;
-  user-select: none;
+
   cursor: pointer;
+  user-select: none;
+
   fill: transparent;
   stroke: #fff;
   stroke-width: 4;

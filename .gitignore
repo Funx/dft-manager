@@ -4,7 +4,6 @@ npm-debug.log
 bower_components
 build
 public
-client/assets/fonts/icons/**/*
 .sass-cache
 *.old
 dist/*

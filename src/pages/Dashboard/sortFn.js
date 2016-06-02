@@ -1,10 +1,10 @@
-import {curry, sortBy, compose, prop, reverse, groupBy, concat, identity} from 'ramda'
+import {curry, sortBy, compose, pipe, prop, reverse, groupBy, concat, identity, toLower} from 'ramda'
 import {remove as removeDiacritics} from 'diacritics'
 
 export const sortFn = curry(({property, order}, list) => {
-  return compose(
-    makeSortOrderFn(property, order),
+  return pipe(
     makeSortPropFn(property),
+    // makeSortOrderFn(property, order),
   )(list)
   // return compose(
   //   makeOrderFn(property, order),
@@ -15,13 +15,16 @@ export default sortFn
 
 export const makeSortPropFn = (propName) => {
   const sortFns = {
-    'benefits': ({price, cost}) => price - cost,
-    'benefitsRate': ({price, cost}) => (price - cost) / cost,
-    'price': prop('price'),
-    'cost': prop('cost'),
-    'alphabetical': compose(removeDiacritics, prop('name')),
+    'benefits': compose(
+      sortBy(({price, cost}) => (price == 0 && cost > 0) ? 2 : 1), // put them first
+      sortBy(({price, cost}) => price - cost),
+    ),
+    'benefitsRate': sortBy(({price, cost}) => (price - cost) / cost),
+    'price': sortBy(prop('price')),
+    'cost': sortBy(prop('cost')),
+    'alphabetical': sortBy(compose(removeDiacritics, toLower, prop('name'))),
   }
-  return sortBy(sortFns[propName])
+  return sortFns[propName]
 }
 
 export const makeSortOrderFn = (prop, order) => {

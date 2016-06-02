@@ -16,7 +16,7 @@ export const view = (M) => {
       }, [
         div(dot(css.innerWrapper), [
           div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
-            `${k(card.cost)} -> ${k(card.price)} | ${card.secondaryInfo}`,
+            `${invalidCost(card) ? '?' : k(card.cost)} -> ${infiniteProfit(card) ? '∞' : k(card.price)}${infiniteProfit(card) ? '' : ' | ' + card.secondaryInfo}`,
             Checkbox(
               dot(css.favorite), '.m-favorites',
               {checked: card.favorites},
@@ -35,7 +35,7 @@ export const view = (M) => {
 export default view
 
 function renderMainInfo (item) {
-  const fontSize = isOverProfitable(item) ? '4rem'
+  const fontSize = isOverProfitable(item) || infiniteProfit(item) ? '4rem'
     : isSuperProfitable(item) ? '3rem'
     : isProfitable(item) ? '2rem'
     : '1rem'
@@ -43,7 +43,11 @@ function renderMainInfo (item) {
   return div(
     '.mainInfo' + dot(css.mainInfo),
     {style: `font-size: ${fontSize};`, key: 'primaryInfo'},
-    [item.primaryInfo]
+    [
+      infiniteProfit(item) ? '∞' : '',
+      invalidCost(item) ? '?' : '',
+      !infiniteProfit(item) && !invalidCost(item) ? item.primaryInfo : '',
+    ]
   )
 }
 
@@ -55,3 +59,5 @@ const profitability = (boundary, boundaryRate) =>
 const isProfitable = profitability(200000, .15)
 const isSuperProfitable = profitability(400000, .30)
 const isOverProfitable = profitability(800000, .50)
+const infiniteProfit = x => (x.price == 0 && x.recipe.length)
+const invalidCost = x => (x.cost == 0 && x.recipe.length)

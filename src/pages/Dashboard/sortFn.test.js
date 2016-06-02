@@ -1,6 +1,6 @@
-import {sortFn, makeSortPropFn} from './sortFn'
+import {sortFn, makeSortPropFn, putEmptyRecipesLast} from './sortFn'
 import {createGroup, assert} from 'painless'
-
+import {sortBy, identity, compose, pipe} from 'ramda'
 const test = createGroup('dashboard/sortFn')
 
 test(`makeSortPropFn('benefits') should order by benefits asc`, () => {
@@ -21,14 +21,16 @@ test(`makeSortPropFn('benefits') should order by benefits asc`, () => {
 test(`makeSortPropFn('benefits') should consider benefits as infinite when price is 0, then order them by cost`, () => {
   const sort = makeSortPropFn('benefits')
   const input = [
-    {price: 0, cost: 1}, //benefits = Infinite -1
+    {price: 0, cost: 1, recipe: [{}]}, //benefits = Infinite -1
     {price: 102, cost: 2}, //benefits = 100
-    {price: 0, cost: 2}, //benefits = Infinite -2
+    {price: 0, cost: 2, recipe: [{}]}, //benefits = Infinite -2
+    {price: 0, cost: 2, recipe: []}, //impossible -> -2
   ]
   const expected = [
+    {price: 0, cost: 2, recipe: []}, //impossible -> -2
     {price: 102, cost: 2}, //benefits = 100
-    {price: 0, cost: 2}, //benefits = Infinite -2
-    {price: 0, cost: 1}, //benefits = Infinite -1
+    {price: 0, cost: 2, recipe: [{}]}, //benefits = Infinite -2
+    {price: 0, cost: 1, recipe: [{}]}, //benefits = Infinite -1
   ]
   const output = sort(input)
   return assert.deepEqual(output, expected)
@@ -99,5 +101,23 @@ test(`makeSortPropFn('alphabetical') should order by name, caps and special char
     {name: 'u2'},
   ]
   const output = sort(input)
+  return assert.deepEqual(output, expected)
+})
+test('putEmptyRecipesLast', () => {
+  const input = [
+    {name: '3', recipe: []},
+    {name: '4'},
+    {name: '1', recipe: [{}, {}]},
+    {name: '2', recipe: [{}]},
+    {name: '5', recipe: []},
+  ]
+  const expected = [
+    {name: '1', recipe: [{}, {}]},
+    {name: '2', recipe: [{}]},
+    {name: '3', recipe: []},
+    {name: '4'},
+    {name: '5', recipe: []},
+  ]
+  const output = putEmptyRecipesLast(input)
   return assert.deepEqual(output, expected)
 })

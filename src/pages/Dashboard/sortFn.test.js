@@ -104,6 +104,7 @@ test(`makeSortPropFn('alphabetical') should order by name, caps and special char
   return assert.deepEqual(output, expected)
 })
 test('putEmptyRecipesLast', () => {
+  const sort = makeSortPropFn('price')
   const input = [
     {name: '3', recipe: []},
     {name: '4'},
@@ -118,6 +119,6 @@ test('putEmptyRecipesLast', () => {
     {name: '4'},
     {name: '5', recipe: []},
   ]
-  const output = putEmptyRecipesLast(input)
+  const output = sort(input)
   return assert.deepEqual(output, expected)
 })

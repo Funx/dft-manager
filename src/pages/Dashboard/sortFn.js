@@ -1,76 +1,42 @@
-import {curry, sortBy, compose, pipe, prop, reverse, groupBy, concat, identity, toLower, sort} from 'ramda'
+import {curry, sortBy, compose, prop, toLower, sort} from 'ramda'
 import {remove as removeDiacritics} from 'diacritics'
 import firstBy from 'thenby'
 
 export const sortFn = curry(({property, order}, list) => {
-  return pipe(
-    makeSortPropFn(property),
-    makeSortOrderFn(property, order),
-  )(list)
+  return makeSortPropFn(property, order)(list)
 })
 export default sortFn
 
-export const makeSortPropFn = (propName) => {
-  const emptyPriceTop = ({price, recipe}) => (price == 0 && recipe.length) ? 2 : 1
+export const makeSortPropFn = (propName, order = 'ascending') => {
+  const direction = ({
+    'ascending': 1,
+    'descending': -1,
+  })[order]
+
   const sortFns = {
     'price': sort(
-      firstBy('price')
-      .thenBy(emptyPriceTop)
+      firstBy(emptyPriceTop, {direction})
+      .thenBy('price', {direction})
     ),
     'cost': sortBy(prop('cost')),
     'alphabetical': sortBy(compose(removeDiacritics, toLower, prop('name'))),
     'benefits': sort(
-      firstBy('cost')
-      .thenBy(({price, cost}) => price - cost)
-      .thenBy(emptyPriceTop)
+      firstBy(emptyRecipesLast)
+      .thenBy(emptyPriceTop, {direction})
+      .thenBy(({price, cost}) => price - cost, {direction})
+      .thenBy('cost', {direction})
     ),
     'benefitsRate': sort(
-      firstBy('cost')
-      .thenBy(({price, cost}) => (price - cost) / cost)
-      .thenBy(emptyPriceTop)
-    )
-    // const putEmptyPriceTop = xs => {
-    //   const {first, last} = groupBy(({price, recipe}) => (price == 0 && recipe.length) ? 'last' : 'first')(xs)
-    //   return concat(first || [], last || [])
-    // }
-  // const sortFns = {
-  //   'price': pipe(
-  //     sortBy(prop('price')),
-  //     putEmptyPriceTop,
-  //   ),
-  //   'cost': sortBy(prop('cost')),
-  //   'alphabetical': sortBy(compose(removeDiacritics, toLower, prop('name'))),
-  //   'benefits': pipe(
-  //     sortBy(prop('cost')),
-  //     sortBy(({price, cost}) => price - cost),
-  //     putEmptyPriceTop,
-  //   ),
-  //   'benefitsRate': pipe(
-  //     sortBy(prop('cost')),
-  //     sortBy(({price, cost}) => ((price - cost) / cost)),
-  //     // putEmptyPriceTop,
-  //   ),
+      firstBy(emptyRecipesLast)
+      .thenBy(emptyPriceTop, {direction})
+      .thenBy(({price, cost}) => (price - cost) / cost, {direction})
+      .thenBy('cost', {direction})
+    ),
   }
   return sortFns[propName]
 }
-
-export const makeSortOrderFn = (prop, order) => {
-  const reverseFn = {
-    'ascending': identity,
-    'descending': reverse
-  }
-  const orderFns = {
-    'benefits': putEmptyRecipesLast,
-    'benefitsRate': putEmptyRecipesLast,
-    'default': identity,
-  }
-  return pipe(
-    reverseFn[order],
-    orderFns[prop] || orderFns.default,
-  )
-}
-
-export const putEmptyRecipesLast = (xs) => {
-  const {first, last} = groupBy(({recipe}) => (recipe && recipe.length) ? 'first' : 'last')(xs)
-  return concat(first || [], last || [])
-}
+const emptyPriceTop = ({price, recipe, cost}) =>
+  (price == 0 && recipe.length && cost > 0) ? 2
+  : (price == 0 && recipe.length) ? 2
+  : 0
+const emptyRecipesLast = ({recipe}) => (recipe && recipe.length) ? 1 : 2

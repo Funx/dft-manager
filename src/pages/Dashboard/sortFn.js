@@ -37,6 +37,6 @@ export const makeSortPropFn = (propName, order = 'ascending') => {
 }
 const emptyPriceTop = ({price, recipe, cost}) =>
   (price == 0 && recipe.length && cost > 0) ? 2
-  : (price == 0 && recipe.length) ? 2
+  : (price == 0 && recipe.length) ? 1
   : 0
-const emptyRecipesLast = ({recipe}) => (recipe && recipe.length) ? 1 : 2
+const emptyRecipesLast = ({recipe}) => (recipe && recipe.length) ? 0 : 1

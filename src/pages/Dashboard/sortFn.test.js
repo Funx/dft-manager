@@ -19,7 +19,7 @@ test(`makeSortPropFn('benefits') should order by benefits asc`, () => {
   return assert.deepEqual(output, expected)
 })
 test(`makeSortPropFn('benefits') should consider benefits as infinite when price is 0, then order them by cost`, () => {
-  const sort = makeSortPropFn('benefits')
+  const sort = makeSortPropFn('benefits', 'descending')
   const input = [
     {price: 0, cost: 1, recipe: [{}]}, //benefits = Infinite -1
     {price: 102, cost: 2}, //benefits = 100
@@ -27,10 +27,10 @@ test(`makeSortPropFn('benefits') should consider benefits as infinite when price
     {price: 0, cost: 2, recipe: []}, //impossible -> -2
   ]
   const expected = [
-    {price: 0, cost: 2, recipe: []}, //impossible -> -2
-    {price: 102, cost: 2}, //benefits = 100
-    {price: 0, cost: 2, recipe: [{}]}, //benefits = Infinite -2
     {price: 0, cost: 1, recipe: [{}]}, //benefits = Infinite -1
+    {price: 0, cost: 2, recipe: [{}]}, //benefits = Infinite -2
+    {price: 102, cost: 2}, //benefits = 100
+    {price: 0, cost: 2, recipe: []}, //impossible -> -2
   ]
   const output = sort(input)
   return assert.deepEqual(output, expected)
@@ -104,7 +104,7 @@ test(`makeSortPropFn('alphabetical') should order by name, caps and special char
   return assert.deepEqual(output, expected)
 })
 test('putEmptyRecipesLast', () => {
-  const sort = makeSortPropFn('price')
+  const sort = makeSortPropFn('benefits', 'ascending')
   const input = [
     {name: '3', recipe: []},
     {name: '4'},

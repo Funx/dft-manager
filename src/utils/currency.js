@@ -1,12 +1,12 @@
 import {curry} from 'ramda'
 
-export function k (val) {
+export function k (val, simplifyNumber = true) {
   let isBigNumber = false
   if (Math.abs(val) >= 1000000) {
     val /= 1000000
     isBigNumber = true
   }
-  let formatted = humanize(val)
+  let formatted = humanize(val, simplifyNumber)
   if (isBigNumber) {
     formatted = formatted.replace(',', 'M')
     if(formatted.indexOf('M') == -1) formatted += 'M'
@@ -25,8 +25,8 @@ export function percent (val) {
   return `${format(val)}%`
 }
 
-export function humanize (val) {
+export function humanize (val, simplifyNumber = true) {
   const formatter = new Intl.NumberFormat(
-    'fr-FR', {maximumSignificantDigits: 3})
+    'fr-FR', {maximumSignificantDigits: simplifyNumber ? 3 : 21})
   return formatter.format(val)
 }

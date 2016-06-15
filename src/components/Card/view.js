@@ -1,5 +1,5 @@
 import {div, h2, small, span, input} from '@cycle/dom'
-import {k} from 'utils/currency'
+import {k, humanize} from 'utils/currency'
 import {Hook} from 'utils/hook'
 
 import css from './card.css'
@@ -39,7 +39,7 @@ function renderEditForm (item) {
   return div(dot(css.editForm), [
     input('.m-price', {
       type: 'text',
-      value: k(item.price),
+      value: humanize(item.price, false) + 'k',
     }),
   ])
 }
@@ -71,3 +71,9 @@ const isSuperProfitable = profitability(400000, .30)
 const isOverProfitable = profitability(800000, .50)
 const infiniteProfit = x => (x.price == 0 && x.recipe.length)
 const invalidCost = x => (x.cost == 0 && x.recipe.length)
+
+function renderStockStatus () {
+  return div([
+    div(''),
+  ])
+}

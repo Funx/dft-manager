@@ -33,7 +33,7 @@ export const Dashboard = ({DOM, M, Screen}) => {
   const collection = VirtualList({
     DOM, Screen,
     M: virtualListM,
-    viewParam$: M.lens('display').lens('benefits'),
+    viewParam$: M.lens('display'),
   })
 
   const searchResults$ = M

@@ -1,5 +1,6 @@
-import {div, h2, small, img, span} from '@cycle/dom'
+import {div, h2, small, span, input} from '@cycle/dom'
 import {k} from 'utils/currency'
+import {Hook} from 'utils/hook'
 
 import css from './card.css'
 import dot from 'utils/dot'
@@ -19,11 +20,11 @@ export const view = (M) => {
             `${invalidCost(card) ? '?' : k(card.cost)} -> ${infiniteProfit(card) ? '∞' : k(card.price)}${infiniteProfit(card) ? '' : ' | ' + card.secondaryInfo}`,
             Checkbox(
               dot(css.favorite), '.m-favorites',
-              {checked: card.favorites},
+              {checked: card.favorites, tabIndex: card.editing ? '-1' : ''},
               span({innerHTML: iconFavorites})
             ),
           ]),
-          renderMainInfo(card),
+          card.editing ? renderEditForm(card) : renderMainInfo(card),
           div(dot(css.identity), [
             small(dot(css.type), [card.type]),
             h2(dot(css.name), [card.name]),
@@ -33,6 +34,15 @@ export const view = (M) => {
   )
 }
 export default view
+
+function renderEditForm (item) {
+  return div(dot(css.editForm), [
+    input('.m-price', {
+      type: 'text',
+      value: k(item.price),
+    }),
+  ])
+}
 
 function renderMainInfo (item) {
   const fontSize = isOverProfitable(item) || infiniteProfit(item) ? '4rem'

@@ -56,6 +56,9 @@
   font-size: 1rem;
 }
 .mainInfo {
+  user-select: none;
+}
+.mainInfo, .editForm {
   display: flex;
 
   width: 100%;
@@ -69,6 +72,18 @@
   flex: 1 0;
   align-items: center;
   justify-content: center;
+}
+.editForm input {
+  text-align: center;
+  display: inline-block;
+  width: 80%;
+  color: #fff;
+  font-size: 2rem;
+}
+.editForm input::-webkit-inner-spin-button,
+.editForm input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .priceInfos {
   display: flex;

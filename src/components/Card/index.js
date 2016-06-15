@@ -2,19 +2,21 @@ import {Observable as O} from 'rx'
 
 import view from './view'
 import {k, percent as perc, sign} from 'utils/currency'
-import {toggleBenefitsPrintMode} from './actions'
+import {toggleBenefitsPrintMode, setPrice} from './actions'
+import intent from './intent'
 
 export const Card = ({M, viewParam$, DOM}) => {
   const state$ = O.combineLatest(
     M, viewParam$,
-    (card, param) => ({
+    (card, params) => ({
       ...card,
+      editing: params.editing,
       benefits: benefits(card),
       benefitsRate: printBenefitsRate(card),
-      secondaryInfo: (param == '%')
+      secondaryInfo: (params.benefits == '%')
         ? printBenefits(card)
         : printBenefitsRate(card),
-      primaryInfo: (param == '%')
+      primaryInfo: (params.benefits == '%')
         ? printBenefitsRate(card)
         : printBenefits(card),
     })
@@ -23,25 +25,17 @@ export const Card = ({M, viewParam$, DOM}) => {
   const vtree$ = view(state$)
   const intents = intent(DOM)
   const mod$ = O.merge(
-    viewParam$.mod(
+    viewParam$.lens('benefits').mod(
       intents.toggleBenefitsPrintMode$.map(toggleBenefitsPrintMode)),
+    viewParam$.lens('editing').set(intents.startEdit$.map(() => true)),
+    viewParam$.lens('editing').set(intents.endEdit$.map(() => false)),
+    M.lens('price').mod(intents.save$.map(setPrice)),
     M.lens('favorites').set(intents.toggleFavorites$),
+    M.lens('focused').set(intents.focus$),
   )
   return {
     DOM: vtree$,
     M: mod$,
-  }
-}
-
-function intent (DOM) {
-  const mainInfo = DOM.select('.mainInfo')
-  return {
-    toggleBenefitsPrintMode$: mainInfo.events('click')
-      .debounce(10),
-    toggleFavorites$: DOM.select('.m-favorites')
-      .events('change')
-      .pluck('target', 'checked')
-      .debounce(10),
   }
 }
 

@@ -9,28 +9,31 @@ import {Checkbox} from 'components/Checkbox'
 
 export const view = (M) => {
   return M.map(card =>
-    div('.card' + dot(css.container),
-      {
-        dataVisible: card.visible,
-        key: card.id,
-        style: `background-color: hsl(${card.hue}, 44%, 50%);`,
-      }, [
-        div(dot(css.innerWrapper), [
-          div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
-            `${invalidCost(card) ? '?' : k(card.cost)} -> ${infiniteProfit(card) ? '∞' : k(card.price)}${infiniteProfit(card) ? '' : ' | ' + card.secondaryInfo}`,
-            Checkbox(
-              dot(css.favorite), '.m-favorites',
-              {checked: card.favorites, tabIndex: card.editing ? '-1' : ''},
-              span({innerHTML: iconFavorites})
-            ),
-          ]),
-          card.editing ? renderEditForm(card) : renderMainInfo(card),
-          div(dot(css.identity), [
-            small(dot(css.type), [card.type]),
-            h2(dot(css.name), [card.name]),
+    div('.card', [
+      div(dot(css.container),
+        {
+          dataVisible: card.visible,
+          key: card.id,
+          style: `background-color: hsl(${card.hue}, 44%, 50%);`,
+        }, [
+          div(dot(css.innerWrapper), [
+            div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
+              `${invalidCost(card) ? '?' : k(card.cost)} -> ${infiniteProfit(card) ? '∞' : k(card.price)}${infiniteProfit(card) ? '' : ' | ' + card.secondaryInfo}`,
+              Checkbox(
+                dot(css.favorite), '.m-favorites',
+                {checked: card.favorites, tabIndex: card.editing ? '-1' : ''},
+                span({innerHTML: iconFavorites})
+              ),
+            ]),
+            card.editing ? renderEditForm(card) : renderMainInfo(card),
+            div(dot(css.identity), [
+              small(dot(css.type), [card.type]),
+              h2(dot(css.name), [card.name]),
+            ]),
           ]),
         ]),
-      ])
+      renderStockStatus(),
+    ])
   )
 }
 export default view
@@ -73,7 +76,9 @@ const infiniteProfit = x => (x.price == 0 && x.recipe.length)
 const invalidCost = x => (x.cost == 0 && x.recipe.length)
 
 function renderStockStatus () {
-  return div([
-    div(''),
+  return div(dot(css.stockStatus), [
+    span('crafting: 1'),
+    span('selling: 2'),
+    span('sold: 21'),
   ])
 }

@@ -127,3 +127,9 @@
   fill: #fff;
   stroke-width: 0;
 }
+
+.stockStatus {
+  height: 3.2rem;
+  background: #000;
+  display: flex;
+}

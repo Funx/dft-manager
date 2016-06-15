@@ -16,8 +16,12 @@ export function intent (DOM) {
       $mPrice.events('focus').map(true),
       $mPrice.events('blur').map(false),
     ),
-    startEdit$: buffer$.filter(x => x == 2),
+    startEdit$: O.merge(
+      buffer$.filter(x => x == 2),
+      $mPrice.events('focus').map(true),
+    ),
     endEdit$: O.merge(
+      $mPrice.events('blur').map(false),
       $mPrice.events('keyup').filter(x => x.key == 'Escape'),
     ),
     toggleFavorites$: DOM.select('.m-favorites')

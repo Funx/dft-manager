@@ -1,4 +1,4 @@
-import {div, h2, small, span, input} from '@cycle/dom'
+import {div, h2, small, span, input, button} from '@cycle/dom'
 import {k, humanize} from 'utils/currency'
 import {Hook} from 'utils/hook'
 
@@ -9,12 +9,12 @@ import {Checkbox} from 'components/Checkbox'
 
 export const view = (M) => {
   return M.map(card =>
-    div('.card', [
+    div(dot(css.card), [
       div(dot(css.container),
         {
           dataVisible: card.visible,
           key: card.id,
-          style: `background-color: hsl(${card.hue}, 44%, 50%);`,
+          style: `background-color: hsl(${card.hue}, 44%, 50%);`
         }, [
           div(dot(css.innerWrapper), [
             div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
@@ -32,7 +32,7 @@ export const view = (M) => {
             ]),
           ]),
         ]),
-      renderStockStatus(),
+      renderStockStatus(card),
     ])
   )
 }
@@ -75,10 +75,12 @@ const isOverProfitable = profitability(800000, .50)
 const infiniteProfit = x => (x.price == 0 && x.recipe.length)
 const invalidCost = x => (x.cost == 0 && x.recipe.length)
 
-function renderStockStatus () {
-  return div(dot(css.stockStatus), [
-    span('crafting: 1'),
-    span('selling: 2'),
-    span('sold: 21'),
+function renderStockStatus (item) {
+  return div(dot(css.stockStatus),
+    {style: `background-color: hsl(${item.hue}, 44%, 50%);`},
+  [
+    button({tabIndex: item.editing ? '-1' : ''}, `🔨 ${item.crafts}`),
+    button({tabIndex: item.editing ? '-1' : ''}, `💰 ${item.stocks}`),
+    button({tabIndex: item.editing ? '-1' : ''}, `📈 ${item.sold}`),
   ])
 }

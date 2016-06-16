@@ -8,14 +8,17 @@ export function attachMeta (list) {
       ...obj,
       hue: hueMap[obj.type],
       price: proba(1/20) ? 0 : randomInterval(...priceInterval(obj.type)),
-      favorites: proba(1/5),
-      stocks: proba(1/10),
-      crafts: proba(1/20),
+      favorites: isComplex(obj) ? proba(1/5) : false,
+      crafts: isComplex(obj) ? randomInterval(0, 1) : 0,
+      stocks: isComplex(obj) ? randomInterval(0, 2) : 0,
+      sold: isComplex(obj) ? randomInterval(0, 25) : 0,
       outdated: proba(1/30),
     }))
 }
 
 export default attachMeta
+
+const isComplex = (obj) => obj.recipe && obj.recipe.length
 
 function priceInterval (type) {
   const intervals = {
@@ -31,7 +34,7 @@ function proba (proba) {
 }
 
 function randomInterval (min, max) {
-  return Math.floor(Math.random() * (max-min)) + min
+  return Math.floor(Math.random() * (max - min + 1)) + min 
 }
 
 function generateHueMap(list) {

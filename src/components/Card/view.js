@@ -79,8 +79,8 @@ function renderStockStatus (item) {
   return div(dot(css.stockStatus),
     {style: `background-color: hsl(${item.hue}, 44%, 50%);`},
   [
-    button({tabIndex: item.editing ? '-1' : ''}, `🔨 ${item.crafts}`),
-    button({tabIndex: item.editing ? '-1' : ''}, `💰 ${item.stocks}`),
-    button({tabIndex: item.editing ? '-1' : ''}, `📈 ${item.sold}`),
+    button('.i-crafts', {tabIndex: item.editing ? '-1' : ''}, `🔨 ${item.crafts}`),
+    button('.i-stocks', {tabIndex: item.editing ? '-1' : ''}, `💰 ${item.stocks}`),
+    button('.i-sold', {tabIndex: item.editing ? '-1' : ''}, `📈 ${item.sold}`),
   ])
 }

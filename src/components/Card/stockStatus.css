@@ -1,0 +1,93 @@
+.hexagon {
+  color: rgb(0,0,0);
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  display: block;
+  flex: 1 1 33%;
+}
+.hexagon:hover, .hexagon:focus, .hexagon:active {
+  color: rgb(200,50,0);
+  outline: 0;
+}
+.inner1 {
+  height: 6rem;
+  margin: 0 calc(-.9rem);
+  padding: 0 1rem;
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  align-items: stretch;
+}
+
+.inner1::after,
+.inner2::before,
+.inner2::after {
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+  position: absolute;
+  border-top: 3rem solid transparent;
+  border-bottom: 3rem solid transparent;
+}
+.inner1::after {
+  border-left: 1rem solid currentColor;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.inner2::before {
+  border-right: 1rem solid currentColor;
+  left: 0;
+  bottom: 0;
+  transform: translateY(50%);
+}
+.inner2::after {
+  border-right: 1rem solid currentColor;
+  left: 0;
+  top: 0;
+  transform: translateY(-50%);
+}
+.inner2 {
+  background-color: currentColor;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding: 0 .75rem;
+}
+.inner2 > * {
+  position: relative;
+  z-index: 1;
+  left: .25rem;
+  color: #fff;
+  flex: 1;
+}
+
+.hexagon:first-child {
+  margin-left: 0;
+}
+.hexagon:first-child .inner2::after,
+.hexagon:first-child .inner2::before {
+  display: none;
+}
+.hexagon:first-child .inner2 {
+  padding-left: 1.5rem;
+}
+.hexagon:first-child .inner2 > * {
+  left: 0;
+}
+
+.hexagon:last-child {
+  margin-right: 0;
+}
+.hexagon:last-child .inner1::after {
+  display: none;
+}
+.hexagon:last-child .inner2 {
+  padding-right: 1.5rem;
+}
+.hexagon:last-child .inner2 > * {
+  left: .25rem;
+}

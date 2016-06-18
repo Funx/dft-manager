@@ -6,6 +6,7 @@ import css from './card.css'
 import dot from 'utils/dot'
 import iconFavorites from 'icons/icon-eye.svg'
 import {Checkbox} from 'components/Checkbox'
+import {renderStockStatus} from './stockStatus'
 
 export const view = (M) => {
   return M.map(card =>
@@ -14,7 +15,7 @@ export const view = (M) => {
         {
           dataVisible: card.visible,
           key: card.id,
-          style: `background-color: hsl(${card.hue}, 44%, 50%);`
+          style: `background-color: hsl(${card.hue}, 44%, 50%);`,
         }, [
           div(dot(css.innerWrapper), [
             div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
@@ -74,13 +75,3 @@ const isSuperProfitable = profitability(400000, .30)
 const isOverProfitable = profitability(800000, .50)
 const infiniteProfit = x => (x.price == 0 && x.recipe.length)
 const invalidCost = x => (x.cost == 0 && x.recipe.length)
-
-function renderStockStatus (item) {
-  return div(dot(css.stockStatus),
-    {style: `background-color: hsl(${item.hue}, 44%, 50%);`},
-  [
-    button('.i-crafts', {tabIndex: item.editing ? '-1' : ''}, `🔨 ${item.crafts}`),
-    button('.i-stocks', {tabIndex: item.editing ? '-1' : ''}, `💰 ${item.stocks}`),
-    button('.i-sold', {tabIndex: item.editing ? '-1' : ''}, `📈 ${item.sold}`),
-  ])
-}

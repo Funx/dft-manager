@@ -19,7 +19,10 @@ function wrap(cards$) {
   return cards$
     .map(cards => cards.map(card =>
       li(dot(css.children),
-        {key: card.key},
+        {
+          key: card.key,
+          style: `transform: translateY(${card.properties.offsetTop}px)`,
+        },
         card,
       )
     ))

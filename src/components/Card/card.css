@@ -12,8 +12,6 @@
 }
 .container {
   position: relative;
-
-  background: #111;
 }
 
 .container::before {

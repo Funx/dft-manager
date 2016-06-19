@@ -9,13 +9,13 @@ import {renderStockStatus} from './stockStatus'
 
 export const view = (M) => {
   return M.map(card =>
-    div(dot(css.card), [
-      div(dot(css.container),
-        {
-          dataVisible: card.visible,
-          key: card.id,
-          style: `background-color: hsl(${card.hue}, 44%, 50%);`,
-        }, [
+    div(dot(css.card),
+      {
+        key: card.id,
+        style: `background-color: hsl(${card.hue}, 44%, 50%);`,
+        offsetTop: card.offsetTop,
+      }, [
+        div(dot(css.container), [
           div(dot(css.innerWrapper), [
             div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
               `${invalidCost(card) ? '?' : k(card.cost)} -> ${infiniteProfit(card) ? '∞' : k(card.price)}${infiniteProfit(card) ? '' : ' | ' + card.secondaryInfo}`,
@@ -32,8 +32,8 @@ export const view = (M) => {
             ]),
           ]),
         ]),
-      renderStockStatus(card),
-    ])
+        renderStockStatus(card),
+      ])
   )
 }
 export default view

@@ -4,8 +4,7 @@ import {Observable as O} from 'rx'
 import {Collection} from 'components/collection'
 import {mergeArrayInMap} from 'utils/iterable'
 
-const EXTRA_BLEED = 2 // the bigger the number, the bigger the impact in DOM perf on huge screens (it makes a lot more of elements)
-const THROTTLE = 17
+const EXTRA_BLEED = 3 // the bigger the number, the bigger the impact in DOM perf on huge screens (it renders a lot more of elements)
 export function VirtualList (sources_) {
   const {M, Screen} = sources_
   const vList$ = M.lens('vList')
@@ -61,18 +60,32 @@ export function VirtualList (sources_) {
     )
     .distinctUntilChanged()
 
-  const visibleRange$ = O.combineLatest(
-    offset$, visibleCount$,
-    (offset, visibleCount) => [offset, offset + visibleCount]
-  )
-
   const paddingTop$ = O.combineLatest(
-    offset$, rowLength$, itemHeight$,
-    (offset, rowLength, itemHeight) => offset / rowLength * itemHeight
-  ).distinctUntilChanged()
+      offset$, rowLength$, itemHeight$,
+      (offset, rowLength, itemHeight) => offset / rowLength * itemHeight
+    )
+    .distinctUntilChanged()
+
+  const visibleRange$ = O.combineLatest(
+      offset$, visibleCount$,
+      (offset, visibleCount) => [offset, offset + visibleCount]
+    )
+    .distinctUntilChanged()
+
+  const visibility$ = O.combineLatest(
+      offset$, rowLength$, itemHeight$, visibleCount$,
+      (offset, rowLength, itemHeight, visibleCount) => ({
+        paddingTop: offset / rowLength * itemHeight,
+        visibleRange: [offset, offset + visibleCount],
+      })
+    )
+    .distinctUntilChanged()
 
   const visibleItems$ = M.lens(L.lens(
-    ({items, vList}) => items.slice(...(vList.visibleRange || [0, 1])),
+    ({items, vList}) => items
+      .slice(...(vList.visibleRange || [0, 1]))
+      .map(x => ({...x, offsetTop: vList.paddingTop}))
+      .map(x => (console.log(x), x)),
     (items, model) => ({
       ...model,
       db: mergeArrayInMap(model.db, items),
@@ -80,16 +93,25 @@ export function VirtualList (sources_) {
   ))
 
   const sources = {...sources_, M: visibleItems$}
+  // const sources = {...sources_}
   const collection = Collection(sources)
   const vtree$ = collection.DOM
     .let(transformVtree(vList$))
-    .debounce(THROTTLE)
+    // .debounce(THROTTLE)
+
+  // const mod$ = O.merge(
+  //   vList$.lens('visibleRange').set(visibleRange$),
+  //   vList$.lens('paddingTop').set(paddingTop$),
+  //   vList$.lens('height').set(height$),
+  // )
+  visibility$.subscribe(x => console.log('out', x, Date.now()))
+  vList$.subscribe(x => console.log('in', x, Date.now()))
 
   const mod$ = O.merge(
-    vList$.lens('visibleRange').set(visibleRange$),
     vList$.lens('height').set(height$),
-    vList$.lens('paddingTop').set(paddingTop$),
+    vList$.mod(visibility$.map(x => y => ({...y, ...x})))
   )
+
   return {
     ...collection,
     M: O.merge(collection.M, mod$),
@@ -103,15 +125,16 @@ function transformVtree (vList$) {
     vtree$, vList$,
     (ul, {height, paddingTop}) => {
       const style = {'height': `${height}px`}
-      const children = ul.children.map(li => Object.assign(li, {
-        properties: {
-          ...li.properties,
-          style: {
-            ...li.properties.style,
-            transform: `translateY(${paddingTop}px)`,
-          },
-        },
-      }))
+      const children = ul.children
+        // .map(li => Object.assign(li, {
+        //   properties: {
+        //     ...li.properties,
+        //     style: {
+        //       ...li.properties.style,
+        //       transform: `translateY(${paddingTop}px)`,
+        //     },
+        //   },
+        // }))
       const hasClassName = (ul.properties.className
         .indexOf('virtualListContainer') != -1)
       const className = `${ul.properties.className || ''} virtualListContainer`

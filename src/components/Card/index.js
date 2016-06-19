@@ -14,7 +14,7 @@ import intent from './intent'
 export const Card = ({M, viewParam$, DOM}) => {
   const state$ = O.combineLatest(
     M, viewParam$,
-    (card, params) => ({
+    (card = {}, params) => ({
       ...card,
       editing: params.editing,
       benefits: benefits(card),

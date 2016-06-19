@@ -1,10 +1,9 @@
-import {div, h2, small, span, input, button} from '@cycle/dom'
+import {div, h2, small, span, input} from '@cycle/dom'
 import {k, humanize} from 'utils/currency'
-import {Hook} from 'utils/hook'
 
 import css from './card.css'
 import dot from 'utils/dot'
-import iconFavorites from 'icons/icon-eye.svg'
+import iconFavorites from 'icons/icon_eye.svg'
 import {Checkbox} from 'components/Checkbox'
 import {renderStockStatus} from './stockStatus'
 

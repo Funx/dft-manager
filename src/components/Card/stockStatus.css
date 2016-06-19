@@ -3,6 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
 
+  user-select: none;
   height: 6rem;
 
   color: #fff;
@@ -28,13 +29,23 @@
   cursor: pointer;
   padding: 0;
   margin: 0 .6rem;
+
+  transition: color .2s ease-in-out;
 }
 .hexagon.isActive {
   color: rgba(0, 0, 0, .4);
 }
-.hexagon:hover, .hexagon:focus, .hexagon:active {
-  color: rgba(0, 0, 0, .6);
+.hexagon:focus {
   outline: 0;
+}
+.hexagon:matches(:focus,:hover).isActive {
+  color: rgba(0, 0, 0, .5);
+}
+.hexagon:matches(:focus,:hover):not(.isActive) {
+  color: rgba(0, 0, 0, .3);
+}
+.hexagon:active, .hexagon:hover:active {
+  color: rgba(0, 0, 0, .7);
 }
 .inner1 {
   height: 6rem;
@@ -82,13 +93,26 @@
   align-items: center;
   text-align: center;
   padding: 0 .25rem;
-  line-height: normal;
+  line-height: 2rem;
 }
-.inner2 > * {
-  color: #fff;
+.content {
   flex: 1;
+  display: flex;
+  line-height: 2rem;
+  align-items: stretch;
+  justify-content: center;
 }
-
+.content svg {
+  width: 2rem;
+  fill: currentColor;
+  height: 2rem;
+  margin: 0;
+  line-height: 0;
+  float: left;
+}
+.content * {
+  line-height: 2rem;
+}
 .hexagon:first-child {
   margin-left: 0;
 }

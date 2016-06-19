@@ -1,22 +1,47 @@
+.stockStatus {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  height: 6rem;
+
+  color: #fff;
+  background: transparent;
+}
+.stockStatus > * {
+  color: #fff;
+  background: transparent;
+  background-color: rgba(0,0,0, .2);
+
+  font-size: 2rem;
+
+  flex: 2;
+}
+.stockStatus:last-child {
+  flex: 1;
+}
+
 .hexagon {
-  color: rgb(0,0,0);
+  color: rgba(0, 0, 0, .2);
   background-color: transparent;
   border: 0;
   cursor: pointer;
   padding: 0;
-  display: block;
-  flex: 1 1 33%;
+  margin: 0 .6rem;
+}
+.hexagon.isActive {
+  color: rgba(0, 0, 0, .4);
 }
 .hexagon:hover, .hexagon:focus, .hexagon:active {
-  color: rgb(200,50,0);
+  color: rgba(0, 0, 0, .6);
   outline: 0;
 }
 .inner1 {
   height: 6rem;
-  margin: 0 calc(-.9rem);
+  margin: 0 -1rem;
   padding: 0 1rem;
   position: relative;
-  display: inline-flex;
+  display: flex;
   overflow: hidden;
   align-items: stretch;
 }
@@ -53,14 +78,13 @@
 .inner2 {
   background-color: currentColor;
   display: flex;
+  flex: 1;
   align-items: center;
   text-align: center;
-  padding: 0 .75rem;
+  padding: 0 .25rem;
+  line-height: normal;
 }
 .inner2 > * {
-  position: relative;
-  z-index: 1;
-  left: .25rem;
   color: #fff;
   flex: 1;
 }
@@ -72,9 +96,6 @@
 .hexagon:first-child .inner2::before {
   display: none;
 }
-.hexagon:first-child .inner2 {
-  padding-left: 1.5rem;
-}
 .hexagon:first-child .inner2 > * {
   left: 0;
 }
@@ -84,10 +105,4 @@
 }
 .hexagon:last-child .inner1::after {
   display: none;
-}
-.hexagon:last-child .inner2 {
-  padding-right: 1.5rem;
-}
-.hexagon:last-child .inner2 > * {
-  left: .25rem;
 }

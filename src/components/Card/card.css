@@ -136,25 +136,3 @@
   fill: #fff;
   stroke-width: 0;
 }
-
-.stockStatus {
-  display: flex;
-  flex-direction: row;
-
-  height: 6rem;
-
-  color: #fff;
-  background: transparent;
-}
-.stockStatus > * {
-  color: #fff;
-  background: transparent;
-  background-color: rgba(0,0,0, .2);
-
-  font-size: 2rem;
-
-  flex: 2;
-}
-.stockStatus:last-child {
-  flex: 1;
-}

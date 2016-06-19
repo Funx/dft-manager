@@ -2,7 +2,13 @@ import {Observable as O} from 'rx'
 
 import view from './view'
 import {k, percent as perc, sign} from 'utils/currency'
-import {toggleBenefitsPrintMode, setPrice} from './actions'
+import {
+  toggleBenefitsPrintMode,
+  setPrice,
+  addToCrafts, rmFromCrafts,
+  addToStocks, rmFromStocks,
+  sell, unSell,
+} from './actions'
 import intent from './intent'
 
 export const Card = ({M, viewParam$, DOM}) => {
@@ -32,6 +38,12 @@ export const Card = ({M, viewParam$, DOM}) => {
     M.lens('price').mod(intents.save$.map(setPrice)),
     M.lens('favorites').set(intents.toggleFavorites$),
     M.lens('focused').set(intents.focus$),
+    M.mod(intents.craftBtnIntents.increment$.map(addToCrafts)),
+    M.mod(intents.craftBtnIntents.decrement$.map(rmFromCrafts)),
+    M.mod(intents.stockBtnIntents.increment$.map(addToStocks)),
+    M.mod(intents.stockBtnIntents.decrement$.map(rmFromStocks)),
+    M.mod(intents.sellBtnIntents.increment$.map(sell)),
+    M.mod(intents.sellBtnIntents.decrement$.map(unSell)),
   )
   return {
     DOM: vtree$,

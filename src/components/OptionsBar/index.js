@@ -1,6 +1,7 @@
 import {Observable as O} from 'rx'
 import {div} from '@cycle/dom'
 import isolate from '@cycle/isolate'
+import {L} from 'stanga'
 
 import SearchForm from 'components/SearchForm'
 import Dropdown from 'components/Dropdown'
@@ -32,10 +33,23 @@ export const OptionsBar = ({DOM, M}) => {
   const sortOrder = isolate(Dropdown(sortOrders), 'sortOrder')
     ({DOM, M: order$})
 
-  const filters$ = M.lens('filters')
-  const query$ = filters$.lens('query')
+  // const filters$ = M.lens(L.props('filters', 'outdated'))
+  const query$ = M.lens('filters').lens('query')
   const searchForm = SearchForm({DOM, M: query$})
-  const currentCategories$ = filters$.lens('currentCategories')
+  const currentCategories$ = M.lens(L.lens(
+    x => ({
+      outdated: x.outdated,
+      currentCategories: x.filters.currentCategories,
+    }),
+    (x, model) => ({
+      ...model,
+      outdated: x.outdated,
+      filters: {
+        ...model.filters,
+        currentCategories: x.currentCategories
+      },
+    })
+  ))
   const categories = Categories({DOM, M: currentCategories$})
 
   return {

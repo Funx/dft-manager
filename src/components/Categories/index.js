@@ -11,7 +11,7 @@ const availableCategories = {
     stocks: 'en vente',
   },
   rightSide: {
-    outdated: 'à mettre à jour (3)',
+    outdated: 'à mettre à jour',
   },
 }
 
@@ -19,10 +19,10 @@ export const Categories = ({DOM, M}) => {
   const state$ = M
   const intents = intent(DOM)
   const reflect = propName =>
-    M.mod(intents.getToggle(propName).map(toggleProp(propName)))
+    M.lens('currentCategories').mod(intents.getToggle(propName).map(toggleProp(propName)))
 
   const mod$ = O.merge(
-    M.mod(intents.getToggle('all').map(toggleAll)),
+    M.lens('currentCategories').mod(intents.getToggle('all').map(toggleAll)),
     reflect('favorites'),
     reflect('stocks'),
     reflect('crafts'),

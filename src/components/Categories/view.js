@@ -5,16 +5,17 @@ import dot from 'utils/dot'
 import {renderCheckbox} from 'components/Checkbox'
 
 export const view = options => M =>
-  M.map(model => {
-    const toCheckbox = renderCheckbox(model, dot(css.checkbox))
+  M.map(({currentCategories, outdated}) => {
+    const toCheckbox = renderCheckbox(currentCategories, dot(css.checkbox))
     return div(dot(css.container), [
       div(dot(css.all),
         mapObjKeys(toCheckbox, {all: options.all})),
       span(dot(css.separator), '|'),
       div(dot(css.leftSide),
         mapObjKeys(toCheckbox, options.leftSide)),
-      div(dot(css.rightSide),
-        mapObjKeys(toCheckbox, options.rightSide)),
+      div(dot(css.rightSide), [
+        mapObjKeys(toCheckbox, {outdated: options.rightSide.outdated + ' (' + outdated + ')'}),
+      ]),
     ])
   }
 )

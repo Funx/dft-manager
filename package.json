@@ -8,8 +8,6 @@
     "build-js": "webpack --progress --colors",
     "build": "npm run build-jade && npm run build-js",
     "watch-jade": "nodemon --watch ./src/index.jade --exec 'npm run build-jade'",
-    "watch-js": "webpack --progress --watch",
-    "watch": "npm run watch-jade & npm run watch-js",
     "dev-server": "webpack-dev-server --content-base dist/dev/ --host 0.0.0.0 --inline --hot --progress --watch",
     "build-prod": "webpack --config webpack.production.js -p --progress",
     "build-prod-server": "webpack --config webpack.server.js --progress",

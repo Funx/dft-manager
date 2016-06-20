@@ -1,6 +1,6 @@
 import {L} from 'stanga'
 import {Observable as O} from 'rx'
-import {pipe} from 'ramda'
+import {pipe, prop} from 'ramda'
 
 import OptionsBar from 'components/OptionsBar'
 import VirtualList from 'components/VirtualList'
@@ -15,9 +15,15 @@ import {view} from './view'
 export const Dashboard = ({DOM, M, Screen}) => {
   const optionsBar = OptionsBar({
     DOM,
-    M: M.lens(L.props(
-      'sortOptions',
-      'filters',
+    M: M.lens(L.compose(
+      L.augment({
+        outdated: x => x.items.filter(prop('outdated')).length
+      }),
+      L.props(
+        'sortOptions',
+        'filters',
+        'outdated',
+      )
     )),
   })
 

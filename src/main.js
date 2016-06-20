@@ -9,14 +9,22 @@ import layout from 'pages/layout.css'
 import {dot} from 'utils/dot'
 
 export const main = (responses) => {
-  responses.M.subscribe(x => console.log(x))
+  // responses.M.subscribe(x => console.log(x))
 
   const dashboard = Dashboard(responses)
   const navbar = Navbar(responses)
+  const outdated$ = responses.M.lens('db')
+    .map(db =>
+      [...db.values()]
+      .filter(x => !x.outdated)
+      .map(x => x.latestUpdate)
+    )
+
+  outdated$.subscribe(db => console.log(db))
 
   return {
     DOM: view(navbar.DOM, dashboard.DOM),
-    M: O.merge(dashboard.M),
+    M: O.merge(dashboard.M, outdated$),
   }
 }
 

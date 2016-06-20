@@ -13,6 +13,11 @@ export function attachMeta (list) {
       stocks: isComplex(obj) ? randomInterval(0, 2) : 0,
       sold: isComplex(obj) ? randomInterval(0, 25) : 0,
       outdated: proba(1/30),
+      latestUpdate: Date.now() + randomInterval(0, 100) - 10
+    }))
+    .map(x => ({
+      ...x,
+      outdated: (x.latestUpdate <= Date.now()),
     }))
 }
 
@@ -34,7 +39,7 @@ function proba (proba) {
 }
 
 function randomInterval (min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min 
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 function generateHueMap(list) {

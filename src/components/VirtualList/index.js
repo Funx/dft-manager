@@ -84,8 +84,7 @@ export function VirtualList (sources_) {
   const visibleItems$ = M.lens(L.lens(
     ({items, vList}) => items
       .slice(...(vList.visibleRange || [0, 1]))
-      .map(x => ({...x, offsetTop: vList.paddingTop}))
-      .map(x => (console.log(x), x)),
+      .map(x => ({...x, offsetTop: vList.paddingTop})),
     (items, model) => ({
       ...model,
       db: mergeArrayInMap(model.db, items),
@@ -104,8 +103,6 @@ export function VirtualList (sources_) {
   //   vList$.lens('paddingTop').set(paddingTop$),
   //   vList$.lens('height').set(height$),
   // )
-  visibility$.subscribe(x => console.log('out', x, Date.now()))
-  vList$.subscribe(x => console.log('in', x, Date.now()))
 
   const mod$ = O.merge(
     vList$.lens('height').set(height$),

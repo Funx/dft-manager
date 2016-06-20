@@ -12,8 +12,7 @@ export function attachMeta (list) {
       crafts: isComplex(obj) ? randomInterval(0, 1) : 0,
       stocks: isComplex(obj) ? randomInterval(0, 2) : 0,
       sold: isComplex(obj) ? randomInterval(0, 25) : 0,
-      outdated: proba(1/30),
-      latestUpdate: Date.now() + randomInterval(0, 100) - 10
+      latestUpdate: Date.now() + randomInterval(0, 1000000) - 100000,
     }))
     .map(x => ({
       ...x,

@@ -14,17 +14,19 @@ export const main = (responses) => {
   const dashboard = Dashboard(responses)
   const navbar = Navbar(responses)
   const outdated$ = responses.M.lens('db')
-    .map(db =>
-      [...db.values()]
-      .filter(x => !x.outdated)
-      .map(x => x.latestUpdate)
+    .flatMapLatest(db =>
+      O.fromArray([...db.values()].filter(x => !x.outdated))
+    )
+    .flatMap(x =>
+      O.of(x).delay((new Date(x.latestUpdate + 2000)))
     )
 
-  outdated$.subscribe(db => console.log(db))
+
+  // outdated$.subscribe(x => console.log(x))
 
   return {
     DOM: view(navbar.DOM, dashboard.DOM),
-    M: O.merge(dashboard.M, outdated$),
+    M: O.merge(dashboard.M),
   }
 }
 

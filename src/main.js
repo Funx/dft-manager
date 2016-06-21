@@ -9,9 +9,7 @@ import layout from 'pages/layout.css'
 import {dot} from 'utils/dot'
 
 const EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000
-// const EXPIRY_TIME = 1000
 export const main = (responses) => {
-  // responses.M.lens('db').subscribe(x => console.log([...x.values()]))
   const dashboard = Dashboard(responses)
   const navbar = Navbar(responses)
   const outdated$ = responses.M.lens('db')
@@ -28,7 +26,6 @@ export const main = (responses) => {
       db.update(x.id, x => ({...x, outdated: true}))
     )
   )
-
   return {
     DOM: view(navbar.DOM, dashboard.DOM),
     M: O.merge(dashboard.M, mod$),

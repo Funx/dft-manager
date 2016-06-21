@@ -46,15 +46,16 @@ export const Dashboard = ({DOM, M, Screen}) => {
       'filters',
       'sortOptions',
     ))
+    .distinctUntilChanged()
     .map(({db, filters = {}, sortOptions = {}}) =>
       pipe(
         calcCosts,
-        x => x.toJS(),
-        x => Object.keys(x).map(key => x[key]),
         filterFn(filters),
+        x => x.toArray(),
         sortFn(sortOptions),
       )(db)
     )
+    .shareReplay(1)
 
   const mod$ = M.lens('items').set(searchResults$)
 

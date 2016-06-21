@@ -5,10 +5,10 @@ function removeDiacritics (str = '') {
 }
 
 export const filterFn = curry(({query, currentCategories}, list) => {
-  return list.filter(allPass([
+  return filter(allPass([
     queryPredicate(query),
     categoriesPredicate(currentCategories),
-  ]))
+  ]))(list)
 })
 
 function queryPredicate (queryStr = '') {

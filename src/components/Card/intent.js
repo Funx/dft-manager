@@ -41,8 +41,8 @@ function btnIntent (DOM, className) {
       O.of('down').concat(
         O.merge(
           $craftBtn.events('mouseup').map(() => 'up'),
-          O.interval(250).map(() => 'up'),
-          $craftBtn.events('mousemove').map(() => 'move'),
+          O.interval(300).map(() => 'up'),
+          $craftBtn.events('mouseleave').map(() => 'move'),
           $craftBtn.events('contextmenu').map(() => 'right')
         ).first()
       ),
@@ -50,11 +50,12 @@ function btnIntent (DOM, className) {
     .distinctUntilChanged()
     .timeInterval()
     .filter(x => x.value == 'up')
+    .shareReplay(1)
 
   const shortClick$ = mousedown$
-    .filter(x => x.interval < 250)
+    .filter(x => x.interval < 300)
   const longClick$ = mousedown$
-    .filter(x => x.interval >= 250)
+    .filter(x => x.interval >= 300)
   const rightClick$ = $craftBtn.events('contextmenu')
     .do(x => x.preventDefault())
     .debounce(1)

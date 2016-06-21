@@ -1,8 +1,9 @@
 import {L} from 'stanga'
 import {Observable as O} from 'rx'
-
+import {Map} from 'immutable'
 import {Collection} from 'components/collection'
 import {mergeArrayInMap} from 'utils/iterable'
+import {logFnArgs} from 'utils/debug'
 
 const EXTRA_BLEED = 3 // the bigger the number, the bigger the impact in DOM perf on huge screens (it renders a lot more of elements)
 export function VirtualList (sources_) {
@@ -87,16 +88,14 @@ export function VirtualList (sources_) {
       .map(x => ({...x, offsetTop: vList.paddingTop})),
     (items, model) => ({
       ...model,
-      db: mergeArrayInMap(model.db, items),
+      db: model.db.merge(new Map(items.map(x => [x.id, x]))),
     })
   ))
 
   const sources = {...sources_, M: visibleItems$}
-  // const sources = {...sources_}
   const collection = Collection(sources)
   const vtree$ = collection.DOM
     .let(transformVtree(vList$))
-    // .debounce(THROTTLE)
 
   // const mod$ = O.merge(
   //   vList$.lens('visibleRange').set(visibleRange$),

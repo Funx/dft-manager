@@ -5,8 +5,6 @@ import {pipe, prop} from 'ramda'
 import OptionsBar from 'components/OptionsBar'
 import VirtualList from 'components/VirtualList'
 
-import {fromMapToArray, mergeMaps} from 'utils/iterable'
-
 import {filterFn} from './filterFn'
 import {sortFn} from './sortFn'
 import {calcCosts} from './calcCosts'
@@ -17,7 +15,7 @@ export const Dashboard = ({DOM, M, Screen}) => {
     DOM,
     M: M.lens(L.compose(
       L.augment({
-        outdated: x => x.items.filter(prop('outdated')).length
+        outdated: x => x.items.filter(prop('outdated')).length,
       }),
       L.props(
         'sortOptions',
@@ -33,7 +31,7 @@ export const Dashboard = ({DOM, M, Screen}) => {
       ({db, items, vList}, model) => ({
         ...model,
         vList,
-        db: mergeMaps(model.db, db),
+        db: model.db.merge(db),
       })
     ))
   const collection = VirtualList({
@@ -51,7 +49,8 @@ export const Dashboard = ({DOM, M, Screen}) => {
     .map(({db, filters = {}, sortOptions = {}}) =>
       pipe(
         calcCosts,
-        fromMapToArray,
+        x => x.toJS(),
+        x => Object.keys(x).map(key => x[key]),
         filterFn(filters),
         sortFn(sortOptions),
       )(db)

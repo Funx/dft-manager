@@ -8,21 +8,31 @@ import './reset.css'
 import layout from 'pages/layout.css'
 import {dot} from 'utils/dot'
 
+// const EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000
+const EXPIRY_TIME = 1000
 export const main = (responses) => {
-  // responses.M.subscribe(x => console.log(x))
-
+  // responses.M.lens('db').subscribe(x => console.log([...x.values()]))
   const dashboard = Dashboard(responses)
   const navbar = Navbar(responses)
-  const outdated$ = responses.M.lens('db')
-    .flatMapLatest(db =>
-      O.fromArray([...db.values()].filter(x => !x.outdated))
-    )
-    .flatMap(x =>
-      O.of(x).delay((new Date(x.latestUpdate + 2000)))
-    )
-
-
-  // outdated$.subscribe(x => console.log(x))
+  // const outdated$ = responses.M.lens('db')
+  //   .flatMap(db => O.fromArray(
+  //     [...db.values()].filter(x => !x.outdated)
+  //   ))
+  //   .flatMap(x => O.of(x)
+  //     .delay((new Date(x.latestUpdate + EXPIRY_TIME)))
+  //     .takeUntil(responses.M.lens('db').skip(1))
+  //   )
+  //
+  // const mod$ = responses.M.lens('db').mod(
+  //   outdated$.map(x => model =>
+  //     new Map(...model.set(x.id, {
+  //       ...model.get(x.id),
+  //       outdated: true,
+  //     }))
+  //   )
+  // )
+  // mod$.subscribe(x => console.log(x))
+  // outdated$.subscribe(x => console.log('expired:', x))
 
   return {
     DOM: view(navbar.DOM, dashboard.DOM),

@@ -1,13 +1,8 @@
 export function calcCosts (db) {
-  return new Map(
-    [...db.entries()]
-      .map(([id, x]) => ({
-        ...x,
-        id,
-        cost: cost(db, x),
-      }))
-      .map(x => [x.id, x])
-    )
+  return db.map(x => ({
+    ...x,
+    cost: cost(db, x),
+  }))
 }
 
 export default calcCosts

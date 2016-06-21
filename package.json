@@ -59,6 +59,7 @@
     "diacritics": "^1.2.3",
     "express": "latest",
     "history": "^2.1.0",
+    "immutable": "^3.8.1",
     "lost": "latest",
     "next-tick": "^0.2.2",
     "ramda": "latest",

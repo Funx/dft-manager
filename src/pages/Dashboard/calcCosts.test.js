@@ -1,5 +1,6 @@
 import {createGroup, assert} from 'painless'
 import {calcCosts, isRecipeValid, isIngredientValid} from './calcCosts'
+import {Map} from 'immutable'
 
 const test = createGroup('dashboard/calcCosts')
 test('isIngredientValid', () => {

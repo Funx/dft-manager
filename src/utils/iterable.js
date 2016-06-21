@@ -1,7 +1,6 @@
 import {curry} from 'ramda'
 
 const toPairsByKey = curry((key, x) => [x[key], x])
-// const toPairs = toPairsByKey('id')
 export const fromArrayToMapByKey = curry((key, list) =>
   new Map(list.map(toPairsByKey(key))))
 export const fromArrayToMap = fromArrayToMapByKey('id')
@@ -19,14 +18,3 @@ export const mergeArraysByKey = curry((key, arr1, arr2) =>
       fromArrayToMapByKey(key, arr1), arr2)))
 
 export const mergeArrays = mergeArraysByKey('id')
-
-// const original = new Map([
-//   ['doNotEdit', 'prev'],
-//   ['toEdit', 'prev'],
-// ])
-// const edit = new Map([
-//   ['toEdit', 'new'],
-//   ['newItem', 'new'],
-// ])
-// const result = mergeMaps(original, edit)
-// console.log('mergeMaps', result)

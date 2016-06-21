@@ -1,12 +1,12 @@
 import {prop, pipe, filter} from 'ramda'
 import db from './bdd'
 import {attachMeta} from './attachMetadata'
-import {fromArrayToMap} from 'utils/iterable'
+import {Map} from 'immutable'
 
 const normalizeDB = pipe(
   filter(prop('name')),
   attachMeta,
-  fromArrayToMap,
+  x => new Map(x.map(y => [y.id, y])),
 )
 
 export const initialState = {

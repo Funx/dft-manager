@@ -30,3 +30,13 @@ export function humanize (val, simplifyNumber = true) {
     'fr-FR', {maximumSignificantDigits: simplifyNumber ? 3 : 21})
   return formatter.format(val)
 }
+
+// const leftPad = (n) => String("00000" + n).slice(-5)
+const rightPad = (x) => String(x + '000000').slice(0, 6)
+export function parseInputPrice (val = '') {
+  const value = val.split('M')
+    .map(x => x.replace(/[^0-9]/gi, ''))
+  return (value.length == 2)
+    ? parseInt(value[0]) * 1000000 + parseInt(rightPad(value[1] || '0'))
+    : parseInt(value[0])
+}

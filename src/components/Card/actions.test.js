@@ -7,19 +7,28 @@ test('toggleBenefitsPrintMode', () => {
   assert.equal(fn('k'), '%')
   assert.equal(fn('%'), 'k')
 })
-
 import {setPrice} from './actions'
 test('setPrice', () => {
-  assert.equal(setPrice('100')(), 100)
-  assert.equal(setPrice('1 000')(), 1000)
-  assert.equal(setPrice('1k')(), 1)
-  assert.equal(setPrice('1M')(), 1000000)
-  assert.equal(setPrice('1M234')(), 1234000)
-  assert.equal(setPrice('1M234k')(), 1234000)
-  assert.equal(setPrice('0')(10), 0)
-  assert.equal(setPrice('invalid')(10), 10)
-})
+  const yesterday = 'yesterday'
+  const now = 'now'
 
+  assert.deepEqual(
+    setPrice('100', now)({latestUpdate: yesterday}),
+    {latestUpdate: now, price: 100})
+
+  assert.deepEqual(
+    setPrice('1M234k', now)({latestUpdate: yesterday}),
+    {latestUpdate: now, price: 1234000})
+
+  assert.deepEqual(
+    setPrice('0', now)({latestUpdate: yesterday, price: 10}),
+    {latestUpdate: now, price: 0})
+
+  assert.deepEqual(
+    setPrice('invalid', now)({latestUpdate: yesterday, price: 10}),
+    {latestUpdate: yesterday, price: 10}
+  )
+})
 import {addToCrafts} from './actions'
 test('addToCrafts', () => {
   const action = addToCrafts()
@@ -52,11 +61,16 @@ test('rmFromStocks', () => {
 import {sell} from './actions'
 test('sell', () => {
   const action = sell()
-  assert.deepEqual(action({}),
+  assert.deepEqual(
+    action({}),
     {crafts: 0, stocks: 0, sold: 1})
-  assert.deepEqual(action({crafts: 2, stocks: 2, sold: 0}),
+
+  assert.deepEqual(
+    action({crafts: 2, stocks: 2, sold: 0}),
     {crafts: 2, stocks: 1, sold: 1})
-  assert.deepEqual(action({crafts: 2, stocks: 0, sold: 0}),
+
+  assert.deepEqual(
+    action({crafts: 2, stocks: 0, sold: 0}),
     {crafts: 1, stocks: 0, sold: 1})
 })
 

@@ -46,6 +46,8 @@ export const Card = ({M, viewParam$, DOM}) => {
     M.mod(intents.sellBtnIntents.decrement$.map(unSell)),
   )
 
+
+
   return {
     DOM: vtree$,
     M: mod$,

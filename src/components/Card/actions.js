@@ -1,3 +1,4 @@
+import {parseInputPrice} from 'utils/currency'
 const min0 = x => Math.max((x || 0), 0)
 const add1 = x => (x || 0) + 1
 const rm1 = x => (x || 0) - 1
@@ -6,16 +7,14 @@ const decrement = x => min0(rm1(x))
 export function toggleBenefitsPrintMode () {
   return state => (state == '%') ? 'k' : '%'
 }
-
-import {parseInputPrice} from 'utils/currency'
-export function setPrice (val, now) {
+export function setPrice ({value, timestamp}) {
   return prev => {
-    const price = parseInputPrice(val)
+    const price = parseInputPrice(value)
     return Number.isNaN(price)
       ? prev
       : {
         ...prev,
-        latestUpdate: now,
+        latestUpdate: timestamp,
         price,
       }
   }

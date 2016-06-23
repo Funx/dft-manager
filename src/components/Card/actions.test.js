@@ -13,19 +13,23 @@ test('setPrice', () => {
   const now = 'now'
 
   assert.deepEqual(
-    setPrice('100', now)({latestUpdate: yesterday}),
+    setPrice({value: '100', timestamp: now})
+      ({latestUpdate: yesterday}),
     {latestUpdate: now, price: 100})
 
   assert.deepEqual(
-    setPrice('1M234k', now)({latestUpdate: yesterday}),
+    setPrice({value: '1M234k', timestamp: now})
+      ({latestUpdate: yesterday}),
     {latestUpdate: now, price: 1234000})
 
   assert.deepEqual(
-    setPrice('0', now)({latestUpdate: yesterday, price: 10}),
+    setPrice({value: '0', timestamp: now})
+      ({latestUpdate: yesterday, price: 10}),
     {latestUpdate: now, price: 0})
 
   assert.deepEqual(
-    setPrice('invalid', now)({latestUpdate: yesterday, price: 10}),
+    setPrice({value: 'invalid', timestamp: now})
+      ({latestUpdate: yesterday, price: 10}),
     {latestUpdate: yesterday, price: 10}
   )
 })

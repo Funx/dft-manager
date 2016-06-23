@@ -33,23 +33,11 @@ export const OptionsBar = ({DOM, M}) => {
   const sortOrder = isolate(Dropdown(sortOrders), 'sortOrder')
     ({DOM, M: order$})
 
-  // const filters$ = M.lens(L.props('filters', 'outdated'))
   const query$ = M.lens('filters').lens('query')
   const searchForm = SearchForm({DOM, M: query$})
-  const currentCategories$ = M.lens(L.lens(
-    x => ({
-      outdated: x.outdated,
-      currentCategories: x.filters.currentCategories,
-    }),
-    (x, model) => ({
-      ...model,
-      outdated: x.outdated,
-      filters: {
-        ...model.filters,
-        currentCategories: x.currentCategories
-      },
-    })
-  ))
+  const currentCategories$ = M.lens(
+    L.pick({outdated: "outdated", currentCategories: L.compose("filters", "currentCategories")})
+  )
   const categories = Categories({DOM, M: currentCategories$})
 
   return {

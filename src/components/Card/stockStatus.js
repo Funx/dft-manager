@@ -11,8 +11,10 @@ export function renderStockStatus (item) {
   return div(dot(css.stockStatus),
     {style: {background: color}},
     [
-      arrowButton(`.i-crafts${item.crafts ? dot(css.isActive) : ''}`,
-        span({style: {color}}, [svgIcon(iconCrafts), ` ${item.crafts}`])),
+      (item.recipe.length)
+        ? arrowButton(`.i-crafts${item.crafts ? dot(css.isActive) : ''}`,
+          span({style: {color}}, [svgIcon(iconCrafts), ` ${item.crafts}`]))
+        : '',
       arrowButton(`.i-stocks${item.stocks ? dot(css.isActive) : ''}`,
         span({style: {color}}, [svgIcon(iconStocks), ` ${item.stocks}`])),
       arrowButton(`.i-sold`,

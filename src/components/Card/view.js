@@ -18,7 +18,7 @@ export const view = (M) => {
         div(dot(css.container), [
           div(dot(css.innerWrapper), [
             div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
-              `${invalidCost(card) ? '?' : k(card.cost)} -> ${infiniteProfit(card) ? '∞' : k(card.price)}${infiniteProfit(card) ? '' : ' | ' + card.secondaryInfo}`,
+              `${invalidCost(card) ? '?' : k(card.cost)} -> ${infiniteProfit(card) ? '∞' : k(card.price)}${(infiniteProfit(card) || invalidCost(card)) ? '' : ' | ' + card.secondaryInfo}`,
               Checkbox(
                 dot(css.favorite), '.m-favorites',
                 {checked: card.favorites, tabIndex: card.editing ? '-1' : ''},
@@ -73,4 +73,4 @@ const isProfitable = profitability(200000, .15)
 const isSuperProfitable = profitability(400000, .30)
 const isOverProfitable = profitability(800000, .50)
 const infiniteProfit = x => (x.price == 0 && x.recipe.length)
-const invalidCost = x => (x.cost == 0 && x.recipe.length)
+const invalidCost = x => (x.cost == 0)

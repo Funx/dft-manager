@@ -4,21 +4,24 @@ export default intent
 export function intent (DOM) {
   const $mainInfo = DOM.select('.mainInfo')
   const $mPrice = DOM.select('.m-price')
-  const click$ = $mainInfo.events('click')
+  const click$ = $mainInfo.events('click').share()
+
   const buffer$ = click$
-    .buffer(() => click$.debounce(250))
+    .buffer(() => click$.debounce(300))
     .map(x => x.length)
+    .share()
 
   return {
     toggleBenefitsPrintMode$: buffer$.filter(x => x == 1),
     save$: $mPrice.events('blur').map(x => x.target.value)
-      .distinctUntilChanged(),
+      .distinctUntilChanged()
+      .timestamp(),
     focus$: O.merge(
       $mPrice.events('focus').map(true),
       $mPrice.events('blur').map(false),
     ),
     startEdit$: O.merge(
-      buffer$.filter(x => x == 2),
+      buffer$.filter(x => x >= 2),
       $mPrice.events('focus').map(true),
     ),
     endEdit$: O.merge(

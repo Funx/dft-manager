@@ -5,7 +5,6 @@
   right: 3rem;
   background: #111;
   border: #eee 1px solid;
-  padding: 1rem;
   max-width: 28rem;
   /*width: 100%;*/
   box-shadow: 4px 4px 16px color(#111 alpha(20%));
@@ -17,4 +16,22 @@
     left: .5rem;
     right: .5rem;
   }
+}
+
+.logs {
+  padding: 1rem;
+  background-color: #eee;
+}
+
+.input {
+  padding: 1rem;
+  color: #eee;
+  background: transparent;
+  border: 0;
+  width: 100%;
+  display: block;
+  border-top: 1px solid #eee;
+}
+.input:focus {
+  outline: 0;
 }

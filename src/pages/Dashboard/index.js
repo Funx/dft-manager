@@ -50,8 +50,8 @@ export const Dashboard = ({DOM, M, Screen}) => {
     .map(({db, filters = {}, sortOptions = {}}) =>
       pipe(
         calcCosts,
-        filterFn(filters),
         x => x.toArray(),
+        filterFn(filters),
         sortFn(sortOptions),
       )(db)
     )

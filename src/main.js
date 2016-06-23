@@ -28,16 +28,17 @@ export const main = (responses) => {
   )
   return {
     DOM: view(navbar.DOM, dashboard.DOM),
-    M: O.merge(dashboard.M, mod$),
+    M: O.merge(dashboard.M, mod$).do(x => console.time('MOD -> DRAW')),
   }
 }
 
 export default main
 
+import {Hook} from 'utils/hook'
 const view = (navbar, dashboard) => O.combineLatest(
   navbar, dashboard,
   (navbar, dashboard) =>
-    div(dot(layout.layout), [
+    div(dot(layout.layout), {'test': Hook(x => console.timeEnd('MOD -> DRAW'))}, [
       div(dot(layout.shrink), navbar),
       div(dot(layout.grow), dashboard),
     ])

@@ -4,6 +4,7 @@ import {pipe, prop} from 'ramda'
 
 import OptionsBar from 'components/OptionsBar'
 import VirtualList from 'components/VirtualList'
+import Logger from 'components/Logger'
 
 import {filterFn} from './filterFn'
 import {sortFn} from './sortFn'
@@ -39,6 +40,7 @@ export const Dashboard = ({DOM, M, Screen}) => {
     M: virtualListM,
     viewParam$: M.lens('display'),
   })
+  const logger = Logger({})
 
   const searchResults$ = M
     .lens(L.props(
@@ -60,8 +62,8 @@ export const Dashboard = ({DOM, M, Screen}) => {
   const mod$ = M.lens('items').set(searchResults$)
 
   return {
-    DOM: view(virtualListM.lens('items'), optionsBar, collection),
-    M: O.merge(optionsBar.M, collection.M, mod$),
+    DOM: view(M.lens('items'), optionsBar, collection, logger),
+    M: O.merge(optionsBar.M, collection.M, logger.M, mod$),
   }
 }
 export default Dashboard

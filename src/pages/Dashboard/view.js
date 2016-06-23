@@ -5,14 +5,15 @@ import css from './searchable.css'
 
 import renderStatus from './renderStatus'
 
-export const view = (M, searchForm$, collection$) =>
+export const view = (M, searchForm$, collection$, logger$) =>
   O.combineLatest(
-    M, searchForm$.DOM, collection$.DOM,
-    (searchResults, searchForm, collection) =>
+    M, searchForm$.DOM, collection$.DOM, logger$.DOM,
+    (searchResults, searchForm, collection, logger) =>
       div(dot(css.contentWrapper), [
         searchForm,
         renderStatus(searchResults),
         collection,
+        logger,
       ])
   )
 

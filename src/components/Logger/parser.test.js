@@ -18,20 +18,20 @@ test('splitLogs', () => {
 import {parseLog} from './parser'
 test('parseLog', () => {
   assert.deepEqual(
-    parseLog('[12:12] (Info) 10 x [Ailes de Moskito] (789 kamas)'),
+    parseLog('[12:12] (Info) 10 x [Ailes de Moskito] (789 000 kamas)'),
     {
       type: 'BUY',
       quantity: '10',
-      price: '789',
+      price: '789 000',
       name: 'Ailes de Moskito',
     },
   )
   assert.deepEqual(
-    parseLog('[12:13] (Info) Banque : + 100 Kamas (vente : 10 [Ailes de Moskito]).'),
+    parseLog('[12:13] (Info) Banque : + 100 000 Kamas (vente : 10 [Ailes de Moskito]).'),
     {
       type: 'SELL',
       quantity: '10',
-      price: '100',
+      price: '100 000',
       name: 'Ailes de Moskito',
     }
   )

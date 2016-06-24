@@ -35,9 +35,10 @@ export const OptionsBar = ({DOM, M}) => {
 
   const query$ = M.lens('filters').lens('query')
   const searchForm = SearchForm({DOM, M: query$})
-  const currentCategories$ = M.lens(
-    L.pick({outdated: "outdated", currentCategories: L.compose("filters", "currentCategories")})
-  )
+  const currentCategories$ = M.lens(L.pick({
+    outdated: "outdated",
+    currentCategories: L.compose("filters", "currentCategories")
+  }))
   const categories = Categories({DOM, M: currentCategories$})
 
   return {

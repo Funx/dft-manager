@@ -31,6 +31,10 @@ export const initialState = {
     benefits: '%',
   },
   vList: {},
+  logger: {
+    draft: '',
+    logs: ['Hellooo', 'from', 'the', 'other', 'siiiiiide'],
+  }
 }
 
 export default initialState

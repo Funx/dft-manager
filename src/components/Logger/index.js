@@ -1,24 +1,23 @@
 import {Observable as O} from 'rx'
-import {div, ul, li, textarea} from '@cycle/dom'
+import {L} from 'stanga'
 
-import css from './logger.css'
-import dot from 'utils/dot'
+import {intents} from './intents'
+import {view} from './view'
+import {appendLogs} from './actions'
+import {parseLogs} from './parser'
 
-export function Logger ({}) {
+export function Logger ({DOM, M}) {
+  const intent = intents({DOM})
+  const update$ = intent.submit$
+    .map(parseLogs)
+  const mod$ = O.merge(
+      M.lens('draft').set(intent.draft$),
+      M.lens('logs').mod(update$.map(appendLogs)),
+      // M.lens('db').mod(intent.submit$.map(parseLog)),
+    )
   return {
-    DOM: O.of(
-      div(dot(css.logger), [
-        ul(dot(css.logs), [
-          li(dot(css.log), ['Hellooo']),
-          li(dot(css.log), ['From']),
-          li(dot(css.log), ['the']),
-          li(dot(css.log), ['other']),
-          li(dot(css.log), ['siiiiiide']),
-        ]),
-        textarea(dot(css.input), {placeholder: '>_'}),
-      ])
-    ),
-    M: O.empty(),
+    DOM: view(M.lens(L.props('draft', 'logs'))),
+    M: mod$,
   }
 }
 export default Logger

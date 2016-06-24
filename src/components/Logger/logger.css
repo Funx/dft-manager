@@ -1,37 +1,61 @@
 .logger {
   position: fixed;
+  right: 3rem;
   bottom: 3rem;
   left: 3rem;
-  right: 3rem;
-  background: #111;
-  border: #eee 1px solid;
+
   max-width: 28rem;
+
+  border: #eee 1px solid;
+  background: #111;
   /*width: 100%;*/
   box-shadow: 4px 4px 16px color(#111 alpha(20%));
 }
 
 @media (max-width: 400px) {
   .logger {
+    right: .5rem;
     bottom: .5rem;
     left: .5rem;
-    right: .5rem;
   }
 }
 
 .logs {
-  padding: 1rem;
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+
   background-color: #eee;
+}
+.log {
+  padding: .5rem 1rem;
+
+  border-top: #ddd 1px solid;
+  border-bottom: #ddd 1px solid;
 }
 
 .input {
-  padding: 1rem;
-  color: #eee;
-  background: transparent;
-  border: 0;
-  width: 100%;
   display: block;
+
+  width: 100%;
+  padding: 1rem;
+
+  color: #eee;
+  border: 0;
   border-top: 1px solid #eee;
+  background: transparent;
 }
 .input:focus {
   outline: 0;
+}
+.submit {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  display: none;
+}
+.input:valid ~ .submit {
+  display: block;
 }

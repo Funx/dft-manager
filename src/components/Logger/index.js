@@ -8,12 +8,12 @@ import {parseLogs} from './parser'
 
 export function Logger ({DOM, M}) {
   const intent = intents({DOM})
-  const update$ = intent.submit$
+  const gameEvents$ = intent.submit$
     .map(parseLogs)
   const mod$ = O.merge(
       M.lens('draft').set(intent.draft$),
-      M.lens('logs').mod(update$.map(appendLogs)),
-      // M.lens('db').mod(intent.submit$.map(parseLog)),
+      M.lens('logs').mod(gameEvents$.map(appendLogs)),
+      M.lens('db').mod(gameEvents$.map(updateDB)),
     )
   return {
     DOM: view(M.lens(L.props('draft', 'logs'))),

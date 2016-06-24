@@ -33,7 +33,7 @@ export const initialState = {
   vList: {},
   logger: {
     draft: '',
-    logs: ['Hellooo', 'from', 'the', 'other', 'siiiiiide'],
+    logs: [],
   }
 }
 

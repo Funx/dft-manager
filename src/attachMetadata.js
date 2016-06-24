@@ -6,6 +6,8 @@ export function attachMeta (list) {
   return list
     .map(obj => ({
       ...obj,
+      id: obj.id.match(/\d+-(.*)/)[1], // remove the numbers (1556-xyz -> xyz)
+      recipe: obj.recipe.map(x => ({...x, id: x.id.match(/\d+-(.*)/)[1]})), // same thing
       hue: hueMap[obj.type],
       price: proba(1/20) ? 0 : randomInterval(...priceInterval(obj.type)),
       favorites: isComplex(obj) ? proba(1/5) : false,

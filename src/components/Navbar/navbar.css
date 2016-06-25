@@ -9,7 +9,7 @@
   color: #fff;
   text-align: center;
   flex-direction: column;
-  width: 8rem;
+  width: 2rem;
   display: block;
   margin-right: 2rem;
 
@@ -17,9 +17,9 @@
     display: block;
   }
   & > span:first-child {
-    font-size: 4rem;
+    font-size: 3rem;
   }
   & > span:last-child {
-    font-size: 1.6rem;
+    font-size: .8rem;
   }
 }

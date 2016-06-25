@@ -1,3 +1,13 @@
-.container {
+.fixedContainer {
   display: flex;
+  position: fixed;
+  right: 0rem;
+  left: 4rem;
+  top: 0;
+  z-index: 2;
+  background: #eee;
+  padding: 1rem 2rem;
+}
+.placeholder {
+  height: 1rem;
 }

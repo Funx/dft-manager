@@ -53,9 +53,10 @@ function view (searchForm, sortProp, sortOrder, categories) {
     searchForm, sortProp, sortOrder, categories,
     (searchForm, sortProp, sortOrder, categories) =>
     div([
-      div(dot(css.container), [
+      div(dot(css.fixedContainer), [
         searchForm, sortProp, sortOrder,
       ]),
+      div(dot(css.placeholder)),
       categories,
     ])
   )

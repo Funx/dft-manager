@@ -14,26 +14,18 @@
 
 .children {
   box-sizing: border-box;
-  flex: 1 1 24rem;
+  flex: 1 1 20rem;
   padding: 1rem;
   max-width: 100%;
   opacity: 1;
-  /*animation-name: appear;
-  animation-duration: .2s;
-  animation-fill-mode: forwards;*/
 
   @media screen and (min-width: 32rem) {
-    max-width: 50%;
-  }
-  @media screen and (min-width: 64rem) {
     max-width: 33.33333%;
   }
-  @media screen and (min-width: 96rem) {
+  @media screen and (min-width: 64rem) {
     max-width: 25%;
   }
-}
-
-@keyframes appear {
-    from {opacity: 0;}
-    to {opacity: 1;}
+  @media screen and (min-width: 96rem) {
+    max-width: 20%;
+  }
 }

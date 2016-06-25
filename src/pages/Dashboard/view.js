@@ -9,11 +9,14 @@ export const view = (M, searchForm$, collection$, logger$) =>
   O.combineLatest(
     M, searchForm$.DOM, collection$.DOM, logger$.DOM,
     (searchResults, searchForm, collection, logger) =>
-      div(dot(css.contentWrapper), [
-        searchForm,
-        renderStatus(searchResults),
-        collection,
-        logger,
+      div(dot(css.mainFrame), [
+        div(dot(css.loggerWrapper), [logger]),
+        div(dot(css.contentWrapper), [
+          searchForm,
+          renderStatus(searchResults),
+          collection,
+          div(dot(css.overlay)),
+        ]),
       ])
   )
 

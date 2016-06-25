@@ -19,7 +19,8 @@ export function view (M) {
 
 function renderLog (log) {
   return li(dot(css.log), [
-    `[${log.type}] ${log.quantity} × ${log.name}`,
+    span(dot(css.icon), `[${log.type.charAt(0) + log.type.charAt(1)}]`),
+    `${log.quantity} × ${log.name}`,
     log.price ? ` ${k(log.price)}` : '',
     log.price ? small(` (${k(log.price / log.quantity)}/u)`) : '',
   ])

@@ -6,10 +6,12 @@
   min-height: 100vh;
 }
 
-.grow {
+.content {
   flex: 1 0 auto;
 }
 
-.shrink {
+.header {
   flex: 0 1 auto;
+  position: relative;
+  z-index: 2;
 }

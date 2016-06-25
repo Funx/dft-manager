@@ -1,5 +1,54 @@
+.mainFrame {
+  flex-direction: row;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.loggerWrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 24rem;
+  z-index: 1;
+  overflow: hidden;
+  opacity: .8;
+  transform: translateX(-1rem);
+  transition: .5s ease-in-out;
+}
+.loggerWrapper:hover {
+  opacity: 1;
+  transform: translateX(0);
+}
 .contentWrapper {
   padding: 2rem;
+  padding-bottom: 50rem;
+  position: relative;
+  left: 4rem;
+  margin: 0;
+  z-index: 2;
+  background: #eee;
+  max-width: calc(100% - 4rem);
+  min-height: 100vh;
+  transition: .5s cubic-bezier(.65,0,.45,1);
+}
+.loggerWrapper:hover ~ .contentWrapper {
+  transform: translateX(20rem);
+}
+.overlay {
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #111;
+  opacity: 0;
+  transition: .2s ease-in-out;
+}
+.loggerWrapper:hover ~ .contentWrapper .overlay {
+  opacity: .2;
 }
 
 .statusBar {

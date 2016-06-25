@@ -1,17 +1,15 @@
 import {Observable as O} from 'rx'
+import {L} from 'stanga'
 
 import view from './view'
 import {k, percent as perc, sign} from 'utils/currency'
 import {
   toggleBenefitsPrintMode,
-  setPrice,
-  addToCrafts, rmFromCrafts,
-  addToStocks, rmFromStocks,
-  sell, unSell,
+  append,
 } from './actions'
 import intent from './intent'
 
-export const Card = ({M, viewParam$, DOM}) => {
+export const Card = ({M, updates$, viewParam$, DOM}) => {
   const state$ = O.combineLatest(
     M, viewParam$,
     (card = {}, params) => ({
@@ -30,23 +28,58 @@ export const Card = ({M, viewParam$, DOM}) => {
 
   const vtree$ = view(state$)
   const intents = intent(DOM)
+  const update$ = O.merge(
+      intents.save$.map(price => ({
+        type: 'SET_PRICE',
+        price,
+      })),
+      intents.craftBtnIntents.increment$.map(() => ({
+        type: 'PLAN',
+        quantity: 1,
+      })),
+      intents.craftBtnIntents.decrement$.map(() => ({
+        type: 'RM_PLANNED',
+        quantity: 1,
+      })),
+      intents.stockBtnIntents.increment$.map(() => ({
+        type: 'CRAFT',
+        quantity: 1,
+      })),
+      intents.stockBtnIntents.decrement$.map(() => ({
+        type: 'RM_STORED',
+        quantity: 1,
+      })),
+      intents.sellBtnIntents.increment$.map(() => ({
+        type: 'SELL',
+        quantity: 1,
+      })),
+      intents.sellBtnIntents.decrement$.map(() => ({
+        type: 'RM_SOLD',
+        quantity: 1,
+      })),
+      intents.toggleFavorites$.map(() => ({
+        type: 'TOGGLE_FAVORITES',
+      })),
+    )
+    .timestamp()
+    .withLatestFrom(
+      M.lens(L.props('id', 'name')),
+      ({value, timestamp}, {id, name}) => ({
+        ...value,
+        timestamp,
+        id,
+        name,
+      }),
+    )
+
   const mod$ = O.merge(
     viewParam$.lens('benefits').mod(
       intents.toggleBenefitsPrintMode$.map(toggleBenefitsPrintMode)),
     viewParam$.lens('editing').set(intents.startEdit$.map(() => true)),
     viewParam$.lens('editing').set(intents.endEdit$.map(() => false)),
-    M.lens('price').mod(intents.save$.map(setPrice)),
-    M.lens('favorites').set(intents.toggleFavorites$),
     M.lens('focused').set(intents.focus$),
-    M.mod(intents.craftBtnIntents.increment$.map(addToCrafts)),
-    M.mod(intents.craftBtnIntents.decrement$.map(rmFromCrafts)),
-    M.mod(intents.stockBtnIntents.increment$.map(addToStocks)),
-    M.mod(intents.stockBtnIntents.decrement$.map(rmFromStocks)),
-    M.mod(intents.sellBtnIntents.increment$.map(sell)),
-    M.mod(intents.sellBtnIntents.decrement$.map(unSell)),
+    updates$.mod(update$.map(append)),
   )
-
-
 
   return {
     DOM: vtree$,

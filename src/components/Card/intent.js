@@ -1,4 +1,5 @@
 import {Observable as O} from 'rx'
+import {parseInputPrice} from 'utils/currency'
 
 export default intent
 export function intent (DOM) {
@@ -13,9 +14,11 @@ export function intent (DOM) {
 
   return {
     toggleBenefitsPrintMode$: buffer$.filter(x => x == 1),
-    save$: $mPrice.events('blur').map(x => x.target.value)
-      .distinctUntilChanged()
-      .timestamp(),
+    save$: $mPrice.events('blur')
+      .map(x => x.target.value)
+      .map(parseInputPrice)
+      .filter(x => !!x)
+      .distinctUntilChanged(),
     focus$: O.merge(
       $mPrice.events('focus').map(true),
       $mPrice.events('blur').map(false),

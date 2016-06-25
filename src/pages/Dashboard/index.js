@@ -39,14 +39,15 @@ export const Dashboard = ({DOM, M, Screen}) => {
     DOM, Screen,
     M: virtualListM,
     viewParam$: M.lens('display'),
+    updates$: M.lens('logger').lens('logs'),
   })
 
   const loggerM = M.lens(L.pick({
-    db: 'db',
+    db: L.prop('db'),
     logs: L.compose('logger', 'logs'),
     draft: L.compose('logger', 'draft'),
   }))
-  const logger = Logger({DOM, M: M.lens('logger')})
+  const logger = Logger({DOM, M: loggerM})
 
   const searchResults$ = M
     .lens(L.props(

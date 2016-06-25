@@ -1,4 +1,4 @@
-import {last, slice, pipe} from 'ramda'
+import {last, slice} from 'ramda'
 
 import {parseInputPrice} from 'utils/currency'
 import {nameToDofusId} from 'utils/strings'
@@ -53,24 +53,23 @@ export function parseLog (str = '') {
 }
 
 export function parseLogs (str) {
-  return splitLogs(str)
+  return groupSimilarActions(splitLogs(str)
     .map(parseLog)
-    .filter(x => !!x)
+    .filter(x => !!x))
+}
+
+export function arePricesCloseEnough (x, y) {
+  return Math.abs((x.price / x.quantity) / (y.price / y.quantity) - 1) < 0.05 // less than 5% price difference
+}
+
+export function groupSimilarActions (actions) {
+  return actions
     .reduce((acc, x) => {
-      let prev = last(acc)
+      const prev = last(acc)
       const areSameAction = prev && prev.type == x.type && prev.id == x.id
 
-      // group same CRAFT actions
-      if(x.type == "CRAFT" && areSameAction) {
-        const action = {
-          ...prev,
-          quantity: prev.quantity + x.quantity
-        }
-        return [...pop(acc), action]
-      }
-
       // group same SELL or BUY actions
-      if((x.type == "SELL" || x.type == "BUY") && areSameAction && arePricesCloseEnough(x, prev)) {
+      if(('price' in x) && areSameAction && arePricesCloseEnough(x, prev)) {
         const action = {
           ...prev,
           quantity: prev.quantity + x.quantity,
@@ -79,10 +78,15 @@ export function parseLogs (str) {
         return [...pop(acc), action]
       }
 
+      if(!('price' in x) && areSameAction) {
+        const action = {
+          ...prev,
+          quantity: prev.quantity + x.quantity,
+        }
+        return [...pop(acc), action]
+      }
+
+      // DEFAULT
       return [...acc, x]
     }, [])
-}
-
-export function arePricesCloseEnough (x, y) {
-  return Math.abs((x.price / x.quantity) / (y.price / y.quantity) - 1) < 0.05 // less than 5% price difference
 }

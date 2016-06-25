@@ -1,15 +1,15 @@
-import {div, ul, li, textarea, button, small} from '@cycle/dom'
-import {Observable as O} from 'rx'
+import {div, ul, li, textarea, button, small, span} from '@cycle/dom'
 
 import css from './logger.css'
 import dot from 'utils/dot'
 import {k} from 'utils/currency'
+import {groupSimilarActions} from './parser'
 
 export function view (M) {
   return M.map(({draft, logs}) =>
     div(dot(css.logger), [
       ul(dot(css.logs), [
-        logs.map(renderLog),
+        groupSimilarActions(logs).map(renderLog),
       ]),
       textarea('.m-logs' + dot(css.input), {placeholder: '>_', required: 'true', value: draft}),
       button('.i-submitLogs' + dot(css.submit), {type: 'button'}, '>'),

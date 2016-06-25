@@ -66,6 +66,7 @@
     "ramda": "^0.21.0",
     "rx-combine-latest-obj": "latest",
     "rxjs": "^5.0.0-beta.6",
+    "slugify": "^0.1.1",
     "stage": "^0.9.0",
     "stanga": "^2.0.0",
     "switch-path": "latest",

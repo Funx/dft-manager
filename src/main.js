@@ -8,8 +8,16 @@ import './reset.css'
 import layout from 'pages/layout.css'
 import {dot} from 'utils/dot'
 
+const LOG_LIFECYCLE = true
+const LOG_BUBBLEUP = false
+const LOG_BUBBLEDOWN = false
+
 const EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000
 export const main = (responses) => {
+  responses.M.subscribe(() => {
+    if (LOG_BUBBLEUP) console.timeEnd('BUBBLE UP (MOD -> UPDATE)')
+    if (LOG_BUBBLEDOWN) console.time('BUBBLE DOWN (UPDATE -> DRAW)')
+  })
   const dashboard = Dashboard(responses)
   const navbar = Navbar(responses)
   const outdated$ = responses.M.lens('db')
@@ -28,7 +36,11 @@ export const main = (responses) => {
   )
   return {
     DOM: view(navbar.DOM, dashboard.DOM),
-    M: O.merge(dashboard.M, mod$).do(x => console.time('MOD -> DRAW')),
+    M: O.merge(dashboard.M, mod$)
+      .do(() => {
+        if (LOG_LIFECYCLE) console.time('== LIFECYCLE (MOD -> DRAW)')
+        if (LOG_BUBBLEUP) console.time('BUBBLE UP (MOD -> UPDATE)')
+      }),
   }
 }
 
@@ -38,8 +50,11 @@ import {Hook} from 'utils/hook'
 const view = (navbar, dashboard) => O.combineLatest(
   navbar, dashboard,
   (navbar, dashboard) =>
-    div(dot(layout.layout), {'test': Hook(x => console.timeEnd('MOD -> DRAW'))}, [
-      div(dot(layout.shrink), navbar),
-      div(dot(layout.grow), dashboard),
+    div(dot(layout.layout), {'test': Hook(() => {
+      if (LOG_BUBBLEDOWN) console.timeEnd('BUBBLE DOWN (UPDATE -> DRAW)')
+      if (LOG_LIFECYCLE) console.timeEnd('== LIFECYCLE (MOD -> DRAW)')
+    })}, [
+      // div(dot(layout.header), navbar),
+      div(dot(layout.content), dashboard),
     ])
 )

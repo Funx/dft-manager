@@ -35,26 +35,17 @@ export const main = (responses) => {
     )
   )
   return {
-    DOM: view(navbar.DOM, dashboard.DOM),
-    M: O.merge(dashboard.M, mod$)
-      .do(() => {
-        if (LOG_LIFECYCLE) console.time('== LIFECYCLE (MOD -> DRAW)')
-        if (LOG_BUBBLEUP) console.time('BUBBLE UP (MOD -> UPDATE)')
-      }),
+    DOM: view(dashboard.DOM),
+    M: O.merge(dashboard.M, mod$),
   }
 }
 
 export default main
 
-import {Hook} from 'utils/hook'
-const view = (navbar, dashboard) => O.combineLatest(
-  navbar, dashboard,
-  (navbar, dashboard) =>
-    div(dot(layout.layout), {'test': Hook(() => {
-      if (LOG_BUBBLEDOWN) console.timeEnd('BUBBLE DOWN (UPDATE -> DRAW)')
-      if (LOG_LIFECYCLE) console.timeEnd('== LIFECYCLE (MOD -> DRAW)')
-    })}, [
-      // div(dot(layout.header), navbar),
-      div(dot(layout.content), dashboard),
+const view = (dashboard) => O.combineLatest(
+  dashboard,
+  (dashboard) =>
+    div(dot(layout.layout), [
+      div(dot(layout.content), [dashboard]),
     ])
 )

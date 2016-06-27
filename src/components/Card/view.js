@@ -13,7 +13,7 @@ export const view = (M) => {
     div(dot(css.card),
       {
         key: card.id,
-        style: `background-color: hsl(${card.hue}, 44%, 50%);`,
+        attrs: {style: `background-color: hsl(${card.hue}, 44%, 50%);`},
       }, [
         div(dot(css.container), [
           div(dot(css.innerWrapper), [
@@ -40,10 +40,10 @@ export default view
 
 function renderEditForm (item) {
   return div(dot(css.editForm), [
-    input('.m-price', {
+    input('.m-price', {attrs: {
       type: 'text',
       value: humanize(item.price, false) + 'k',
-    }),
+    }}),
   ])
 }
 
@@ -55,7 +55,7 @@ function renderMainInfo (item) {
 
   return div(
     '.mainInfo' + dot(css.mainInfo),
-    {style: `font-size: ${fontSize};`, key: 'primaryInfo'},
+    {key: 'primaryInfo', attrs: {style: `font-size: ${fontSize};`}},
     [
       infiniteProfit(item) ? '∞' : '',
       invalidCost(item) ? '?' : '',

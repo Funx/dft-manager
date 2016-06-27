@@ -1,1 +1,8 @@
-<svg id="icon-eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72"><title>icon</title><rect x="22" y="16" width="44" height="24.04" rx="4" ry="4" transform="translate(33 -23) rotate(45)"/><rect x="5" y="41" width="40" height="12.73" transform="translate(76 63) rotate(135)"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="icon-eye" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 72 72" style="enable-background:new 0 0 72 72;" xml:space="preserve">
+<title>icon</title>
+<path d="M65.5,32.2L40.1,6.7c-1.6-1.6-4.1-1.6-5.7,0L23.1,18c-1.6,1.6-1.6,4.1,0,5.7l8.1,8.1l-25,25l9,9l25-25l8.3,8.3
+	c1.6,1.6,4.1,1.6,5.7,0l11.3-11.3C67.1,36.2,67.1,33.7,65.5,32.2z"/>
+</svg>

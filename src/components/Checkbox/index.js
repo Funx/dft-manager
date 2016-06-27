@@ -6,7 +6,7 @@ export const renderCheckbox = curry((model, className, labelName, prop) =>
 
 export function Checkbox (className, selector, attrs, labelName) {
   return label(className, [
-    input(selector, {...attrs, type: 'checkbox'}),
+    input(selector, {attrs: {...attrs, type: 'checkbox'}}),
     span(labelName),
   ])
 }

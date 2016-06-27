@@ -50,11 +50,11 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
-    "@cycle/core": "^6.0.3",
-    "@cycle/dom": "^9.4.0",
+    "@cycle/dom": "^10.0.2",
     "@cycle/history": "^2.0.2",
     "@cycle/http": "^8.2.2",
     "@cycle/isolate": "^1.2.0",
+    "@cycle/rx-run": "^7.0.0",
     "@cycle/storage": "^2.0.3",
     "cssrecipes-defaults": "^0.5.0",
     "diacritics": "^1.2.3",
@@ -70,6 +70,7 @@
     "stage": "^0.9.0",
     "stanga": "^2.0.0",
     "switch-path": "latest",
-    "thenby": "^1.2.1"
+    "thenby": "^1.2.1",
+    "xstream": "^5.0.6"
   }
 }

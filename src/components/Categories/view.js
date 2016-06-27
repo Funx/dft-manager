@@ -13,9 +13,9 @@ export const view = options => M =>
       span(dot(css.separator), '|'),
       div(dot(css.leftSide),
         mapObjKeys(toCheckbox, options.leftSide)),
-      div(dot(css.rightSide), [
+      div(dot(css.rightSide),
         mapObjKeys(toCheckbox, {outdated: options.rightSide.outdated + ' (' + outdated + ')'}),
-      ]),
+      ),
     ])
   }
 )

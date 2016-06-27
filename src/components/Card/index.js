@@ -10,9 +10,8 @@ import {
 import intent from './intent'
 
 export const Card = ({M, updates$, viewParam$, DOM}) => {
-  M.distinctUntilChanged().subscribe(x => console.log(x))
   const state$ = O.combineLatest(
-    M.distinctUntilChanged(), viewParam$.distinctUntilChanged(),
+    M, viewParam$,
     (card = {}, params) => ({
       ...card,
       ...params,

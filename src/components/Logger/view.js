@@ -8,11 +8,9 @@ import {groupSimilarActions} from './parser'
 export function view (M) {
   return M.map(({draft, logs}) =>
     div(dot(css.logger), [
-      ul(dot(css.logs), [
-        groupSimilarActions(logs).map(renderLog),
-      ]),
-      textarea('.m-logs' + dot(css.input), {placeholder: '>_', required: 'true', value: draft}),
-      button('.i-submitLogs' + dot(css.submit), {type: 'button'}, '>'),
+      ul(dot(css.logs), groupSimilarActions(logs).map(renderLog)),
+      textarea('.m-logs' + dot(css.input), {attrs: {placeholder: '>_', required: 'true', value: draft}}),
+      button('.i-submitLogs' + dot(css.submit), {attrs: {type: 'button'}}, '>'),
     ])
   )
 }

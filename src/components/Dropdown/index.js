@@ -12,11 +12,11 @@ export default Dropdown
 const view = options => M =>
   M.map(model =>
     div(dot(css.select), [
-      select('.model', [
+      select('.model',
         Object.keys(options).map(value =>
-          option({value, selected: (model == value)}, [options[value]])
+          option({attrs: {value, selected: (model == value)}}, [options[value]])
         ),
-      ]),
+      ),
     ])
   )
 

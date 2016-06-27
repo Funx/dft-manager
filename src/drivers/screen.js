@@ -1,7 +1,7 @@
-import {Observable as O} from 'rx'
+import {Observable as O, Scheduler} from 'rx'
 
 export function makeScreenDriver () {
-  const resize$ = O.fromEvent(window, 'resize')
+  const resize$ = O.fromEvent(window, 'resize', Scheduler.requestAnimationFrame)
     .merge(O.of({}).delay(50))
     .shareReplay(1)
 
@@ -15,7 +15,7 @@ export function makeScreenDriver () {
         ? () => document.querySelectorAll(selector)
         : x => x
 
-      return O.fromEvent(window, eventName)
+      return O.fromEvent(window, eventName, Scheduler.requestAnimationFrame)
         .startWith({})
         .merge(O.interval(100).take(10).map({}))
         .map(toElement)

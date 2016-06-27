@@ -1,5 +1,6 @@
 import {div, h2, small, span, input} from '@cycle/dom'
 import {k, humanize} from 'utils/currency'
+import {Observable as O} from 'rx'
 
 import css from './card.css'
 import dot from 'utils/dot'
@@ -13,7 +14,6 @@ export const view = (M) => {
       {
         key: card.id,
         style: `background-color: hsl(${card.hue}, 44%, 50%);`,
-        offsetTop: card.offsetTop,
       }, [
         div(dot(css.container), [
           div(dot(css.innerWrapper), [

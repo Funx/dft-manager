@@ -10,11 +10,12 @@ import {
 import intent from './intent'
 
 export const Card = ({M, updates$, viewParam$, DOM}) => {
+  M.distinctUntilChanged().subscribe(x => console.log(x))
   const state$ = O.combineLatest(
-    M, viewParam$,
+    M.distinctUntilChanged(), viewParam$.distinctUntilChanged(),
     (card = {}, params) => ({
       ...card,
-      editing: params.editing,
+      ...params,
       benefits: benefits(card),
       benefitsRate: printBenefitsRate(card),
       secondaryInfo: (params.benefits == '%')
@@ -77,7 +78,7 @@ export const Card = ({M, updates$, viewParam$, DOM}) => {
       intents.toggleBenefitsPrintMode$.map(toggleBenefitsPrintMode)),
     viewParam$.lens('editing').set(intents.startEdit$.map(() => true)),
     viewParam$.lens('editing').set(intents.endEdit$.map(() => false)),
-    M.lens('focused').set(intents.focus$),
+    viewParam$.lens('focused').set(intents.focus$),
     updates$.mod(update$.map(append)),
   )
 

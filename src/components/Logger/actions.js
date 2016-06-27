@@ -1,10 +1,13 @@
-import {range} from 'ramda'
+import {range, last, pipe} from 'ramda'
+import {calcCosts} from '../../pages/Dashboard/calcCosts'
 
 export function appendLogs (logs) {
   return prev => [...prev, ...logs]
 }
 export function updateDB (logs) {
-  return db => logs.reduce(reducer, db)
+  const update = db => [last(logs)].reduce(reducer, db)
+  if(last(logs) && last(logs).price) return pipe(update, calcCosts)
+  else return update
 
   function reducer (db, action) {
     const dict = {

@@ -23,9 +23,9 @@
     max-width: 33.33333%;
   }
   @media screen and (min-width: 64rem) {
-    max-width: 25%;
+    max-width: 33.33333%;
   }
   @media screen and (min-width: 96rem) {
-    max-width: 20%;
+    max-width: 25%;
   }
 }

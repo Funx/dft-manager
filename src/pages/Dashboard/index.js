@@ -6,6 +6,7 @@ import OptionsBar from 'components/OptionsBar'
 import VirtualList from 'components/VirtualList'
 import Logger from 'components/Logger'
 
+import {monitorFn} from 'utils/debug'
 import {filterFn} from './filterFn'
 import {sortFn} from './sortFn'
 import {calcCosts} from './calcCosts'
@@ -26,15 +27,7 @@ export const Dashboard = ({DOM, M, Screen}) => {
     )),
   })
 
-  const virtualListM = M.lens(L.props('db', 'items', 'vList'))
-    .lens(L.lens(
-      x => x,
-      ({db, items, vList}, model) => ({
-        ...model,
-        vList,
-        db: model.db.merge(db),
-      })
-    ))
+  const virtualListM = M.lens(L.props('items', 'vList'))
   const collection = VirtualList({
     DOM, Screen,
     M: virtualListM,
@@ -58,7 +51,7 @@ export const Dashboard = ({DOM, M, Screen}) => {
     .distinctUntilChanged()
     .map(({db, filters = {}, sortOptions = {}}) =>
       pipe(
-        calcCosts,
+        // monitorFn('calcCosts', calcCosts),
         x => x.toArray(),
         filterFn(filters),
         sortFn(sortOptions),

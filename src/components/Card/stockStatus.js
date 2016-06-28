@@ -9,17 +9,17 @@ const svgIcon = svg => span({props: {innerHTML: svg}})
 export function renderStockStatus (item) {
   const color = `hsl(${item.hue}, 44%, 50%)`
   return div(dot(css.stockStatus),
-    {attrs: {style: {background: color}}},
+    {attrs: {style: `background: ${color};`}},
     [
       (item.recipe.length)
         ? arrowButton(`.i-crafts${item.crafts ? dot(css.isActive) : ''}`,
-          span({attrs: {style: {color}}}, [svgIcon(iconCrafts), ` ${item.crafts}`]))
+          span({attrs: {style: `color: ${color};`}}, [svgIcon(iconCrafts), ` ${item.crafts}`]))
         : '',
       arrowButton(`.i-stocks${item.stocks ? dot(css.isActive) : ''}`,
-        span({attrs: {style: {color}}}, [svgIcon(iconStocks), ` ${item.stocks}`])),
+        span({attrs: {style: `color: ${color};`}}, [svgIcon(iconStocks), ` ${item.stocks}`])),
       arrowButton(`.i-sold`,
-        span({attrs: {style: {color}}}, [`${item.sold}`])),
-    ]
+        span({attrs: {style: `color: ${color};`}}, [`${item.sold}`])),
+    ],
   )
 }
 

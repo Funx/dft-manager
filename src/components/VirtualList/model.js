@@ -1,6 +1,6 @@
 import {Observable as O} from 'rx'
 
-const EXTRA_BLEED = 2 // the bigger the number, the bigger the impact in DOM perf on huge screens (it renders a lot more of elements)
+const EXTRA_BLEED = 1 // the bigger the number, the bigger the impact in DOM perf on huge screens (it renders a lot more of elements)
 export function model(M, intents) {
   const rowLength$ = O.combineLatest(
       intents.containerWidth$, intents.itemWidth$,

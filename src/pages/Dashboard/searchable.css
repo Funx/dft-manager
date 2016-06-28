@@ -1,68 +1,80 @@
 .mainFrame {
-  flex-direction: row;
   overflow-x: hidden;
+  flex-direction: row;
+
   width: 100%;
 }
 
 .loggerWrapper {
   position: fixed;
+  z-index: 1;
   top: 0;
   bottom: 0;
   left: 0;
-  width: 24rem;
-  z-index: 1;
+
   overflow: hidden;
-  opacity: .8;
+
+  width: 24rem;
+
+  transition: transform .5s ease-in-out;
   transform: translateX(-1rem);
-  transition: .5s ease-in-out;
+
+  opacity: 1;
 }
 .loggerWrapper:hover {
-  opacity: 1;
   transform: translateX(0);
+
+  opacity: 1;
 }
 .contentWrapper {
-  padding: 2rem;
-  padding-bottom: 50rem;
   position: relative;
-  left: 4rem;
-  margin: 0;
   z-index: 2;
-  background: #eee;
+  left: 4rem;
+
   max-width: calc(100% - 4rem);
   min-height: 100vh;
-  transition: .5s cubic-bezier(.65,0,.45,1);
+  margin: 0;
+  padding: 2rem;
+  padding-bottom: 50rem;
+
+  transition: transform .5s cubic-bezier(.65,0,.45,1);
+
+  background: #eee;
 }
 .loggerWrapper:hover ~ .contentWrapper {
   transform: translateX(20rem);
 }
 .overlay {
-  pointer-events: none;
   position: absolute;
   z-index: 1;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
-  background: #111;
-  opacity: 0;
+
   transition: .2s ease-in-out;
+  pointer-events: none;
+
+  opacity: 0;
+  background: #111;
 }
 .loggerWrapper:hover ~ .contentWrapper .overlay {
   opacity: .2;
 }
 
 .statusBar {
-  background: #000;
-  position: relative;;
+  position: relative;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
 
-  font-size: 1.2rem;
-  line-height: 100%;
-  font-family: consolas, monospace;
-  color: #fff;
-
-  padding: 1rem 1rem;
   margin-top: 2rem;
+  padding: 1rem 1rem;
+
+  color: #fff;
+  background: #000;
+
+  font-family: consolas, monospace;
+  font-size: 1.2rem;
+  line-height: 100%;;
 }

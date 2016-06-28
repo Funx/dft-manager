@@ -1,17 +1,13 @@
 .layout {
-  display: flex;
+  /*display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
+
   min-height: 100vh;
+
+  justify-content: flex-start;
+  align-items: stretch;*/
 }
 
 .content {
   flex: 1 0 auto;
-}
-
-.header {
-  flex: 0 1 auto;
-  position: relative;
-  z-index: 2;
 }

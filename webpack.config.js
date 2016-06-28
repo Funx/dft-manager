@@ -1,77 +1,27 @@
-// var Webpack = require('webpack')
+var sharedConfig = require('./webpack.shared')
+var merge = require('ramda').merge
+
 var path = require('path')
 
-var webpackConfig = {
-  watch: false,
+var webpackConfig = merge(sharedConfig, {
   devtool: 'inline-source-map',
+  entry: './src/app.dev.js',
+  watch: false,
   cache: true,
   debug: true,
-  entry: './src/app.dev.js',
   map: true,
 
-  output: {
-    filename: 'app.js',
+  output: merge(sharedConfig.output, {
     path: path.resolve('./dist/dev/'),
-    sourceMapFilename: '[file].map',
-  },
+  }),
 
   module: {
-    loaders: [
-      { test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-      },
+    loaders: sharedConfig.module.loaders.concat([
       {
         test: /\.css$/,
         loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader',
       },
-      {
-        test: /.*\.(gif|png|jpe?g|svg)$/i,
-        exclude: /icons/,
-        loaders: [
-          'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image-webpack',
-        ],
-      },
-      {
-        test: /\.svg$/,
-        include: /icons/,
-        loader: 'svg-inline',
-      },
-    ],
-  },
-
-  resolveLoader: {
-    modulesDirectories: [
-      path.resolve('./node_modules'),
-    ],
-  },
-
-  resolve: {
-    alias: {
-      'utils': path.resolve('./src/utils'),
-      'components': path.resolve('./src/components'),
-      'pages': path.resolve('./src/pages'),
-      'drivers': path.resolve('./src/drivers'),
-      'icons': path.resolve('./src/icons'),
-      'test': path.resolve('./test'),
-    },
-  },
-  postcss: function () {
-    return [require('postcss-cssnext'), require('lost')]
-  },
-
-  imageWebpackLoader: {
-    pngquant:{
-      quality: '65-90',
-      speed: 4,
-    },
-    svgo:{
-      plugins: [
-        {removeViewBox: false},
-        {removeEmptyAttrs: false},
-      ],
-    },
+    ]),
   },
 
   devServer: {
@@ -79,8 +29,20 @@ var webpackConfig = {
     port: 3000,
     historyApiFallback: true,
     contentBase: 'dist/dev/',
+    proxy: {
+      '/*': {
+        target: 'http://localhost:3001',
+        secure: false,
+        changeOrigin: true,
+        bypass: function(req) {
+          if (req.headers.accept.indexOf('html') !== -1) {
+            console.log('Skipping proxy for browser request.')
+            return '/index.html'
+          }
+        },
+      },
+    },
   },
-
-}
+})
 
 module.exports = webpackConfig

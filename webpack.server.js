@@ -1,7 +1,8 @@
-var Extract = require('extract-text-webpack-plugin')
-// var Webpack = require('webpack');
+var sharedConfig = require('./webpack.shared')
+var merge = require('ramda').merge
 var path = require('path')
 var fs = require('fs')
+var Extract = require('extract-text-webpack-plugin')
 
 var nodeModules = {}
 fs.readdirSync('node_modules')
@@ -11,46 +12,32 @@ fs.readdirSync('node_modules')
   .forEach(function(mod) {
     nodeModules[mod] = 'commonjs ' + mod
   })
-
-var webpackConfig = {
+var webpackConfig = merge(sharedConfig, {
   entry: './src/server.js',
-
   target: 'node',
 
   output: {
     filename: 'server.js',
-    path: path.resolve('./dist/'),
+    path: path.resolve('./dist/dev/'),
   },
 
   module: {
-    loaders: [
-      { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/},
+    loaders: sharedConfig.module.loaders.concat([
       {
         test: /\.css$/,
-        loader: Extract.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'),
+        loader: Extract.extract(
+          'style-loader',
+          'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
+        ),
       },
-    ],
+    ]),
   },
 
   externals: nodeModules,
 
-  resolve: {
-    alias: {
-      'utils': path.resolve('./src/utils'),
-      'dialogue': path.resolve('./src/dialogue'),
-      'test': path.resolve('./test'),
-    },
-  },
-  postcss: function () {
-    return [require('postcss-cssnext')]
-  },
-
   plugins: [
     new Extract('styles.css', {allChunks: true}),
-    //new Webpack.NormalModuleReplacementPlugin(/\.styl$/, 'node-noop'),
-    //new Webpack.IgnorePlugin(/\.styl$/),
   ],
 
-}
-
+})
 module.exports = webpackConfig

@@ -4,8 +4,7 @@
   "description": "Simple setup for cycle.js",
   "main": "",
   "scripts": {
-    "server": "babel-node ./server.js",
-    "watch-server": "nodemon --exec npm run server",
+    "server": "nodemon --exec babel-node ./server.js",
     "start": "npm run watch-jade & npm run dev-server",
     "watch-jade": "nodemon --watch ./src/index.jade --exec 'npm run build-jade'",
     "build-jade": "jade ./src/index.jade -o ./dist/dev/",

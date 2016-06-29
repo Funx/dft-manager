@@ -1,6 +1,15 @@
-import {groupBy, prop} from 'ramda'
+import {prop, pipe, filter, groupBy} from 'ramda'
+import {Map} from 'immutable'
+import {calcCosts} from 'pages/Dashboard/calcCosts'
 
-export function attachMeta (list) {
+export const normalizeDB = pipe(
+  filter(prop('name')),
+  attachMetadata,
+  x => new Map(x.map(y => [y.id, y])),
+  calcCosts,
+)
+
+export function attachMetadata (list) {
   const hueMap = generateHueMap(list)
 
   return list
@@ -22,7 +31,7 @@ export function attachMeta (list) {
     }))
 }
 
-export default attachMeta
+export default attachMetadata
 
 const isComplex = (obj) => obj.recipe && obj.recipe.length
 

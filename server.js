@@ -1,10 +1,13 @@
 import express from 'express'
-
-// --------your proxy----------------------
 const server = express()
 
+
 // proxy the request for static assets
-server.use('/assets', express.static(`static`))
+server.get('/db', express.static(`./static/bdd.json`))
+server.post('/test', (req, res) => {
+  console.log('post')
+  res.send('POST request to the homepage')
+})
 
 // run the two servers
-server.listen(3001, 'localhost', () => console.log('listening to localhost:3001'))
+server.listen(3001, () => console.log('listening to localhost:3001'))

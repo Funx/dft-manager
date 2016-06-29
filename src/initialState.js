@@ -1,19 +1,8 @@
-import {prop, pipe, filter} from 'ramda'
-import db from './bdd'
-import {attachMeta} from './attachMetadata'
 import {Map} from 'immutable'
-import {calcCosts} from 'pages/Dashboard/calcCosts'
-
-const normalizeDB = pipe(
-  filter(prop('name')),
-  attachMeta,
-  x => new Map(x.map(y => [y.id, y])),
-  calcCosts,
-)
 
 export const initialState = {
   route: {pathname: '/'},
-  db: normalizeDB(db),
+  db: new Map([['a', {}]]),
   items: [],
   sortOptions: {
     property: 'benefits',

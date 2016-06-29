@@ -43,12 +43,11 @@ var webpackConfig = {
 
   resolve: {
     alias: {
-      'utils': path.resolve('./src/utils'),
+      'utils': path.resolve('utils'),
       'components': path.resolve('./src/components'),
       'pages': path.resolve('./src/pages'),
       'drivers': path.resolve('./src/drivers'),
       'icons': path.resolve('./src/icons'),
-      'test': path.resolve('./test'),
     },
   },
   postcss: function () {
@@ -67,14 +66,6 @@ var webpackConfig = {
       ],
     },
   },
-
-  devServer: {
-    host: '0.0.0.0',
-    port: 3000,
-    historyApiFallback: true,
-    contentBase: 'dist/dev/',
-  },
-
 }
 
 module.exports = webpackConfig

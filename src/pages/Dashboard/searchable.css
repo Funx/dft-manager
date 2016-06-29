@@ -14,7 +14,7 @@
 
   overflow: hidden;
 
-  width: 24rem;
+  width: 30rem;
 
   transition: transform .5s ease-in-out;
   transform: translateX(-1rem);
@@ -42,7 +42,7 @@
   background: #eee;
 }
 .loggerWrapper:hover ~ .contentWrapper {
-  transform: translateX(20rem);
+  transform: translateX(26rem);
 }
 .overlay {
   position: absolute;

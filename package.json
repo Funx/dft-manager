@@ -47,8 +47,8 @@
   "dependencies": {
     "@cycle/dom": "^10.0.2",
     "@cycle/history": "^2.0.2",
-    "@cycle/http": "^8.2.2",
-    "@cycle/isolate": "^1.2.0",
+    "@cycle/http": "^9.0.2",
+    "@cycle/isolate": "^1.4.0",
     "@cycle/rx-run": "^7.0.0",
     "@cycle/storage": "^2.0.3",
     "JSONStream": "^1.1.2",
@@ -63,6 +63,7 @@
     "ramda": "^0.21.0",
     "rxjs": "^5.0.0-beta.6",
     "slugify": "^0.1.1",
+    "socket.io": "^1.4.8",
     "stage": "^0.9.0",
     "stanga": "^2.0.0",
     "switch-path": "latest",

@@ -12,9 +12,16 @@ const EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000
 export const main = (responses) => {
   const {M, HTTP} = responses
   const db$ = HTTP
+    .select('initialstate')
     .switch()
     .pluck('body')
     .map(normalizeDB)
+
+  HTTP
+    .select('transaction')
+    .switch()
+    .pluck('text')
+    .subscribe(x => console.log(x))
 
   const dashboard = Dashboard(responses)
   const outdated$ = M.lens('db')
@@ -37,15 +44,16 @@ export const main = (responses) => {
 
   const request$ = O.merge(
     O.of({
-      url: '/db',
-      category: 'db',
+      url: '/initialstate',
+      category: 'initialstate',
       method: 'GET',
     }),
     M.lens('db').debounce(1000).map(db => ({
-      url: '/db',
+      url: '/transaction',
+      category: 'transaction',
       method: 'POST',
-      // send: db.toArray(),
-    })).do(x => console.log(x)),
+      send: db.toArray(),
+    })),
   )
 
 

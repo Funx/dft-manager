@@ -6,6 +6,8 @@ import {rerunner, restartable} from 'cycle-restart'
 
 import {drivers} from './drivers'
 
+import './drivers/socket.io.js'
+
 const {main} = require('./main')
 run(main, drivers)
 

@@ -32,6 +32,7 @@ export const Card = ({M, updates$, viewParam$, DOM}) => {
       intents.save$.map(price => ({
         type: 'SET_PRICE',
         price,
+        quantity: 1,
       })),
       intents.craftBtnIntents.increment$.map(() => ({
         type: 'PLAN',

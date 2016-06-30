@@ -11,7 +11,13 @@ export function Logger ({DOM, M}) {
   const gameEvents$ = intent.submit$
     .map(parseLogs)
 
-  const updates$ = M.lens('logs').distinctUntilChanged()
+  const updates$ = M.lens('logs')
+    .distinctUntilChanged()
+    .combineLatest(
+        M.lens('db').skip(1).first(),
+        (logs, db) => ({logs, db})
+      )
+      .do(x => console.log(x))
 
   const mod$ = O.merge(
       M.lens('draft').set(intent.draft$),

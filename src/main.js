@@ -10,16 +10,12 @@ import {normalizeDB} from './attachMetadata'
 
 const EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000
 export const main = (responses) => {
-  const {M, HTTP, WS} = responses
-  // const db$ = HTTP
-  //   .select('initialstate')
-  //   .switch()
-  //   .pluck('body')
+  const {M, WS} = responses
 
   const db$ = WS.select('welcome')
+    .do(x => console.log(x))
     .map(normalizeDB)
 
-    // .subscribe(x => console.log(x))
 
   const dashboard = Dashboard(responses)
   const outdated$ = M.lens('db')
@@ -40,29 +36,18 @@ export const main = (responses) => {
     )
   )
 
-  const request$ = O.merge(
-    O.of({
-      url: '/initialstate',
-      category: 'initialstate',
-      method: 'GET',
-    }),
-  )
-
   const transaction$ = M.lens('db')
     .debounce(1000)
     .map(db => ({
-      url: '/transaction',
-      category: 'transaction',
-      method: 'POST',
-      send: db.toArray(),
+      name: 'transaction',
+      message: db,
     }))
 
 
   return {
     DOM: view(dashboard.DOM),
     M: O.merge(dashboard.M, mod$),
-    HTTP: request$,
-    WS: O.of({name: 'transaction', message: {hello: 'world'}}),
+    WS: transaction$,
   }
 }
 

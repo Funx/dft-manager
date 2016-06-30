@@ -1,8 +1,9 @@
-import {prop, pipe, filter, groupBy} from 'ramda'
+import {prop, pipe, filter, groupBy, values} from 'ramda'
 import {Map} from 'immutable'
 import {calcCosts} from 'pages/Dashboard/calcCosts'
 
 export const normalizeDB = pipe(
+  values,
   filter(prop('name')),
   attachMetadata,
   x => new Map(x.map(y => [y.id, y])),
@@ -15,15 +16,15 @@ export function attachMetadata (list) {
   return list
     .map(obj => ({
       ...obj,
-      id: obj.id.match(/\d+-(.*)/)[1], // remove the numbers (1556-xyz -> xyz)
-      recipe: obj.recipe.map(x => ({...x, id: x.id.match(/\d+-(.*)/)[1]})), // same thing
+      // id: obj.id.match(/\d+-(.*)/)[1], // remove the numbers (1556-xyz -> xyz)
+      // recipe: obj.recipe.map(x => ({...x, id: x.id.match(/\d+-(.*)/)[1]})), // same thing
       hue: hueMap[obj.type],
-      price: proba(1/20) ? 0 : randomInterval(...priceInterval(obj.type)),
-      favorites: isComplex(obj) ? proba(1/5) : false,
-      crafts: isComplex(obj) ? randomInterval(0, 1) : 0,
-      stocks: isComplex(obj) ? randomInterval(0, 2) : 0,
-      sold: isComplex(obj) ? randomInterval(0, 25) : 0,
-      latestUpdate: Date.now() + randomInterval(0, 10000000) - 1000000,
+      // price: proba(1/20) ? 0 : randomInterval(...priceInterval(obj.type)),
+      // favorites: isComplex(obj) ? proba(1/5) : false,
+      // crafts: isComplex(obj) ? randomInterval(0, 1) : 0,
+      // stocks: isComplex(obj) ? randomInterval(0, 2) : 0,
+      // sold: isComplex(obj) ? randomInterval(0, 25) : 0,
+      // latestUpdate: Date.now() + randomInterval(0, 10000000) - 1000000,
     }))
     .map(x => ({
       ...x,

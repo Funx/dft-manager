@@ -1,25 +1,22 @@
 import express from 'express'
 import socket from 'socket.io'
 import http from 'http'
+import fs from 'fs-promise'
 const app = express()
 const server = http.Server(app)
 const io = socket(server)
 
 // proxy the request for static assets
 app.use('/initialstate', express.static(`./static/bdd.json`))
-app.post('/transaction', function (req, res) {
-  console.log('POST /db')
-  res.send('I hear you, buddy ❤️ \n')
-})
 
 io.on('connection', function (socket) {
-  socket.emit('transaction', { hello: 'world' })
-  socket.on('transaction', function (data) {
-    console.log(data)
-  })
-  socket.on('disconnect', function () {
-    io.emit('user disconnected')
-  })
+  console.log(socket.id)
+  fs.readJson('./static/bdd.json')
+    .then(x => socket.emit('welcome', x))
+
+  socket.on('disconnect', () => io.emit('user disconnected'))
+  socket.on('transaction', (x) => console.log(x))
+  setTimeout(() => socket.emit('transaction', { hello: 'caca' }), 2000)
 })
 
 // run the two servers

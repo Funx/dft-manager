@@ -29,9 +29,9 @@
 .contentWrapper {
   position: relative;
   z-index: 2;
-  left: 4rem;
+  left: 6rem;
 
-  max-width: calc(100% - 4rem);
+  max-width: calc(100% - 6rem);
   min-height: 100vh;
   margin: 0;
   padding: 2rem;
@@ -42,7 +42,7 @@
   background: #eee;
 }
 .loggerWrapper:hover ~ .contentWrapper {
-  transform: translateX(26rem);
+  transform: translateX(24rem);
 }
 .overlay {
   position: absolute;

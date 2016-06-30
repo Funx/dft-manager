@@ -1,7 +1,18 @@
+import {Observable as O} from 'rx'
 import io from 'socket.io-client'
 
-var socket = io.connect('http://localhost:3000')
-socket.on('transaction', function (data) {
-  console.log(data)
-  socket.emit('my other event', { my: 'data' })
-})
+export function makeSocketDriver (url) {
+  const socket = io.connect(url)
+  return (output$) => {
+    output$.subscribe(({name, message}) => socket.emit(name, message))
+
+    return {
+      select: (name) =>
+        O.fromEventPattern(
+            (h) => socket.on(name, h),
+            (h) => socket.removeListener(name, h))
+          .shareReplay(1),
+    }
+  }
+}
+export default makeSocketDriver

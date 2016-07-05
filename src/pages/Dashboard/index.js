@@ -32,12 +32,13 @@ export const Dashboard = ({DOM, M, Screen}) => {
     DOM, Screen,
     M: virtualListM,
     viewParam$: M.lens('display'),
-    updates$: M.lens('logger').lens('logs'),
+    updates$: M.lens('latestActions'),
   })
 
   const loggerM = M.lens(L.pick({
     db: L.prop('db'),
     logs: L.compose('logger', 'logs'),
+    latestActions: L.prop('latestActions'),
     draft: L.compose('logger', 'draft'),
   }))
   const logger = Logger({DOM, M: loggerM})

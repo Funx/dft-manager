@@ -17,12 +17,12 @@ export function Logger ({DOM, M}) {
         M.lens('db').skip(1).first(),
         (logs, db) => ({logs, db})
       )
-      .do(x => console.log(x))
 
   const mod$ = O.merge(
       M.lens('draft').set(intent.draft$),
-      M.lens('logs').mod(gameEvents$.map(appendLogs)),
-      M.lens('db').mod(updates$.map(updateDB)),
+      M.lens('logs').mod(M.lens('latestActions').map(appendLogs)),
+      M.lens('latestActions').set(gameEvents$),
+      // M.lens('db').mod(updates$.map(updateDB)),
     )
   return {
     DOM: view(M.lens(L.props('draft', 'logs'))),

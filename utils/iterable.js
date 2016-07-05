@@ -1,3 +1,4 @@
+import {Map} from 'immutable'
 import {curry} from 'ramda'
 
 const toPairsByKey = curry((key, x) => [x[key], x])
@@ -18,3 +19,5 @@ export const mergeArraysByKey = curry((key, arr1, arr2) =>
       fromArrayToMapByKey(key, arr1), arr2)))
 
 export const mergeArrays = mergeArraysByKey('id')
+
+export const toMap = arr => Map(arr.map(x => [x.id, x]))

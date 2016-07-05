@@ -29,6 +29,7 @@ export const initialState = {
     draft: '',
     logs: [],
   },
+  latestActions: [],
 }
 
 export default initialState

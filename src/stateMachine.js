@@ -1,35 +1,41 @@
 import {Observable as O} from 'rx'
-import {concat, orderBy, prop} from 'ramda'
+import {concat, sortBy, prop, filter} from 'ramda'
 import {Map} from 'immutable'
+import {reducer} from './reducer'
 
-export function stateMachine (transaction$s, initialState$) {
-  return O.merge(...transaction$s)
-    // .startWith([])
-    // .scan(concat)
-    // .map(orderBy(prop('timestamp')))
-    // .map(metaTransformation)
-    // .combineLatest(initialState$, (transactions, db) => ({transactions, db}))
-    // .map(transform)
+export function stateMachine (actions$s, initialState$) {
+  const transactions$ = O.merge(...actions$s)
+    .startWith([])
+    .scan(concat)
+    .map(sortBy(prop('timestamp')))
+    .map(metaReducers)
+    .map(sortBy(prop('timestamp')))
+    .map(filter(x => !x.canceled))
+
+  const state$ = O.combineLatest(
+      transactions$,
+      initialState$,
+      (transactions, db) => ({transactions, db}))
+    .map(reducers)
+
+  return state$
 }
 
-const reducer = (db, transaction) => db
-const transform = ({transactions, db}) => transactions.reduce(reducer, db)
-
-const metaTransformation = (transactions) => transactions
-  .reduce(meta, Map(transactions.map(x => [x.id, x])))
-  .toArray()
-  .filter(prop('canceled'))
-
-const meta = (transactions, transaction) => {
+const metaReducer = (transactions, transaction) => {
   if (transaction.type == 'UNDO') {
     return transactions
-      .set(transaction.target, 'canceled', false)
+      .update(transaction.target, (x) => ({...x, canceled: true}))
       .delete(transaction.id)
   }
   if (transaction.type == 'REDO') {
     return transactions
-      .set(transaction.target, 'canceled', false)
+      .update(transaction.target, (x) => ({...x, canceled: false}))
       .delete(transaction.id)
   }
   return transactions
 }
+const metaReducers = (transactions) => transactions
+  .reduce(metaReducer, Map(transactions.map(x => [x.id, x])))
+  .toArray()
+
+const reducers = ({transactions, db}) => transactions.reduce(reducer, db)

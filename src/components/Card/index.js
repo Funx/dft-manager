@@ -5,7 +5,6 @@ import view from './view'
 import {k, percent as perc, sign} from 'utils/currency'
 import {
   toggleBenefitsPrintMode,
-  append,
 } from './actions'
 import intent from './intent'
 
@@ -68,7 +67,8 @@ export const Card = ({M, updates$, viewParam$, DOM}) => {
       ({value, timestamp}, {id, name}) => ({
         ...value,
         timestamp,
-        id,
+        id: id + timestamp,
+        target: id,
         name,
       }),
     )
@@ -79,7 +79,7 @@ export const Card = ({M, updates$, viewParam$, DOM}) => {
     viewParam$.lens('editing').set(intents.startEdit$.map(() => true)),
     viewParam$.lens('editing').set(intents.endEdit$.map(() => false)),
     viewParam$.lens('focused').set(intents.focus$),
-    updates$.mod(update$.map(append)),
+    updates$.set(update$.map(x => [x])),
   )
 
   return {

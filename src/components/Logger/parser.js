@@ -66,7 +66,7 @@ export function groupSimilarActions (actions) {
   return actions
     .reduce((acc, x) => {
       const prev = last(acc)
-      const areSameAction = prev && prev.type == x.type && prev.id == x.id
+      const areSameAction = prev && prev.type == x.type && prev.target == x.target
 
       // group same SELL or BUY actions
       if(('price' in x) && areSameAction && arePricesCloseEnough(x, prev)) {

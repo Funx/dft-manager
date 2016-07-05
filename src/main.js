@@ -1,3 +1,5 @@
+import {stateMachine} from './stateMachine'
+
 import {Observable as O} from 'rx'
 import {div} from '@cycle/dom'
 
@@ -7,15 +9,16 @@ import './reset.css'
 import layout from 'pages/layout.css'
 import {dot} from 'utils/dot'
 import {normalizeDB} from './attachMetadata'
+import {toMap} from 'utils/iterable'
 
 const EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000
 export const main = (responses) => {
   const {M, WS} = responses
+  const initialState$ = WS.select('welcome')
+    .map(toMap)
 
-  const db$ = WS.select('welcome')
-    .do(x => console.log(x))
-    .map(normalizeDB)
-
+  const transaction$ = M.lens('latestActions')
+  const db$ = stateMachine([transaction$], initialState$)
 
   const dashboard = Dashboard(responses)
   const outdated$ = M.lens('db')
@@ -36,8 +39,8 @@ export const main = (responses) => {
     )
   )
 
-  const transaction$ = M.lens('db')
-    .debounce(1000)
+
+  const socket$ = M.lens('latestActions')
     .map(db => ({
       name: 'transaction',
       message: db,
@@ -47,7 +50,7 @@ export const main = (responses) => {
   return {
     DOM: view(dashboard.DOM),
     M: O.merge(dashboard.M, mod$),
-    WS: transaction$,
+    WS: socket$,
   }
 }
 

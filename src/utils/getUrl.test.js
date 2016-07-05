@@ -1,5 +1,5 @@
-import { createGroup, assert } from 'painless'
-import { getUrlWith } from './getUrl'
+import {createGroup, assert} from 'painless'
+import {getUrlWith} from './getUrl'
 
 const test = createGroup()
 const event = {

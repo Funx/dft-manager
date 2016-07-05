@@ -1,6 +1,6 @@
 import {prop, pipe, filter, groupBy, values} from 'ramda'
 import {Map} from 'immutable'
-import {calcCosts} from './pages/Dashboard/calcCosts'
+import {calcCosts} from './calcCosts'
 
 export const normalizeDB = pipe(
   values,

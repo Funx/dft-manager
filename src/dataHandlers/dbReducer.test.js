@@ -3,28 +3,28 @@ const YESTERDAY = 'time_yesterday'
 const NOW = 'time_now'
 
 const test = createGroup()
-import {setPrice} from './actions'
+import {setPrice} from './dbReducer'
 test('setPrice', () => {
   assert.deepEqual(
     setPrice({price: 100, timestamp: NOW})
       ({latestUpdate: YESTERDAY}),
     {latestUpdate: NOW, price: 100})
 })
-import {plan} from './actions'
+import {plan} from './dbReducer'
 test('plan', () => {
   const action = plan()
   assert.deepEqual(action({}), {crafts: 1})
   assert.deepEqual(action({crafts: 2}), {crafts: 3})
 })
 
-import {rmPlanned} from './actions'
+import {rmPlanned} from './dbReducer'
 test('rmPlanned', () => {
   const action = rmPlanned()
   assert.deepEqual(action({}), {crafts: 0})
   assert.deepEqual(action({crafts: 2}), {crafts: 1})
 })
 
-import {craft} from './actions'
+import {craft} from './dbReducer'
 test('craft', () => {
   const action = craft()
   assert.deepEqual(action({}), {crafts: 0, stocks: 1})
@@ -32,7 +32,7 @@ test('craft', () => {
   assert.deepEqual(action({crafts: 2}), {crafts: 1, stocks: 1})
 })
 
-import {buy} from './actions'
+import {buy} from './dbReducer'
 test('buy', () => {
   assert.deepEqual(buy({})
     ({price: 1, latestUpdate: YESTERDAY}),
@@ -48,14 +48,14 @@ test('buy', () => {
   )
 })
 
-import {rmStored} from './actions'
+import {rmStored} from './dbReducer'
 test('rmStored', () => {
   const action = rmStored()
   assert.deepEqual(action({}), {stocks: 0})
   assert.deepEqual(action({stocks: 2}), {stocks: 1})
 })
 
-import {sell} from './actions'
+import {sell} from './dbReducer'
 test('sell', () => {
   assert.deepEqual(sell({})
     ({price: 1, latestUpdate: YESTERDAY}),
@@ -70,7 +70,7 @@ test('sell', () => {
     {price: 2, latestUpdate: NOW, crafts: 1, stocks: 0, sold: 1})
 })
 
-import {rmSold} from './actions'
+import {rmSold} from './dbReducer'
 test('rmSold', () => {
   const action = rmSold()
   assert.deepEqual(action({}), {sold: 0})

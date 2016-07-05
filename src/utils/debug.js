@@ -1,5 +1,3 @@
-import {pipe} from 'ramda'
-
 export const logFnArgs = (name, fn) => (...args) => {
   if (!fn) fn = name
   const result = fn(...args)

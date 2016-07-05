@@ -2,8 +2,8 @@
 export const getUrlWith = (locationOrigin, event) =>
   event.target.href.replace(locationOrigin, ``)
 
-// impure, usefull, wrote it that way of it fails in non browser environment
+// impure shortcut for browser
 export const getUrl = (event) =>
   getUrlWith(location.origin, event)
 
-export default { getUrl, getUrlWith }
+export default getUrl

@@ -3,9 +3,9 @@ import socket from 'socket.io'
 import http from 'http'
 import fs from 'fs-promise'
 import {Observable as O} from 'rx'
-import {stateMachine} from './src/stateMachine'
-import {normalizeDB} from './src/attachMetadata'
-import {toMap} from './utils/iterable'
+import {stateMachine} from './src/dataHandlers/stateMachine'
+import {normalizeDB} from './src/dataHandlers/attachMetadata'
+import {toMap} from './src/utils/iterable'
 
 const app = express()
 const server = http.Server(app)
@@ -25,11 +25,11 @@ io.on('connection', function (socket) {
 
   state$.skip(1).map(x => x.toArray())
     .debounce(1000)
-    .subscribe(x => fs
-      .writeJson('./static/db.json', x)
-      .then(() => console.log('successfully write file db.json'))
-      .catch(x => console.error('error while writing file:', x))
-    )
+    // .subscribe(x => fs
+    //   .writeJson('./static/db.json', x)
+    //   .then(() => console.log('successfully write file db.json'))
+    //   .catch(x => console.error('error while writing file:', x))
+    // )
 })
 function readJson (path) {
   return O.fromPromise(fs.readJson(path))
@@ -44,5 +44,4 @@ function listen (socket, name) {
 
 app.use('/*', express.static(`./dist/dev/index.html`))
 
-// run the two servers
 server.listen(3001, () => console.log('listening to localhost:3001'))

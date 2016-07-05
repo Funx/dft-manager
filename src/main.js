@@ -1,15 +1,14 @@
-import {stateMachine} from './stateMachine'
-
 import {Observable as O} from 'rx'
-import {div} from '@cycle/dom'
+import {pipe} from 'ramda'
+import {L} from 'stanga'
 
+import {stateMachine} from 'dataHandlers/stateMachine'
+import {makeFilterer} from 'dataHandlers/makeFilterer'
+import {makeSorter} from 'dataHandlers/makeSorter'
 import Dashboard from 'pages/Dashboard'
 
-import './reset.css'
-import layout from 'pages/layout.css'
-import {dot} from 'utils/dot'
-import {normalizeDB} from './attachMetadata'
 import {toMap} from 'utils/iterable'
+import './reset.css'
 
 const EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000
 export const main = (responses) => {
@@ -18,7 +17,7 @@ export const main = (responses) => {
     .map(toMap)
 
   const transaction$ = M.lens('latestActions')
-  const db$ = stateMachine([transaction$], initialState$)
+  const dbChange$ = stateMachine([transaction$], initialState$)
 
   const dashboard = Dashboard(responses)
   const outdated$ = M.lens('db')
@@ -30,13 +29,28 @@ export const main = (responses) => {
       .takeUntil(M.lens('db').skip(1))
     )
 
-  const mod$ = O.merge(
-    M.lens('db').set(db$),
-    M.lens('db').mod(
-      outdated$.map(x => db =>
-        db.update(x.id, x => ({...x, outdated: true}))
-      )
+  const searchResults$ = M
+    .lens(L.props(
+      'db',
+      'filters',
+      'sortOptions',
+    ))
+    .distinctUntilChanged()
+    .map(({db, filters = {}, sortOptions = {}}) =>
+      pipe(
+        x => x.toArray(),
+        makeFilterer(filters),
+        makeSorter(sortOptions),
+      )(db)
     )
+    .shareReplay(1)
+
+  const mod$ = O.merge(
+    M.lens('db').set(dbChange$),
+    M.lens('db').mod(outdated$.map(
+      x => db => db.update(x.id, x => ({...x, outdated: true}))
+    )),
+    M.lens('items').set(searchResults$)
   )
 
 
@@ -48,18 +62,10 @@ export const main = (responses) => {
 
 
   return {
-    DOM: view(dashboard.DOM),
+    DOM: dashboard.DOM,
     M: O.merge(dashboard.M, mod$),
     WS: socket$,
   }
 }
 
 export default main
-
-const view = (dashboard) => O.combineLatest(
-  dashboard,
-  (dashboard) =>
-    div(dot(layout.layout), [
-      div(dot(layout.content), [dashboard]),
-    ])
-)

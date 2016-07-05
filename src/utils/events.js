@@ -1,10 +1,10 @@
-import { Observable } from 'rx'
+import {Observable as O} from 'rx'
 
 export const events = (selector, _events) => {
   if (typeof _events === 'string') {
     _events = _events.split(' ')
   }
-  return Observable.merge(
+  return O.merge(
     _events.map(event => selector.events(event))
   )
 }

@@ -1,7 +1,6 @@
-import {range, pipe} from 'ramda'
-import {calcCosts} from './pages/Dashboard/calcCosts'
+import {range} from 'ramda'
 
-export function reducer (db, action) {
+export function dbReducer (db, action) {
   const dict = {
     PLAN: plan,
     RM_PLANNED: rmPlanned,

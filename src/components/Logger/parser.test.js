@@ -23,8 +23,7 @@ test('parseLog', () => {
       type: 'BUY',
       quantity: 10,
       price: 789000,
-      name: 'Ailes de Moskito',
-      id: 'ailes-moskito',
+      target: 'ailes-moskito',
     },
   )
   assert.deepEqual(
@@ -33,8 +32,7 @@ test('parseLog', () => {
       type: 'SELL',
       quantity: 10,
       price: 100000,
-      name: 'Ailes de Moskito',
-      id: 'ailes-moskito',
+      target: 'ailes-moskito',
     }
   )
   assert.deepEqual(
@@ -42,8 +40,7 @@ test('parseLog', () => {
     {
       type: 'CRAFT',
       quantity: 1,
-      name: 'Magnésite',
-      id: 'magnesite',
+      target: 'magnesite',
     }
   )
   assert.deepEqual(
@@ -73,40 +70,34 @@ test('parseLogs', () => {
         type: 'BUY',
         quantity: 11,
         price: 868500,
-        name: 'Ailes de Moskito',
-        id: 'ailes-moskito',
+        target: 'ailes-moskito',
       },
       {
         type: 'SELL',
         quantity: 10,
         price: 100000,
-        name: 'Ailes de Moskito',
-        id: 'ailes-moskito',
+        target: 'ailes-moskito',
       },
       {
         type: 'SELL',
         quantity: 20,
         price: 299000,
-        name: 'Ailes de Moskito',
-        id: 'ailes-moskito',
+        target: 'ailes-moskito',
       },
       {
         type: 'CRAFT',
         quantity: 2,
-        name: 'Magnésite',
-        id: 'magnesite',
+        target: 'magnesite',
       },
       {
         type: 'CRAFT',
         quantity: 1,
-        name: 'Caca',
-        id: 'caca',
+        target: 'caca',
       },
       {
         type: 'CRAFT',
         quantity: 1,
-        name: 'Magnésite',
-        id: 'magnesite',
+        target: 'magnesite',
       },
     ],
   )
@@ -114,33 +105,33 @@ test('parseLogs', () => {
 
 import {arePricesCloseEnough} from './parser'
 test('arePricesCloseEnough', () => {
-  var x = {
+  const a = {
     price: 100,
     quantity: 1,
   }
-  var y = {
+  const b = {
     price: 1000,
     quantity: 10,
   }
-  assert.isTrue(arePricesCloseEnough(x, y))
+  assert.isTrue(arePricesCloseEnough(a, b))
 
-  var x = {
+  const c = {
     price: 104,
     quantity: 1,
   }
-  var y = {
+  const d = {
     price: 1000,
     quantity: 10,
   }
-  assert.isTrue(arePricesCloseEnough(x, y))
+  assert.isTrue(arePricesCloseEnough(c, d))
 
-  var x = {
+  const e = {
     price: 106,
     quantity: 1,
   }
-  var y = {
+  const f = {
     price: 1000,
     quantity: 10,
   }
-  assert.isFalse(arePricesCloseEnough(x, y))
+  assert.isFalse(arePricesCloseEnough(e, f))
 })

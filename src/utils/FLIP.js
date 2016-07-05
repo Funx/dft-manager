@@ -1,5 +1,3 @@
-import {Hook} from 'utils/hook'
-
 export function FLIP (vtree$) {
   return vtree$.map((children) => {
     children = Array.isArray(children)

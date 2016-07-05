@@ -21,8 +21,7 @@ export function parseLog (str = '') {
       type: 'BUY',
       quantity: parseInt(BUY[1]),
       price: parseInputPrice(BUY[3]),
-      id: nameToDofusId(name),
-      name,
+      target: nameToDofusId(name),
     }
   }
   // SELL
@@ -34,8 +33,7 @@ export function parseLog (str = '') {
       type: 'SELL',
       price: parseInputPrice(SELL[1]),
       quantity: parseInt(SELL[2]),
-      id: nameToDofusId(name),
-      name,
+      target: nameToDofusId(name),
     }
   }
   // CRAFT
@@ -46,8 +44,7 @@ export function parseLog (str = '') {
     return {
       type: 'CRAFT',
       quantity: parseInt(CRAFT[1]),
-      id: nameToDofusId(name),
-      name,
+      target: nameToDofusId(name),
     }
   }
 }

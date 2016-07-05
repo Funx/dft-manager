@@ -1,15 +1,16 @@
-import {allPass, filter, curry} from 'ramda'
+import {allPass, filter} from 'ramda'
 import {remove as removeDiacritics_} from 'diacritics'
 function removeDiacritics (str = '') {
   return removeDiacritics_(str)
 }
 
-export const filterFn = curry(({query, currentCategories}, list) => {
+export function makeFilterer ({query, currentCategories}) {
   return filter(allPass([
     queryPredicate(query),
     categoriesPredicate(currentCategories),
-  ]))(list)
-})
+  ]))
+}
+export default makeFilterer
 
 function queryPredicate (queryStr = '') {
   const regexps = queryStr.trim()

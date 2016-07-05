@@ -10,7 +10,7 @@ export const dot = (classNames) => {
       .map(className => `.${className}`)
       .join(' ')
   }
-  return `.${classNames}` // forced to return a string starting with .
+  return `${classNames}`
 }
 
 export default dot

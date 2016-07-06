@@ -3,26 +3,15 @@ import {L} from 'stanga'
 
 import {intents} from './intents'
 import {view} from './view'
-import {appendLogs, updateDB} from './actions'
+import {appendLogs} from './actions'
 import {parseLogs} from './parser'
 
 export function Logger ({DOM, M}) {
   const intent = intents({DOM})
-  const gameEvents$ = intent.submit$
-    .map(parseLogs)
-
-  const updates$ = M.lens('logs')
-    .distinctUntilChanged()
-    .combineLatest(
-        M.lens('db').skip(1).first(),
-        (logs, db) => ({logs, db})
-      )
-
   const mod$ = O.merge(
       M.lens('draft').set(intent.draft$),
       M.lens('logs').mod(M.lens('latestActions').map(appendLogs)),
-      M.lens('latestActions').set(gameEvents$),
-      // M.lens('db').mod(updates$.map(updateDB)),
+      M.lens('latestActions').set(intent.submit$.map(parseLogs)),
     )
   return {
     DOM: view(M.lens(L.props('draft', 'logs'))),

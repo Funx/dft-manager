@@ -9,12 +9,16 @@ import {Card} from 'components/Card'
 export function VirtualList (sources_) {
   const {M, Screen} = sources_
 
-  const visibleItems$ = M.lens(L.lens(
-    ({items, vList}) => items
-      .slice(...(vList.visibleRange || [0, 1]))
-      .map(x => ({...x, offsetTop: vList.paddingTop})),
-    (items, model) => (model)
-  ))
+  const visibleItemsLens = L.compose(
+    L.props('items', 'vList'),
+    L.lens(
+      ({items, vList}) => items
+        .slice(...(vList.visibleRange || [0, 1]))
+        .map(x => ({...x, offsetTop: vList.paddingTop})),
+      (items, model) => (model) // readOnly
+    )
+  )
+  const visibleItems$ = M.lens(visibleItemsLens)
 
   const cards = liftComponentAsList(Card, visibleItems$, sources_)
   const viewM = M.lens('vList')

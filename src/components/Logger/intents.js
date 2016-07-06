@@ -4,7 +4,7 @@ export function intents ({DOM}) {
   const $submitBtn = DOM.select('.i-submitLogs')
   const $input = DOM.select('.m-logs')
   const keyup$ = $input.events('keyup')
-  const draft$ = O.merge(
+  const write$ = O.merge(
       $input.events('change'),
       $input.events('keyup'),
     )
@@ -12,7 +12,7 @@ export function intents ({DOM}) {
     .distinctUntilChanged()
     .shareReplay(1)
 
-  const submit$ = draft$.sample(O.merge(
+  const submit$ = write$.sample(O.merge(
       $submitBtn.events('click'),
       keyup$.filter(evt => evt.key == 'Enter'),
     ))
@@ -24,8 +24,13 @@ export function intents ({DOM}) {
     submit$,
   )
 
+  const draft$ = O.merge(
+    write$,
+    clear$.map(''),
+  )
+
   return {
-    draft$: draft$.merge(clear$.map('')),
+    draft$,
     submit$,
   }
 }

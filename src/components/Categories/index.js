@@ -1,25 +1,12 @@
 import {Observable as O} from 'rx'
 import view from './view'
 import {toggleAll, toggleProp} from './actions'
-import {identity, every} from 'ramda'
-
-const availableCategories = {
-  all: 'tous',
-  leftSide: {
-    favorites: 'favoris',
-    crafts: 'en cours de craft',
-    stocks: 'en vente',
-  },
-  rightSide: {
-    outdated: 'à mettre à jour',
-  },
-}
 
 export const Categories = ({DOM, M}) => {
-  const state$ = M
   const intents = intent(DOM)
-  const reflect = propName =>
-    M.lens('currentCategories').mod(intents.getToggle(propName).map(toggleProp(propName)))
+  const reflect = propName => M.lens('currentCategories').mod(
+    intents.getToggle(propName).map(toggleProp(propName))
+  )
 
   const mod$ = O.merge(
     M.lens('currentCategories').mod(intents.getToggle('all').map(toggleAll)),
@@ -30,7 +17,7 @@ export const Categories = ({DOM, M}) => {
   )
 
   return {
-    DOM: view(availableCategories)(state$),
+    DOM: view(M),
     M: mod$,
   }
 }

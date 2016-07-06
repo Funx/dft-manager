@@ -4,34 +4,24 @@ import dot from 'utils/dot'
 
 import {renderCheckbox} from 'components/Checkbox'
 
-const availableCategories = {
-  all: 'tous',
-  leftSide: {
-    favorites: 'favoris',
-    crafts: 'en cours de craft',
-    stocks: 'en vente',
-  },
-  rightSide: {
-    outdated: 'à mettre à jour',
-  },
-}
-
-export const view = options => M =>
+export const view = M =>
   M.map(({currentCategories, outdated}) => {
     const toCheckbox = renderCheckbox(currentCategories, dot(css.checkbox))
     return div(dot(css.container), [
-      div(dot(css.all),
-        mapObjKeys(toCheckbox, {all: 'tous'})),
-      span(dot(css.separator), '|'),
-      div(dot(css.leftSide),
-        mapObjKeys(toCheckbox, options.leftSide)),
-      div(dot(css.rightSide),
-        mapObjKeys(toCheckbox, {outdated: options.rightSide.outdated + ' (' + outdated + ')'}),
-      ),
+      div(dot(css.all), [
+        toCheckbox('all', 'tous'),
+      ]),
+      span(dot(css.separator), ['|']),
+      div(dot(css.leftSide), [
+        toCheckbox('favorites', 'favoris'),
+        toCheckbox('crafts', 'en cours de craft'),
+        toCheckbox('stocks', 'en vente'),
+      ]),
+      div(dot(css.rightSide), [
+        toCheckbox('outdated', `à mettre à jour (${outdated})`),
+      ]),
     ])
   }
 )
 
 export default view
-
-const mapObjKeys = (fn, obj) => Object.keys(obj).map(key => fn(obj[key], key))

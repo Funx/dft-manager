@@ -4,7 +4,6 @@ import http from 'http'
 import fs from 'fs-promise'
 import {Observable as O} from 'rx'
 import {stateMachine} from 'dataHandlers/stateMachine'
-import {normalizeDB} from 'dataHandlers/attachMetadata'
 import {toMap} from 'utils/iterable'
 
 const app = express()
@@ -12,6 +11,7 @@ const server = http.Server(app)
 const io = socket(server)
 // proxy the request for static assets
 app.use('/initialstate', express.static(`./static/bdd.json`))
+app.use('/icons', express.static(`./src/icons/`))
 
 io.on('connection', function (socket) {
   const path = './static/db.json'

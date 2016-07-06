@@ -50,8 +50,9 @@ function renderFavoritesIcon (x) {
     tabIndex: x.editing ? '-1' : '',
   }
   return Checkbox(
-    dot(css.favorite), '.m-favorites', attributes,
-    span({innerHTML: iconFavorites}),
+    dot(css.favorite), '.m-favorites', attributes, [
+      span({props: {innerHTML: iconFavorites}}),
+    ],
   )
 }
 

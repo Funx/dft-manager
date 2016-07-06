@@ -10,40 +10,47 @@ import Categories from 'components/Categories'
 import css from './options.css'
 import dot from 'utils/dot'
 
-const sortProps = {
-  'benefits': 'Bénéfices (k)',
-  'benefitsRate': 'Bénéfices (%)',
-  'price': 'Prix de vente',
-  'cost': 'Coût de revient',
-  'alphabetical': 'Alphabétique',
-}
-
-const sortOrders = {
-  'ascending': 'Croissant',
-  'descending': 'Décroissant',
-}
-
-
 export const OptionsBar = ({DOM, M}) => {
-  const sortOptions$ = M.lens('sortOptions')
-  const property$ = sortOptions$.lens('property')
-  const sortProp = isolate(Dropdown(sortProps), 'property')
-    ({DOM, M: property$})
-  const order$ = sortOptions$.lens('order')
-  const sortOrder = isolate(Dropdown(sortOrders), 'sortOrder')
-    ({DOM, M: order$})
+  const sortProps = {
+    'benefits': 'Bénéfices (k)',
+    'benefitsRate': 'Bénéfices (%)',
+    'price': 'Prix de vente',
+    'cost': 'Coût de revient',
+    'alphabetical': 'Alphabétique',
+  }
+  const sortPropLens = L.compose('sortOptions', 'property')
+  const SortPropInput = isolate(Dropdown(sortProps), 'property')
+  const sortPropInput = SortPropInput({DOM, M: M.lens(sortPropLens)})
 
-  const query$ = M.lens('filters').lens('query')
-  const searchForm = SearchForm({DOM, M: query$})
-  const currentCategories$ = M.lens(L.pick({
+  const sortOrders = {
+    'ascending': 'Croissant',
+    'descending': 'Décroissant',
+  }
+  const sortOrderLens = L.compose('sortOptions', 'order')
+  const SortOrderInput = isolate(Dropdown(sortOrders), 'sortOrder')
+  const sortOrderInput = SortOrderInput({DOM, M: M.lens(sortOrderLens)})
+
+  const queryLens = L.compose('filters', 'query')
+  const searchForm = SearchForm({DOM, M: M.lens(queryLens)})
+
+  const currentCategoriesLens = L.pick({
     outdated: 'outdated',
     currentCategories: L.compose('filters', 'currentCategories'),
-  }))
-  const categories = Categories({DOM, M: currentCategories$})
+  })
+  const categories = isolate(Categories)
+    ({DOM, M: M.lens(currentCategoriesLens)})
 
   return {
-    DOM: view(searchForm.DOM, sortProp.DOM, sortOrder.DOM, categories.DOM),
-    M: O.merge(searchForm.M, sortProp.M, sortOrder.M, categories.M),
+    DOM: view(
+      searchForm.DOM,
+      sortPropInput.DOM,
+      sortOrderInput.DOM,
+      categories.DOM),
+    M: O.merge(
+      searchForm.M,
+      sortPropInput.M,
+      sortOrderInput.M,
+      categories.M),
   }
 }
 export default OptionsBar
@@ -52,6 +59,8 @@ function view (searchForm, sortProp, sortOrder, categories) {
   return O.combineLatest(
     searchForm, sortProp, sortOrder, categories,
     (searchForm, sortProp, sortOrder, categories) =>
+
+    /* markup */
     div([
       div(dot(css.fixedContainer), [
         searchForm, sortProp, sortOrder,
@@ -59,5 +68,6 @@ function view (searchForm, sortProp, sortOrder, categories) {
       div(dot(css.placeholder)),
       categories,
     ])
+    /* /markup */
   )
 }

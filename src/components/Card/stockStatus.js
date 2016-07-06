@@ -12,33 +12,44 @@ export function renderStockStatus (item) {
   const buttons = [
     {
       id: '.i-crafts',
-      svg: iconCrafts,
       value: item.crafts,
+      content: [svgIcon(iconCrafts), ` ${item.crafts}`],
     },
-  ].map(({id, svg, value}) => {
-    const activeClass = item.crafts ? dot(css.isActive) : ''
-    return arrowButton(id + activeClass,
-      span(attributes, [svgIcon(svg), value])
-    )
-  })
-  // const buttons = [
-  //   (item.recipe.length)
-  //     ? arrowButton(`.i-crafts${item.crafts ? dot(css.isActive) : ''}`,
-  //       span({attrs: {style: `color: ${color};`}}, [svgIcon(iconCrafts), ` ${item.crafts}`]))
-  //     : '',
-  //   arrowButton(`.i-stocks${item.stocks ? dot(css.isActive) : ''}`,
-  //     span({attrs: {style: `color: ${color};`}}, [svgIcon(iconStocks), ` ${item.stocks}`])),
-  //   arrowButton(`.i-sold`,
-  //     span({attrs: {style: `color: ${color};`}}, [`${item.sold}`])),
-  // ]
-  return div(dot(css.stockStatus), attributes, buttons)
+    {
+      id: '.i-stocks',
+      value: item.stocks,
+      content: [svgIcon(iconStocks), ` ${item.stocks}`],
+    },
+    {
+      id: '.i-sold',
+      value: item.sold,
+      content: [String(item.sold)],
+    },
+  ]
+
+  const renderButton = ({id, content, value}) => {
+    const activeClass = value ? dot(css.isActive) : ''
+    const btnAttrs = {attrs: {tabIndex: item.editing ? '-1' : ''}}
+    const spanAttrs = {attrs: {style: `color: ${color};`}}
+    return arrowButton(id + activeClass, btnAttrs, [
+      span(spanAttrs, content),
+    ])
+  }
+
+  if (!item.recipe || !item.recipe.length) {
+    var buttonsVtree$ = buttons.slice(1).map(renderButton)
+  } else {
+    var buttonsVtree$ = buttons.map(renderButton)
+  }
+
+  return div(dot(css.stockStatus), attributes, buttonsVtree$)
 }
 
-function arrowButton (className, content) {
-  return button(className + dot(css.hexagon), [
+function arrowButton (className, attributes, content) {
+  return button(className + dot(css.hexagon), attributes, [
     div(dot(css.inner1), [
       span(dot(css.inner2), [
-        span(dot(css.content), [content]),
+        span(dot(css.content), content),
       ]),
     ]),
   ])

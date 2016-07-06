@@ -2,7 +2,7 @@ import {Observable as O} from 'rx'
 import {parseInputPrice} from 'utils/currency'
 
 export default intent
-export function intent (DOM) {
+export function intent (DOM, M) {
   const $mainInfo = DOM.select('.mainInfo')
   const $mPrice = DOM.select('.m-price')
   const click$ = $mainInfo.events('click').share()
@@ -21,7 +21,9 @@ export function intent (DOM) {
       .pluck('target', 'value')
       .map(parseInputPrice)
       .filter(x => !!x)
-      .distinctUntilChanged(),
+      .merge(M.lens('price').delay(1))
+      .distinctUntilChanged()
+      .skip(1),
     focus$: O.merge(
       $mPrice.events('focus').map(true),
       $mPrice.events('blur').map(false),
@@ -32,7 +34,7 @@ export function intent (DOM) {
     ),
     endEdit$: O.merge(
       $mPrice.events('keyup').filter(x => x.key == 'Escape'),
-      // $mPrice.events('blur').delay(50),
+      $mPrice.events('blur'),
     ),
     toggleFavorites$: DOM.select('.m-favorites')
       .events('change')
@@ -44,15 +46,15 @@ export function intent (DOM) {
 }
 
 function btnIntent (DOM, className) {
-  const $craftBtn = DOM.select(className)
-  const mousedown$ = $craftBtn.events('mousedown')
+  const $btn = DOM.select(className)
+  const mousedown$ = $btn.events('mousedown')
     .flatMapLatest(() =>
       O.of('down').concat(
         O.merge(
-          $craftBtn.events('mouseup').map(() => 'up'),
+          $btn.events('mouseup').map(() => 'up'),
           O.interval(300).map(() => 'up'),
-          $craftBtn.events('mouseleave').map(() => 'move'),
-          $craftBtn.events('contextmenu').map(() => 'right')
+          $btn.events('mouseleave').map(() => 'move'),
+          $btn.events('contextmenu').map(() => 'right')
         ).first()
       ),
     )
@@ -65,7 +67,7 @@ function btnIntent (DOM, className) {
     .filter(x => x.interval < 300)
   const longClick$ = mousedown$
     .filter(x => x.interval >= 300)
-  const rightClick$ = $craftBtn.events('contextmenu')
+  const rightClick$ = $btn.events('contextmenu')
     .do(x => x.preventDefault())
     .debounce(1)
 

@@ -4,12 +4,24 @@ import dot from 'utils/dot'
 
 import {renderCheckbox} from 'components/Checkbox'
 
+const availableCategories = {
+  all: 'tous',
+  leftSide: {
+    favorites: 'favoris',
+    crafts: 'en cours de craft',
+    stocks: 'en vente',
+  },
+  rightSide: {
+    outdated: 'à mettre à jour',
+  },
+}
+
 export const view = options => M =>
   M.map(({currentCategories, outdated}) => {
     const toCheckbox = renderCheckbox(currentCategories, dot(css.checkbox))
     return div(dot(css.container), [
       div(dot(css.all),
-        mapObjKeys(toCheckbox, {all: options.all})),
+        mapObjKeys(toCheckbox, {all: 'tous'})),
       span(dot(css.separator), '|'),
       div(dot(css.leftSide),
         mapObjKeys(toCheckbox, options.leftSide)),

@@ -8,7 +8,7 @@ import intent from './intent'
 
 export const Card = ({M, updates$, viewParam$, DOM}) => {
   const state$ = O.combineLatest(
-    M, viewParam$,
+    M, viewParam$.debounce(20), // debounce the startEdit/endEdit switch
     (card = {}, params) => ({
       ...card,
       ...params,
@@ -24,7 +24,7 @@ export const Card = ({M, updates$, viewParam$, DOM}) => {
   )
 
   const vtree$ = view(state$)
-  const intents = intent(DOM)
+  const intents = intent(DOM, M)
   const update$ = O.merge(
       intents.save$.map(price => ({
         type: 'SET_PRICE',

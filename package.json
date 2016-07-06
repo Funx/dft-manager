@@ -9,7 +9,7 @@
     "build-jade": "jade ./src/index.jade -o ./dist/dev/",
     "dev-server": "webpack-dev-server --content-base dist/dev/ --host 0.0.0.0 --inline --hot --progress --watch",
 
-    "server": "NODE_PATH=./src nodemon --ignore static/ --ignore dist/ --exec babel-node ./src/server.js",
+    "server": "NODE_PATH=./src nodemon --ignore static/ --ignore dist/ --ignore src/components/ --exec babel-node ./src/server.js",
 
     "autotest": "supervisor -q -n exit -x npm run test",
     "test": "babel-node ./node_modules/.bin/painless ./src/{**,**/**,**/**/**,**/**/**/**}/*.test.js"

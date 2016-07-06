@@ -1,34 +1,26 @@
-import {L} from 'stanga'
 import {Observable as O} from 'rx'
 import {model} from './model'
-import {intents} from './intents'
+import {intent} from './intent'
 import {view} from './view'
 import liftComponentAsList from 'utils/liftComponentAsList'
 import {Card} from 'components/Card'
 
 export function VirtualList (sources_) {
   const {M, Screen} = sources_
+  const intents = intent({Screen})
+  const vList$ = model(M.lens('items'), intents)
 
-  const visibleItemsLens = L.compose(
-    L.props('items', 'vList'),
-    L.lens(
-      ({items, vList}) => items
-        .slice(...(vList.visibleRange || [0, 1]))
-        .map(x => ({...x, offsetTop: vList.paddingTop})),
-      (items, model) => (model) // readOnly
-    )
-  )
-  const visibleItems$ = M.lens(visibleItemsLens)
+  const visibleItems$ = O.combineLatest(
+      M.lens('items'), vList$.pluck('visibleRange'),
+      (items, visibleRange) => items
+        .slice(...(visibleRange || [0, 1])))
 
   const cards = liftComponentAsList(Card, visibleItems$, sources_)
-  const viewM = M.lens('vList')
-    .lens(L.props('height', 'paddingTop'))
-  const vtree$ = view(cards.DOM, viewM)
-
-  const mod$ = model(M.lens(L.props('items', 'vList')), intents({Screen}))
+  const vtree$ = view(cards.DOM, vList$)
+    .debounce(20)
 
   return {
-    M: O.merge(cards.M, mod$),
+    M: O.merge(cards.M),
     DOM: vtree$,
   }
 }

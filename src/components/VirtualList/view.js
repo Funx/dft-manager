@@ -3,23 +3,41 @@ import {div, ul, li} from '@cycle/dom'
 
 import css from './collection.css'
 import dot from 'utils/dot'
+
 export function view (cards$, M) {
-  // cards$.subscribe(x => console.log(x))
   return O.combineLatest(
     cards$,
     M,
-    (cards, {height, paddingTop}) =>
-      div('.virtualListContainer',
-        {attrs: {style: `height: ${height}px;`}},
-        [
-          ul(dot(css.collection),
-            {attrs: {style: `transform: translateY(${paddingTop}px);`}},
-            cards.map(card => li('.card' + dot(css.children),
-              {key: card.data.key},
-              [card],
-            )),
-          ),
-        ]
-      )
+    (cards, {height, paddingTop}) => {
+      const containerAttributes = {attrs: {style: `height: ${height}px;`}}
+      const collectionAttributes = {attrs: {style: `transform: translateY(${paddingTop}px);`}}
+
+      /* markup */
+      return div('.virtualListContainer', containerAttributes, [
+        ul(dot(css.collection), collectionAttributes, [
+          ...cards.map(listItem),
+        ]),
+      ])
+      /* /markup */
+    }
   )
+}
+
+function listItem (card) {
+  const attributes = {
+    key: card.data.key,
+    style: {
+      opacity: '0',
+      transform: 'translateY(-10px)',
+      transition: 'all .1s',
+      delayed: {opacity: '1', transform: 'translateY(0)'},
+      destroy: {opacity: '0', transform: 'translateY(10px)'},
+    },
+  }
+
+  /* markup */
+  return li('.card' + dot(css.children), attributes, [
+    card,
+  ])
+  /* /markup */
 }

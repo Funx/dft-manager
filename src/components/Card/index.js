@@ -61,7 +61,7 @@ export const Card = ({M, updates$, viewParam$, DOM}) => {
     )
     .timestamp()
     .withLatestFrom(
-      M.lens(L.props('id', 'name')),
+      O.combineLatest(M.pluck('id'), M.pluck('name'), (id, name) => ({id, name})),
       ({value, timestamp}, {id, name}) => ({
         ...value,
         timestamp,

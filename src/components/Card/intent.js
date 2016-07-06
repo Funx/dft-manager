@@ -21,7 +21,7 @@ export function intent (DOM, M) {
       .pluck('target', 'value')
       .map(parseInputPrice)
       .filter(x => !!x)
-      .merge(M.lens('price').delay(1))
+      .merge(M.pluck('price').delay(1))
       .distinctUntilChanged()
       .skip(1),
     focus$: O.merge(
@@ -63,10 +63,8 @@ function btnIntent (DOM, className) {
     .filter(x => x.value == 'up')
     .shareReplay(1)
 
-  const shortClick$ = mousedown$
-    .filter(x => x.interval < 300)
-  const longClick$ = mousedown$
-    .filter(x => x.interval >= 300)
+  const shortClick$ = mousedown$.filter(x => x.interval < 300)
+  const longClick$ = mousedown$.filter(x => x.interval >= 300)
   const rightClick$ = $btn.events('contextmenu')
     .do(x => x.preventDefault())
     .debounce(1)

@@ -1,7 +1,7 @@
 import {Observable as O} from 'rx'
 
 const EXTRA_BLEED = 1 // the bigger the number, the bigger the impact in DOM perf on huge screens (it renders a lot more of elements)
-export function model(M, intents) {
+export function model(items$, intents) {
   const rowLength$ = O.combineLatest(
       intents.containerWidth$, intents.itemWidth$,
       (available, width) => Math.round(available / width)
@@ -33,15 +33,15 @@ export function model(M, intents) {
     .distinctUntilChanged()
 
   const height$ = O.combineLatest(
-      M.lens('items'), intents.itemHeight$, rowLength$,
+      items$, intents.itemHeight$, rowLength$,
       (items, height, rowLength) =>
         Math.ceil(items.length / rowLength) * height,
     )
     .distinctUntilChanged()
 
-  return O.merge(
-    M.lens('vList').lens('visibleRange').set(visibleRange$),
-    M.lens('vList').lens('paddingTop').set(paddingTop$),
-    M.lens('vList').lens('height').set(height$),
+  return O.combineLatest(
+    visibleRange$, paddingTop$, height$,
+    (visibleRange, paddingTop, height) =>
+      ({visibleRange, paddingTop, height})
   )
 }

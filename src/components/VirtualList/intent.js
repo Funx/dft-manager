@@ -1,5 +1,5 @@
 
-export function intents ({Screen}) {
+export function intent ({Screen}) {
   // body
   const screenHeight$ = Screen.height()
   const scrollTop$ = Screen.events('scroll', 'body')
@@ -41,3 +41,4 @@ export function intents ({Screen}) {
     containerTop$,
   }
 }
+export default intent

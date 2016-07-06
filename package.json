@@ -1,17 +1,18 @@
 {
   "name": "dft-manager",
   "version": "0.1.0",
-  "description": "Simple setup for cycle.js",
+  "description": "Dofus trophy manager (this name sucks)",
   "main": "",
   "scripts": {
-    "server": "nodemon --ignore static/ --exec babel-node ./server.js",
     "start": "npm run watch-jade & npm run dev-server",
     "watch-jade": "nodemon --watch ./src/index.jade --exec 'npm run build-jade'",
     "build-jade": "jade ./src/index.jade -o ./dist/dev/",
     "dev-server": "webpack-dev-server --content-base dist/dev/ --host 0.0.0.0 --inline --hot --progress --watch",
-    "test": "babel-node ./node_modules/.bin/painless ./src/{**,**/**,**/**/**,**/**/**/**}/*.test.js",
+
+    "server": "NODE_PATH=./src nodemon --ignore static/ --ignore dist/ --exec babel-node ./src/server.js",
+
     "autotest": "supervisor -q -n exit -x npm run test",
-    "jasmine": "./node_modules/.bin/jasmine"
+    "test": "babel-node ./node_modules/.bin/painless ./src/{**,**/**,**/**/**,**/**/**/**}/*.test.js"
   },
   "author": "Géraud Henrion",
   "license": "MIT",

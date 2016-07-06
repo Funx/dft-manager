@@ -3,9 +3,7 @@ import {L} from 'stanga'
 
 import view from './view'
 import {k, percent as perc, sign} from 'utils/currency'
-import {
-  toggleBenefitsPrintMode,
-} from './actions'
+import {toggleBenefitsPrintMode} from './actions'
 import intent from './intent'
 
 export const Card = ({M, updates$, viewParam$, DOM}) => {

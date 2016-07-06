@@ -4,7 +4,7 @@ var webpackConfig = {
   watch: false,
   devtool: 'inline-source-map',
   cache: true,
-  entry: './src/app.js',
+  entry: './src/client.js',
   map: true,
 
   output: {

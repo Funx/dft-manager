@@ -7,15 +7,18 @@ export function intent (DOM) {
   const $mPrice = DOM.select('.m-price')
   const click$ = $mainInfo.events('click').share()
 
-  const buffer$ = click$
+  const clicks$ = click$
     .buffer(() => click$.debounce(300))
     .map(x => x.length)
     .share()
 
   return {
-    toggleBenefitsPrintMode$: buffer$.filter(x => x == 1),
-    save$: $mPrice.events('blur')
-      .map(x => x.target.value)
+    toggleBenefitsPrintMode$: clicks$.filter(count => count == 1),
+    save$: O.merge(
+        $mPrice.events('blur'),
+        $mPrice.events('keyup').filter(x => x.key == 'Enter'),
+      )
+      .pluck('target', 'value')
       .map(parseInputPrice)
       .filter(x => !!x)
       .distinctUntilChanged(),
@@ -24,10 +27,13 @@ export function intent (DOM) {
       $mPrice.events('blur').map(false),
     ),
     startEdit$: O.merge(
-      buffer$.filter(x => x >= 2),
-      $mPrice.events('focus').map(true),
+      clicks$.filter(count => count >= 2),
+      $mPrice.events('focus'),
     ),
-    endEdit$: $mPrice.events('keyup').filter(x => x.key == 'Escape'),
+    endEdit$: O.merge(
+      $mPrice.events('keyup').filter(x => x.key == 'Escape'),
+      // $mPrice.events('blur').delay(50),
+    ),
     toggleFavorites$: DOM.select('.m-favorites')
       .events('change')
       .pluck('target', 'checked'),

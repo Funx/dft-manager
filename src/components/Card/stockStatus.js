@@ -1,4 +1,4 @@
-import {div, button, span, svg} from '@cycle/dom'
+import {div, button, span} from '@cycle/dom'
 
 import css from './stockStatus.css'
 import dot from 'utils/dot'
@@ -8,19 +8,30 @@ const svgIcon = svg => span({props: {innerHTML: svg}})
 
 export function renderStockStatus (item) {
   const color = `hsl(${item.hue}, 44%, 50%)`
-  return div(dot(css.stockStatus),
-    {attrs: {style: `background: ${color};`}},
-    [
-      (item.recipe.length)
-        ? arrowButton(`.i-crafts${item.crafts ? dot(css.isActive) : ''}`,
-          span({attrs: {style: `color: ${color};`}}, [svgIcon(iconCrafts), ` ${item.crafts}`]))
-        : '',
-      arrowButton(`.i-stocks${item.stocks ? dot(css.isActive) : ''}`,
-        span({attrs: {style: `color: ${color};`}}, [svgIcon(iconStocks), ` ${item.stocks}`])),
-      arrowButton(`.i-sold`,
-        span({attrs: {style: `color: ${color};`}}, [`${item.sold}`])),
-    ],
-  )
+  const attributes = {attrs: {style: `background: ${color};`}}
+  const buttons = [
+    {
+      id: '.i-crafts',
+      svg: iconCrafts,
+      value: item.crafts,
+    },
+  ].map(({id, svg, value}) => {
+    const activeClass = item.crafts ? dot(css.isActive) : ''
+    return arrowButton(id + activeClass,
+      span(attributes, [svgIcon(svg), value])
+    )
+  })
+  // const buttons = [
+  //   (item.recipe.length)
+  //     ? arrowButton(`.i-crafts${item.crafts ? dot(css.isActive) : ''}`,
+  //       span({attrs: {style: `color: ${color};`}}, [svgIcon(iconCrafts), ` ${item.crafts}`]))
+  //     : '',
+  //   arrowButton(`.i-stocks${item.stocks ? dot(css.isActive) : ''}`,
+  //     span({attrs: {style: `color: ${color};`}}, [svgIcon(iconStocks), ` ${item.stocks}`])),
+  //   arrowButton(`.i-sold`,
+  //     span({attrs: {style: `color: ${color};`}}, [`${item.sold}`])),
+  // ]
+  return div(dot(css.stockStatus), attributes, buttons)
 }
 
 function arrowButton (className, content) {

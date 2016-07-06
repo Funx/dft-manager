@@ -6,10 +6,8 @@ export function makeScreenDriver () {
     .shareReplay(1)
 
   return () => ({
-    height: () => resize$
-      .map(() => window.innerHeight),
-    width: () => resize$
-      .map(() => window.innerWidth),
+    height: () => resize$.map(() => window.innerHeight),
+    width: () => resize$.map(() => window.innerWidth),
     events: (eventName, selector) => {
       const toElement = selector
         ? () => document.querySelectorAll(selector)

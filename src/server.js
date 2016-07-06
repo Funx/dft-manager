@@ -3,14 +3,13 @@ import socket from 'socket.io'
 import http from 'http'
 import fs from 'fs-promise'
 import {Observable as O} from 'rx'
-import {stateMachine} from './src/dataHandlers/stateMachine'
-import {normalizeDB} from './src/dataHandlers/attachMetadata'
-import {toMap} from './src/utils/iterable'
+import {stateMachine} from 'dataHandlers/stateMachine'
+import {normalizeDB} from 'dataHandlers/attachMetadata'
+import {toMap} from 'utils/iterable'
 
 const app = express()
 const server = http.Server(app)
 const io = socket(server)
-
 // proxy the request for static assets
 app.use('/initialstate', express.static(`./static/bdd.json`))
 

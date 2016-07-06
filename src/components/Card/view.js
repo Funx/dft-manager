@@ -1,6 +1,5 @@
 import {div, h2, small, span, input} from '@cycle/dom'
 import {k, humanize} from 'utils/currency'
-import {Observable as O} from 'rx'
 
 import css from './card.css'
 import dot from 'utils/dot'
@@ -9,59 +8,89 @@ import {Checkbox} from 'components/Checkbox'
 import {renderStockStatus} from './stockStatus'
 
 export const view = (M) => {
-  return M.map(card =>
-    div(dot(css.card),
-      {
-        key: card.id,
-        attrs: {style: `background-color: hsl(${card.hue}, 44%, 50%);`},
-      }, [
-        div(dot(css.container), [
-          div(dot(css.innerWrapper), [
-            div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
-              `${invalidCost(card) ? '?' : k(card.cost)} -> ${infiniteProfit(card) ? '∞' : k(card.price)}${(infiniteProfit(card) || invalidCost(card)) ? '' : ' | ' + card.secondaryInfo}`,
-              Checkbox(
-                dot(css.favorite), '.m-favorites',
-                {checked: card.favorites, tabIndex: card.editing ? '-1' : ''},
-                span({innerHTML: iconFavorites})
-              ),
-            ]),
-            card.editing ? renderEditForm(card) : renderMainInfo(card),
-            div(dot(css.identity), [
-              small(dot(css.type), [card.type]),
-              h2(dot(css.name), [card.name]),
-            ]),
-          ]),
+  return M.map(card => {
+    const attributes = {
+      key: card.id,
+      attrs: {style: `background-color: hsl(${card.hue}, 44%, 50%);`},
+    }
+
+    /* markup */
+    return div(dot(css.card), attributes, [
+      div(dot(css.container), [
+        div(dot(css.innerWrapper), [
+          renderPriceInfos(card),
+          card.editing ? renderEditForm(card) : renderMainInfo(card),
+          renderIdentity(card),
         ]),
-        renderStockStatus(card),
-      ])
-  )
+      ]),
+      renderStockStatus(card),
+    ])
+    /* /markup */
+  })
 }
 export default view
 
-function renderEditForm (item) {
+function renderPriceInfos (x) {
+  const cost = invalidCost(x) ? '?' : k(x.cost)
+  const price = infiniteProfit(x) ? '∞' : k(x.price)
+  const displaySecondaryInfo = !infiniteProfit(x) && !invalidCost(x)
+  const secondaryInfo = displaySecondaryInfo
+    ? `| ${x.secondaryInfo}`
+    : ''
+
+  return div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
+    `${cost} -> ${price} ${secondaryInfo}`,
+    renderFavoritesIcon(x),
+  ])
+}
+
+function renderFavoritesIcon (x) {
+  const attributes = {
+    checked: x.favorites,
+    tabIndex: x.editing ? '-1' : '',
+  }
+  return Checkbox(
+    dot(css.favorite), '.m-favorites', attributes,
+    span({innerHTML: iconFavorites}),
+  )
+}
+
+function renderEditForm ({price}) {
   return div(dot(css.editForm), [
     input('.m-price', {attrs: {
       type: 'text',
-      value: humanize(item.price, false) + 'k',
+      value: `${humanize(price, false)}k`,
     }}),
   ])
 }
 
-function renderMainInfo (item) {
-  const fontSize = isOverProfitable(item) || infiniteProfit(item) ? '4rem'
-    : isSuperProfitable(item) ? '3rem'
-    : isProfitable(item) ? '2rem'
-    : '1rem'
+function renderIdentity (x) {
+  return div(dot(css.identity), [
+    small(dot(css.type), [x.type]),
+    h2(dot(css.name), [x.name]),
+  ])
+}
 
-  return div(
-    '.mainInfo' + dot(css.mainInfo),
-    {key: 'primaryInfo', attrs: {style: `font-size: ${fontSize};`}},
-    [
-      infiniteProfit(item) ? '∞' : '',
-      invalidCost(item) ? '?' : '',
-      !infiniteProfit(item) && !invalidCost(item) ? item.primaryInfo : '',
-    ]
-  )
+function renderMainInfo (x) {
+  const classNames = '.mainInfo' + dot(css.mainInfo)
+  const fontSize = isOverProfitable(x) ? '4rem'
+    : infiniteProfit(x) ? '4rem'
+    : isSuperProfitable(x) ? '3rem'
+    : isProfitable(x) ? '2rem'
+    : '1rem'
+  const style = `font-size: ${fontSize};`
+  const attributes = {
+    key: 'primaryInfo',
+    attrs: {style},
+  }
+  const infinitySymbol = infiniteProfit(x) ? '∞' : ''
+  const questionMark = invalidCost(x) ? '?' : ''
+  const displayPrimaryInfo = !infinitySymbol && !questionMark
+  const primaryInfo = displayPrimaryInfo ? x.primaryInfo : ''
+
+  return div(classNames, attributes, [
+    `${infinitySymbol}${questionMark}${primaryInfo}`,
+  ])
 }
 
 const profitability = (boundary, boundaryRate) =>

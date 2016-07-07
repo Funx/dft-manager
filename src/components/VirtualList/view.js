@@ -4,10 +4,10 @@ import {div, ul, li} from '@cycle/dom'
 import css from './collection.css'
 import dot from 'utils/dot'
 
-export function view (cards$, M) {
+export function view (cards$, vList) {
   return O.combineLatest(
     cards$,
-    M,
+    vList,
     (cards, {height, paddingTop}) => {
       const containerAttributes = {attrs: {style: `height: ${height}px;`}}
       const collectionAttributes = {attrs: {style: `transform: translateY(${paddingTop}px);`}}
@@ -29,7 +29,7 @@ function listItem (card) {
     style: {
       opacity: '0',
       transform: 'translateY(-10px)',
-      transition: 'all .1s',
+      transition: 'all .2s',
       delayed: {opacity: '1', transform: 'translateY(0)'},
       destroy: {opacity: '0', transform: 'translateY(10px)'},
     },

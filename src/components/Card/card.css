@@ -112,10 +112,6 @@
   opacity: 0;
 }
 
-.favorite .icon-eye {
-
-}
-
 .favorite input[type='checkbox'] + span svg {
   display: inline-block;
 

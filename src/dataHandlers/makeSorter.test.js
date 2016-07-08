@@ -103,7 +103,7 @@ test(`makeSorter('alphabetical') should order by name, caps and special chars ag
   return assert.deepEqual(output, expected)
 })
 test('putEmptyRecipesLast', () => {
-  const sort = makeSorter({propName: 'benefits', order: 'ascending'})
+  const sort = makeSorter({propName: 'benefits', ascending: true})
   const input = [
     {name: '3', recipe: []},
     {name: '4'},

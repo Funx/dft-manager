@@ -3,22 +3,27 @@ import css from './categories.css'
 import dot from 'utils/dot'
 
 import {renderCheckbox} from 'components/Checkbox'
+const makeCategoryFilter = (model) => (prop, labelName) =>
+  renderCheckbox(dot(css.checkbox), `.m-${prop}`, {checked: model[prop]}, [
+    span(labelName),
+  ])
+
 
 export const view = M =>
   M.map(({currentCategories, outdated}) => {
-    const toCheckbox = renderCheckbox(currentCategories, dot(css.checkbox))
+    const CategoryFilter = makeCategoryFilter(currentCategories)
     return div(dot(css.container), [
       div(dot(css.all), [
-        toCheckbox('all', 'tous'),
+        CategoryFilter('all', 'tous'),
       ]),
       span(dot(css.separator), ['|']),
       div(dot(css.leftSide), [
-        toCheckbox('favorites', 'favoris'),
-        toCheckbox('crafts', 'en cours de craft'),
-        toCheckbox('stocks', 'en vente'),
+        CategoryFilter('favorites', 'favoris'),
+        CategoryFilter('crafts', 'en cours de craft'),
+        CategoryFilter('stocks', 'en vente'),
       ]),
       div(dot(css.rightSide), [
-        toCheckbox('outdated', `à mettre à jour (${outdated})`),
+        CategoryFilter('outdated', `à mettre à jour (${outdated})`),
       ]),
     ])
   }

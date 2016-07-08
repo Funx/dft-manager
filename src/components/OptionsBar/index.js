@@ -1,11 +1,12 @@
 import {Observable as O} from 'rx'
-import {div} from '@cycle/dom'
+import {div, span} from '@cycle/dom'
 import isolate from '@cycle/isolate'
 import {L} from 'stanga'
 
 import SearchForm from 'components/SearchForm'
 import Dropdown from 'components/Dropdown'
 import Categories from 'components/Categories'
+import {Checkbox} from 'components/Checkbox'
 
 import css from './options.css'
 import dot from 'utils/dot'
@@ -22,13 +23,8 @@ export const OptionsBar = ({DOM, M}) => {
   const SortPropInput = isolate(Dropdown(sortProps), 'property')
   const sortPropInput = SortPropInput({DOM, M: M.lens(sortPropLens)})
 
-  const sortOrders = {
-    'ascending': 'Croissant',
-    'descending': 'Décroissant',
-  }
-  const sortOrderLens = L.compose('sortOptions', 'order')
-  const SortOrderInput = isolate(Dropdown(sortOrders), 'sortOrder')
-  const sortOrderInput = SortOrderInput({DOM, M: M.lens(sortOrderLens)})
+  const sortOrderLens = L.compose('sortOptions', 'ascending')
+  const sortOrderInput = Checkbox({DOM, M: M.lens(sortOrderLens)})
 
   const queryLens = L.compose('filters', 'query')
   const searchForm = SearchForm({DOM, M: M.lens(queryLens)})
@@ -63,7 +59,7 @@ function view (searchForm, sortProp, sortOrder, categories) {
     /* markup */
     div([
       div(dot(css.fixedContainer), [
-        searchForm, sortProp, sortOrder,
+        searchForm, sortProp, span(dot(css.sortOrder), [sortOrder]),
       ]),
       div(dot(css.placeholder)),
       categories,
@@ -71,3 +67,14 @@ function view (searchForm, sortProp, sortOrder, categories) {
     /* /markup */
   )
 }
+
+// function renderToggleSortOrder (checked) {
+//   const attributes = {
+//     checked,
+//   }
+//   return renderCheckbox(
+//     dot(css.favorite), '.m-favorites', attributes, [
+//       'ASC/DESC',
+//     ],
+//   )
+// }

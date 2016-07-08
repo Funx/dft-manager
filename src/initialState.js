@@ -6,7 +6,7 @@ export const initialState = {
   items: [],
   sortOptions: {
     property: 'benefits',
-    order: 'descending',
+    ascending: false,
   },
   filters: {
     query: '',

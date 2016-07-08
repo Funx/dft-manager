@@ -4,7 +4,7 @@ import {k, humanize} from 'utils/currency'
 import css from './card.css'
 import dot from 'utils/dot'
 import iconFavorites from 'icons/icon_eye.svg'
-import {Checkbox} from 'components/Checkbox'
+import {renderCheckbox} from 'components/Checkbox'
 import {renderStockStatus} from './stockStatus'
 
 export const view = (M) => {
@@ -49,7 +49,7 @@ function renderFavoritesIcon (x) {
     checked: x.favorites,
     tabIndex: x.editing ? '-1' : '',
   }
-  return Checkbox(
+  return renderCheckbox(
     dot(css.favorite), '.m-favorites', attributes, [
       span({props: {innerHTML: iconFavorites}}),
     ],

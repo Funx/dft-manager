@@ -14,3 +14,50 @@
 .placeholder {
   height: 1rem;
 }
+
+.sortOrder {
+  cursor: pointer;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortOrder input[type='checkbox'] {
+  width: 0;
+  height: 0;
+  margin: 0;
+
+  opacity: 0;
+}
+
+.sortOrder span {
+  cursor: pointer;
+}
+
+.sortOrder input[type='checkbox'] + span:matches(::before,::after) {
+  font-size: 1rem;
+}
+
+.sortOrder input[type='checkbox'] + span::before {
+  margin-right: .125rem;
+  content: "ASC";
+  color: #333;
+  font-weight: bolder;
+}
+.sortOrder input[type='checkbox'] + span::after {
+  margin-left: .125rem;
+  content: "DESC";
+  color: #aaa;
+  font-weight: normal;
+}
+
+.sortOrder input[type='checkbox']:checked + span::before {
+  color: #aaa;
+  font-weight: normal;
+}
+.sortOrder input[type='checkbox']:checked + span::before {
+  color: #333;
+  font-weight: bolder;
+}

@@ -2,11 +2,8 @@ import {sortBy, compose, prop, toLower, sort} from 'ramda'
 import {remove as removeDiacritics} from 'diacritics'
 import firstBy from 'thenby'
 
-export function makeSorter ({property = 'alphabetical', order = 'ascending'}) {
-  const direction = ({
-    'ascending': 1,
-    'descending': -1,
-  })[order]
+export function makeSorter ({property = 'alphabetical', ascending = true}) {
+  const direction = ascending ? 1 : -1
 
   const sorters = {
     price: sort(

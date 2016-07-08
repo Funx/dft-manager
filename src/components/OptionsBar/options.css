@@ -39,25 +39,37 @@
 .sortOrder input[type='checkbox'] + span:matches(::before,::after) {
   font-size: 1rem;
 }
-
 .sortOrder input[type='checkbox'] + span::before {
+  /* ASC */
   margin-right: .125rem;
   content: "ASC";
+}
+.sortOrder input[type='checkbox'] + span::after {
+  /* DESC */
+  margin-right: .125rem;
+  content: "DESC";
+}
+
+/* checked (ascending = ON) */
+.sortOrder.sortOrder input[type='checkbox']:checked + span::before {
+  /* ASC */
   color: #333;
   font-weight: bolder;
 }
-.sortOrder input[type='checkbox'] + span::after {
-  margin-left: .125rem;
-  content: "DESC";
+.sortOrder.sortOrder input[type='checkbox']:checked + span::after {
+  /* DESC */
   color: #aaa;
   font-weight: normal;
 }
 
-.sortOrder input[type='checkbox']:checked + span::before {
+/* not checked (ascending = OFF) */
+.sortOrder input[type='checkbox']:not(:checked) + span::before {
+  /* ASC */
   color: #aaa;
   font-weight: normal;
 }
-.sortOrder input[type='checkbox']:checked + span::before {
+.sortOrder input[type='checkbox']:not(:checked) + span::after {
+  /* DESC */
   color: #333;
   font-weight: bolder;
 }

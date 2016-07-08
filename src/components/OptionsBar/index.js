@@ -67,14 +67,3 @@ function view (searchForm, sortProp, sortOrder, categories) {
     /* /markup */
   )
 }
-
-// function renderToggleSortOrder (checked) {
-//   const attributes = {
-//     checked,
-//   }
-//   return renderCheckbox(
-//     dot(css.favorite), '.m-favorites', attributes, [
-//       'ASC/DESC',
-//     ],
-//   )
-// }

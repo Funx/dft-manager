@@ -1,14 +1,13 @@
 import {Observable as O} from 'rx'
-import {L} from 'stanga'
 
-import view from './view'
 import {k, percent as perc, sign} from 'utils/currency'
 import {toggleBenefitsPrintMode} from './actions'
 import intent from './intent'
+import view from './view'
 
 export const Card = ({M, updates$, viewParam$, DOM}) => {
   const state$ = O.combineLatest(
-    M, viewParam$.debounce(20), // debounce the startEdit/endEdit switch
+    M, viewParam$.debounce(20), // debounce the startEdit/endEdit switch */
     (card = {}, params) => ({
       ...card,
       ...params,
@@ -26,7 +25,7 @@ export const Card = ({M, updates$, viewParam$, DOM}) => {
   const vtree$ = view(state$)
   const intents = intent(DOM, M)
   const update$ = O.merge(
-      intents.save$.map(price => ({
+      intents.save$.delay(1000).map(price => ({
         type: 'SET_PRICE',
         price,
         quantity: 1,

@@ -25,7 +25,7 @@ export function view (cards$, vList) {
 
 function listItem (card) {
   const attributes = {
-    key: card.data.key,
+    key: card.key,
     style: {
       opacity: '0',
       transform: 'translateY(-10px)',

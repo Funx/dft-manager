@@ -13,17 +13,14 @@ export function dbReducer (db, action) {
     TOGGLE_FAVORITES: toggleFavorites,
   }
   if(action && action.type in dict) {
-    return makeReducer(db, dict[action.type])(action)
+    return update(db, dict[action.type], action)
   } else {
     return db
   }
 }
 
-function makeReducer(db, fn) {
-  return action => {
-    return db.update(action.target, repeat(action.quantity,
-      fn({...action, price: action.price / action.quantity})))
-  }
+function update(db, fn, action) {
+  return db.update(action.target, repeat(action.quantity, fn(action)))
 }
 function repeat (times = 1, reducer) {
   return x => range(0, times)
@@ -35,13 +32,13 @@ const add1 = x => (x || 0) + 1
 const rm1 = x => (x || 0) - 1
 const decrement = x => min0(rm1(x))
 
-export function setPrice ({price, timestamp}) {
+export function setPrice ({price = 0, quantity = 1, timestamp}) {
   return prev => {
     if(!price) return prev
     else return {
       ...prev,
       latestUpdate: timestamp,
-      price: Math.round(price),
+      price: Math.round(price / quantity),
     }
   }
 }

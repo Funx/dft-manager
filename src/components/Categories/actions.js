@@ -19,7 +19,7 @@ export const toggleProp = prop => bool => pipe(
     dict => ({
       ...dict,
       all: mapObjKeys((value, key) => ({key, value}), dict)
-        .filter(x => x.key != 'all')
+        .filter(x => x && x.key != 'all')
         .every(x => !x.value),
     })
   )

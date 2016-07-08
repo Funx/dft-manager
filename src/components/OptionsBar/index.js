@@ -5,7 +5,6 @@ import {L} from 'stanga'
 
 import SearchForm from 'components/SearchForm'
 import Dropdown from 'components/Dropdown'
-import Categories from 'components/Categories'
 import {Checkbox} from 'components/Checkbox'
 
 import css from './options.css'
@@ -29,41 +28,28 @@ export const OptionsBar = ({DOM, M}) => {
   const queryLens = L.compose('filters', 'query')
   const searchForm = SearchForm({DOM, M: M.lens(queryLens)})
 
-  const currentCategoriesLens = L.pick({
-    outdated: 'outdated',
-    currentCategories: L.compose('filters', 'currentCategories'),
-  })
-  const categories = isolate(Categories)
-    ({DOM, M: M.lens(currentCategoriesLens)})
-
   return {
     DOM: view(
       searchForm.DOM,
       sortPropInput.DOM,
-      sortOrderInput.DOM,
-      categories.DOM),
+      sortOrderInput.DOM),
     M: O.merge(
       searchForm.M,
       sortPropInput.M,
-      sortOrderInput.M,
-      categories.M),
+      sortOrderInput.M),
   }
 }
 export default OptionsBar
 
-function view (searchForm, sortProp, sortOrder, categories) {
+function view (searchForm, sortProp, sortOrder) {
   return O.combineLatest(
-    searchForm, sortProp, sortOrder, categories,
-    (searchForm, sortProp, sortOrder, categories) =>
+    searchForm, sortProp, sortOrder,
+    (searchForm, sortProp, sortOrder) =>
 
     /* markup */
-    div([
-      div(dot(css.fixedContainer), [
-        searchForm, sortProp, span(dot(css.sortOrder), [sortOrder]),
-      ]),
-      div(dot(css.placeholder)),
-      categories,
-    ])
+    div(dot(css.fixedContainer), [
+      searchForm, sortProp, span(dot(css.sortOrder), [sortOrder]),
+    ]),
     /* /markup */
   )
 }

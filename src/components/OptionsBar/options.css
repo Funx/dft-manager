@@ -1,18 +1,8 @@
 .fixedContainer {
-  position: fixed;
-  z-index: 2;
-  top: 0;
-  right: 0rem;
-  left: 6rem;
-
+  width: 100%;
   display: flex;
-
   padding: 1rem 2rem;
-
   background: #eee;
-}
-.placeholder {
-  height: 1rem;
 }
 
 .sortOrder {

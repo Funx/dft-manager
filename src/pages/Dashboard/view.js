@@ -5,16 +5,20 @@ import css from './dashboard.css'
 import {k, percent as perc} from 'utils/currency'
 import {sum, prop} from 'ramda'
 
-export const view = (M, searchForm$, collection$, logger$) =>
+export const view = (M, searchForm$, collection$, logger$, categories$) =>
   O.combineLatest(
-    M, searchForm$.DOM, collection$.DOM, logger$.DOM,
-    (searchResults, searchForm, collection, logger) =>
+    M, searchForm$.DOM, collection$.DOM, logger$.DOM, categories$.DOM,
+    (searchResults, searchForm, collection, logger, categories) =>
 
       /* markup */
       div(dot(css.mainFrame), [
         div(dot(css.loggerWrapper), [logger]),
-        div(dot(css.contentWrapper), [
+        div(dot(css.fixedUI), [
           searchForm,
+        ]),
+        div(dot(css.fixedUIplaceholder)),
+        div(dot(css.contentWrapper), [
+          categories,
           renderStatusBar(searchResults),
           collection,
           div(dot(css.overlay)),

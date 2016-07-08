@@ -78,3 +78,18 @@
   font-size: 1.2rem;
   line-height: 100%;;
 }
+.fixedUI {
+  position: fixed;
+  top: 0;
+  left: 6rem;
+  right: 0;
+  z-index: 5;
+  transition: transform .5s cubic-bezier(.65,0,.45,1);
+  transform: translate3d(0,0,0);
+}
+.fixedUIplaceholder {
+  height: 5rem;
+}
+.loggerWrapper:hover ~ .fixedUI {
+  transform: translate3d(24rem,0,0);
+}

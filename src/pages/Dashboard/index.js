@@ -1,10 +1,12 @@
 import {Observable as O} from 'rx'
 import {prop} from 'ramda'
 import {L} from 'stanga'
+import isolate from '@cycle/isolate'
 
 import VirtualList from 'components/VirtualList'
 import OptionsBar from 'components/OptionsBar'
 import Logger from 'components/Logger'
+import Categories from 'components/Categories'
 
 import {view} from './view'
 
@@ -18,14 +20,25 @@ export const Dashboard = ({DOM, M, Screen}) => {
     updates$: M.lens('latestActions'),
   })
 
+  const categories = isolate(Categories)
+    ({DOM, M: M.lens(currentCategoriesLens)})
+
   return {
-    DOM: view(M.lens('items'), optionsBar, collection, logger),
-    M: O.merge(optionsBar.M, collection.M, logger.M),
+    DOM: view(M.lens('items'), optionsBar, collection, logger, categories),
+    M: O.merge(optionsBar.M, collection.M, logger.M, categories.M),
   }
 }
 export default Dashboard
 
-
+const currentCategoriesLens = L.compose(
+  L.augment({
+    outdated: x => x.items.filter(prop('outdated')).length,
+  }),
+  L.pick({
+    outdated: 'outdated',
+    currentCategories: L.compose('filters', 'currentCategories'),
+  }),
+)
 const virtualListLens = L.props('items', 'vList')
 const loggerLens = L.pick({
   db: L.prop('db'),
@@ -33,13 +46,7 @@ const loggerLens = L.pick({
   latestActions: L.prop('latestActions'),
   draft: L.compose('logger', 'draft'),
 })
-const optionsBarLens = L.compose(
-  L.augment({
-    outdated: x => x.items.filter(prop('outdated')).length,
-  }),
-  L.props(
+const optionsBarLens = L.props(
     'sortOptions',
     'filters',
-    'outdated',
   )
-)

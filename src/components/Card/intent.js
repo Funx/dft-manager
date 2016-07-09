@@ -15,7 +15,7 @@ export function intent (DOM, M) {
   return {
     toggleBenefitsPrintMode$: clicks$.filter(count => count == 1),
     save$: O.merge(
-        $mPrice.events('blur'),
+        // $mPrice.events('focusout'),
         $mPrice.events('keyup').filter(x => x.key == 'Enter'),
       )
       .pluck('target', 'value')
@@ -26,7 +26,7 @@ export function intent (DOM, M) {
       .skip(1),
     focus$: O.merge(
       $mPrice.events('focus').map(true),
-      $mPrice.events('blur').map(false),
+      $mPrice.events('focusout').map(false),
     ),
     startEdit$: O.merge(
       clicks$.filter(count => count >= 2),
@@ -34,7 +34,7 @@ export function intent (DOM, M) {
     ),
     endEdit$: O.merge(
       $mPrice.events('keyup').filter(x => x.key == 'Escape'),
-      $mPrice.events('blur'),
+      $mPrice.events('focusout'),
     ),
     toggleFavorites$: DOM.select('.m-favorites')
       .events('change')

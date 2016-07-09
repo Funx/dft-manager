@@ -29,7 +29,9 @@ export function renderStockStatus (item) {
 
   const renderButton = ({id, content, value}) => {
     const activeClass = value ? dot(css.isActive) : ''
-    const btnAttrs = {attrs: {tabIndex: item.editing ? '-1' : ''}}
+    const btnAttrs = {
+      attrs: {tabIndex: item.editing ? '-1' : ''},
+    }
     const spanAttrs = {attrs: {style: `color: ${color};`}}
     return arrowButton(id + activeClass, btnAttrs, [
       span(spanAttrs, content),

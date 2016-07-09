@@ -17,7 +17,7 @@ export const Categories = ({DOM, M}) => {
   )
 
   return {
-    DOM: view(M),
+    DOM: view(M.distinctUntilChanged()),
     M: mod$,
   }
 }

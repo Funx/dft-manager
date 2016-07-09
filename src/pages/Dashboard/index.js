@@ -24,7 +24,13 @@ export const Dashboard = ({DOM, M, Screen}) => {
     ({DOM, M: M.lens(currentCategoriesLens)})
 
   return {
-    DOM: view(M.lens('items'), optionsBar, collection, logger, categories),
+    DOM: view(
+        M.lens('items'),
+        optionsBar.DOM,
+        collection.DOM,
+        logger.DOM,
+        categories.DOM,
+      ),
     M: O.merge(optionsBar.M, collection.M, logger.M, categories.M),
   }
 }

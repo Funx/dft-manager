@@ -7,7 +7,7 @@ import {sum, prop} from 'ramda'
 
 export const view = (M, searchForm$, collection$, logger$, categories$) =>
   O.combineLatest(
-    M, searchForm$.DOM, collection$.DOM, logger$.DOM, categories$.DOM,
+    M, searchForm$, collection$, logger$, categories$,
     (searchResults, searchForm, collection, logger, categories) =>
 
       /* markup */

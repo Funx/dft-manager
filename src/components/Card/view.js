@@ -10,7 +10,7 @@ import {renderStockStatus} from './stockStatus'
 export const view = (M) => {
   return M.map(card => {
     const attributes = {
-      key: card.id,
+      key: 'card-' + card.id,
       attrs: {style: `background-color: hsl(${card.hue}, 44%, 50%);`},
     }
 
@@ -19,6 +19,7 @@ export const view = (M) => {
       div(dot(css.container), [
         div(dot(css.innerWrapper), [
           renderPriceInfos(card),
+          // renderEditForm(card),
           card.editing ? renderEditForm(card) : renderMainInfo(card),
           renderIdentity(card),
         ]),
@@ -38,7 +39,7 @@ function renderPriceInfos (x) {
     ? `| ${x.secondaryInfo}`
     : ''
 
-  return div(dot(css.priceInfos), {key: 'secondaryInfo'}, [
+  return div(dot(css.priceInfos), [
     `${cost} -> ${price} ${secondaryInfo}`,
     renderFavoritesIcon(x),
   ])
@@ -56,12 +57,14 @@ function renderFavoritesIcon (x) {
   )
 }
 
-function renderEditForm ({price}) {
-  return div(dot(css.editForm), [
-    input('.m-price', {attrs: {
-      type: 'text',
-      value: `${humanize(price, false)}k`,
-    }}),
+function renderEditForm ({id, price}) {
+  return div(dot(css.editForm), {key: id + '-editForm'}, [
+    input('.m-price', {
+      attrs: {
+        type: 'text',
+        value: `${humanize(price, false)}k`,
+      },
+    }),
   ])
 }
 
@@ -81,7 +84,7 @@ function renderMainInfo (x) {
     : '1rem'
   const style = `font-size: ${fontSize};`
   const attributes = {
-    key: 'primaryInfo',
+    key: x.id + '-mainInfo',
     attrs: {style},
   }
   const infinitySymbol = infiniteProfit(x) ? '∞' : ''

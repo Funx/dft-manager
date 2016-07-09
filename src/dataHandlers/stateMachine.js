@@ -20,7 +20,6 @@ export function stateMachine (actions$s, initialState$) {
       initialState$,
       (transactions, db) => ({transactions, db}))
     .map(({db, transactions}) => calcCosts(redux(dbReducer, db, transactions)))
-
   return state$
 }
 

@@ -23,9 +23,9 @@ export function view (cards$, vList) {
   )
 }
 
-function listItem (card) {
+function listItem (cardVtree) {
   const attributes = {
-    key: card.key,
+    key: 'vlistitem-' + cardVtree.data.key,
     style: {
       opacity: '0',
       transform: 'translateY(-10px)',
@@ -37,7 +37,7 @@ function listItem (card) {
 
   /* markup */
   return li('.card' + dot(css.children), attributes, [
-    card,
+    cardVtree,
   ])
   /* /markup */
 }

@@ -9,8 +9,8 @@ export function liftComponentAsList (Component, M, responses) {
   })
 
   return {
+    ...flatMerge(list$, 'M', 'sink$'),
     DOM: flatCombine(list$, 'DOM').DOM,
-    M: flatMerge(list$, 'M').M,
   }
 }
 export default liftComponentAsList

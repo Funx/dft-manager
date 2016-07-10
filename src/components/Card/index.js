@@ -7,7 +7,7 @@ import view from './view'
 
 export const Card = ({M, updates$, viewParam$, DOM}) => {
   const state$ = O.combineLatest(
-    M, viewParam$.debounce(100), // debounce the startEdit/endEdit switch */
+    M.distinctUntilChanged(), viewParam$.distinctUntilChanged(),
     (card = {}, params) => ({
       ...card,
       ...params,
@@ -73,15 +73,17 @@ export const Card = ({M, updates$, viewParam$, DOM}) => {
   const mod$ = O.merge(
     viewParam$.lens('benefits').mod(
       intents.toggleBenefitsPrintMode$.map(toggleBenefitsPrintMode)),
-    viewParam$.lens('editing').set(intents.startEdit$.map(() => true)),
-    viewParam$.lens('editing').set(intents.endEdit$.map(() => false)),
-    viewParam$.lens('focused').set(intents.focus$),
     updates$.set(update$.map(x => [x])),
   )
 
   return {
     DOM: vtree$,
     M: mod$,
+    sink$: O.merge(
+        intents.startEdit$,
+        intents.endEdit$.map(() => false),
+      )
+      .map(x => ({editing: x})),
   }
 }
 

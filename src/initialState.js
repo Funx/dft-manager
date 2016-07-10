@@ -27,7 +27,7 @@ export const initialState = {
   },
   logger: {
     draft: '',
-    logs: [],
+    logs: [{"type":"BUY","quantity":11,"price":868500,"target":"oeil-saltik"},{"type":"SELL","price":100000,"quantity":10,"target":"essence-royalmouth"},{"type":"SELL","price":299000,"quantity":20,"target":"essence-royalmouth"},{"type":"CRAFT","quantity":2,"target":"paralyseur-mineur"},{"type":"CRAFT","quantity":1,"target":"solide-mineur"},{"type":"CRAFT","quantity":1,"target":"paralyseur-mineur"}],
   },
   latestActions: [],
 }

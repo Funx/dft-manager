@@ -6,11 +6,11 @@ import {stateMachine} from 'dataHandlers/stateMachine'
 import {makeFilterer} from 'dataHandlers/makeFilterer'
 import {makeSorter} from 'dataHandlers/makeSorter'
 import Dashboard from 'pages/Dashboard'
+import {EXPIRY_TIME} from './params'
 
 import {toMap} from 'utils/iterable'
 import './reset.css'
 
-const EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000
 export const main = (responses) => {
   const {M, WS} = responses
   const initialState$ = WS.select('welcome')

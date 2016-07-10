@@ -23,6 +23,11 @@ export const Dashboard = ({DOM, M, Screen}) => {
   const categories = isolate(Categories)
     ({DOM, M: M.lens(currentCategoriesLens)})
 
+  const editing$ = collection.sink$.pluck('editing')
+    .debounce(100) // -true---false-true- => -true-----true =)
+
+  const mod$ = M.lens(L.compose('display', 'editing')).set(editing$)
+
   return {
     DOM: view(
         M.lens('items'),
@@ -31,7 +36,7 @@ export const Dashboard = ({DOM, M, Screen}) => {
         logger.DOM,
         categories.DOM,
       ),
-    M: O.merge(optionsBar.M, collection.M, logger.M, categories.M),
+    M: O.merge(optionsBar.M, collection.M, logger.M, categories.M, mod$),
   }
 }
 export default Dashboard

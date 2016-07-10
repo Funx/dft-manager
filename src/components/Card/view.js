@@ -19,7 +19,6 @@ export const view = (M) => {
       div(dot(css.container), [
         div(dot(css.innerWrapper), [
           renderPriceInfos(card),
-          // renderEditForm(card),
           card.editing ? renderEditForm(card) : renderMainInfo(card),
           renderIdentity(card),
         ]),
@@ -57,12 +56,18 @@ function renderFavoritesIcon (x) {
   )
 }
 
-function renderEditForm ({id, price}) {
-  return div(dot(css.editForm), {key: id + '-editForm'}, [
+function renderEditForm ({id, price, editing}) {
+  return div(dot(css.editForm), [
     input('.m-price', {
+      key: id + 'priceInput',
       attrs: {
         type: 'text',
         value: `${humanize(price, false)}k`,
+      },
+      hook: {
+        update: (_, vnode) => (editing == id)
+          ? setTimeout(vnode.elm.focus(), 100)
+          : 'noop',
       },
     }),
   ])

@@ -34,7 +34,7 @@ export function VirtualList (sources_) {
   const visibleItems$ = O.combineLatest(
       M.lens('items'), visibleRange$,
       (items, visibleRange) => items
-        .slice(...(/*visibleRange || */[0, 2]))
+        .slice(...(visibleRange || [0, 1]))
     )
 
   const cards = liftComponentAsList(Card, visibleItems$, sources_)
@@ -42,7 +42,7 @@ export function VirtualList (sources_) {
     .sample(cards.DOM.delay(5))
 
   return {
-    M: O.merge(cards.M),
+    ...cards,
     DOM: vtree$,
   }
 }

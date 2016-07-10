@@ -14,7 +14,7 @@ export function Logger ({DOM, M}) {
       M.lens('latestActions').set(intent.submit$.map(parseLogs)),
     )
   return {
-    DOM: view(M.lens(L.props('draft', 'logs')).distinctUntilChanged()),
+    DOM: view(M.lens(L.props('draft', 'logs', 'db')).distinctUntilChanged()),
     M: mod$,
   }
 }

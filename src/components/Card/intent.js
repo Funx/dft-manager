@@ -15,26 +15,27 @@ export function intent (DOM, M) {
   return {
     toggleBenefitsPrintMode$: clicks$.filter(count => count == 1),
     save$: O.merge(
-        // $mPrice.events('focusout'),
+        $mPrice.events('blur'),
         $mPrice.events('keyup').filter(x => x.key == 'Enter'),
       )
       .pluck('target', 'value')
       .map(parseInputPrice)
       .filter(x => !!x)
+      // prevents from saving when nothing has changed
       .merge(M.pluck('price').delay(1))
       .distinctUntilChanged()
       .skip(1),
     focus$: O.merge(
-      $mPrice.events('focus').map(true),
-      $mPrice.events('focusout').map(false),
+      $mPrice.events('focus').withLatestFrom(M.pluck('id'), (_, id) => id),
+      $mPrice.events('blur').map(false),
     ),
     startEdit$: O.merge(
-      clicks$.filter(count => count >= 2),
-      $mPrice.events('focus'),
-    ),
+        clicks$.filter(count => count >= 2),
+        $mPrice.events('focus').delay(17))
+      .withLatestFrom(M.pluck('id'), (_, id) => id),
     endEdit$: O.merge(
       $mPrice.events('keyup').filter(x => x.key == 'Escape'),
-      $mPrice.events('focusout'),
+      $mPrice.events('blur'),
     ),
     toggleFavorites$: DOM.select('.m-favorites')
       .events('change')

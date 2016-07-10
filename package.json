@@ -8,9 +8,7 @@
     "watch-jade": "nodemon --watch ./src/index.jade --exec 'npm run build-jade'",
     "build-jade": "jade ./src/index.jade -o ./dist/dev/",
     "dev-server": "webpack-dev-server --content-base dist/dev/ --host 0.0.0.0 --inline --hot --progress --watch",
-
     "server": "NODE_PATH=./src nodemon --ignore static/ --ignore dist/ --ignore src/components/ --exec babel-node ./src/server.js",
-
     "autotest": "supervisor -q -n exit -x npm run test",
     "test": "babel-node ./node_modules/.bin/painless ./src/{**,**/**,**/**/**,**/**/**/**}/*.test.js"
   },
@@ -55,6 +53,7 @@
     "@cycle/storage": "^2.0.3",
     "JSONStream": "^1.1.2",
     "cssrecipes-defaults": "^0.5.0",
+    "cycle-keys": "^0.3.0",
     "diacritics": "^1.2.3",
     "express": "latest",
     "fs-promise": "^0.5.0",

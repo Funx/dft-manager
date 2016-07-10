@@ -1,0 +1,133 @@
+.card {
+  transition: .2s ease-out;
+  transform: 0;
+
+  color: #eee;
+  box-shadow: 1px 1px 2px color(#111 alpha(40%));
+}
+.card:matches(:hover,:focus,:active) {
+  transform: translateY(-1px);
+
+  box-shadow: 4px 4px 16px color(#111 alpha(20%));
+}
+.container {
+  position: relative;
+}
+
+.container::before {
+  display: block;
+
+  padding-top: 100%;
+
+  content: "";
+}
+
+.innerWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 1rem;
+}
+.identity {
+  display: flex;
+  overflow: visible;
+  flex-direction: column;
+
+  max-height: calc((1 * 1.2 * 1.8rem) + (1 * 1.2 * 1.4rem));
+  margin-top: auto;
+
+  justify-content: flex-end;
+}
+.name {
+  margin: 0;
+
+  font-size: 1.8rem;
+}
+.type {
+  font-size: 1.4rem;
+}
+.priceInfos, .mainInfo {
+  font-family: consolas, monospace;
+  font-size: 1rem;
+}
+.mainInfo {
+  user-select: none;
+}
+.mainInfo, .editForm {
+  display: flex;
+
+  width: 100%;
+
+  cursor: pointer;
+  text-align: center;
+
+  font-family: consolas, monospace;
+  font-size: 4rem;
+
+  flex: 1 0;
+  align-items: center;
+  justify-content: center;
+}
+.editForm input {
+  display: inline-block;
+
+  width: 80%;
+
+  text-align: center;
+
+  color: #fff;
+
+  font-size: 2rem;
+}
+.editForm input::-webkit-inner-spin-button,
+.editForm input::-webkit-outer-spin-button {
+  margin: 0;
+
+  -webkit-appearance: none;
+}
+.priceInfos {
+  display: flex;
+
+  flex-flow: row;
+}
+.favorite {
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-left: auto;
+
+  cursor: pointer;
+}
+
+.favorite input[type='checkbox'] {
+  width: 0;
+  height: 0;
+  margin: 0;
+
+  opacity: 0;
+}
+
+.favorite input[type='checkbox'] + span svg {
+  display: inline-block;
+
+  height: 1.5rem;
+  width: 1.5rem;
+
+  cursor: pointer;
+  user-select: none;
+
+  fill: transparent;
+  stroke: #fff;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.favorite input[type='checkbox']:checked + span svg {
+  fill: #fff;
+  stroke-width: 0;
+}

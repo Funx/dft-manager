@@ -1,0 +1,49 @@
+@import "cssrecipes-defaults/lib/background.css";
+@import "cssrecipes-defaults/lib/border-collapse.css";
+@import "cssrecipes-defaults/lib/box-sizing.css";
+@import "cssrecipes-defaults/lib/document-remove-margin-padding.css";
+@import "cssrecipes-defaults/lib/hidden.css";
+
+html,
+body {
+  background: #111;
+  font-family: raleway, sans-serif;
+}
+
+html {
+  font-size: 0.625em; /* 10px */
+}
+body {
+  font-size: 1.6rem; /* 16px */
+}
+
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+input {
+  font-family: consolas, monospace;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid currentColor;
+  color: #999999;
+  width: 100%;
+}
+button {
+  border: 0;
+  color: #000;
+  padding: .4rem 1rem;
+  cursor: pointer;
+  margin-left: .1rem;
+  background: #fff;
+  font-family: consolas, monospace;
+}
+button.positive {
+  background: #000;
+  color: #fff;
+}
+i {
+  font-style: normal;
+}

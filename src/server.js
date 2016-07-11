@@ -24,11 +24,11 @@ io.on('connection', function (socket) {
 
   state$.skip(1).map(x => x.toArray())
     .debounce(1000)
-    // .subscribe(x => fs
-    //   .writeJson('./static/db.json', x)
-    //   .then(() => console.log('successfully write file db.json'))
-    //   .catch(x => console.error('error while writing file:', x))
-    // )
+    .subscribe(x => fs
+      .writeJson('./static/db.json', x)
+      .then(() => console.log('successfully write file db.json'))
+      .catch(x => console.error('error while writing file:', x))
+    )
 })
 function readJson (path) {
   return O.fromPromise(fs.readJson(path))

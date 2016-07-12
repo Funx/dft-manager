@@ -1,8 +1,8 @@
 // import {run} from '@cycle/core'
 import {run} from '@cycle/rx-run'
 
-import isolate from '@cycle/isolate'
-import {rerunner, restartable} from 'cycle-restart'
+// import isolate from '@cycle/isolate'
+// import {rerunner, restartable} from 'cycle-restart'
 
 import {drivers} from './drivers'
 

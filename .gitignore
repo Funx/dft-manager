@@ -8,3 +8,4 @@ public
 *.old
 dist/*
 .env
+./storage/db.json

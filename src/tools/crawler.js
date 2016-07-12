@@ -1,9 +1,9 @@
 // run crawler on apifier.com <3
 // https://www.apifier.com/crawlers/fNCB8pwaPkTMqH8PK
 
-function pageFunction (context) {
-  if (!isItemPage(location.href)) { return null }
-  var $img = (document.querySelector('.ak-encyclo-detail-illu img') || {})
+function pageFunction (context) { // eslint-disable-line
+  if (!isItemPage(location.href)) return null
+  var $img = document.querySelector('.ak-encyclo-detail-illu img') || {}
 
   return {
     // ---

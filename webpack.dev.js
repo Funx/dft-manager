@@ -1,12 +1,11 @@
 var sharedConfig = require('./webpack.shared')
 var merge = require('ramda').merge
-
 var path = require('path')
 
 var webpackConfig = merge(sharedConfig, {
   devtool: 'inline-source-map',
   entry: './src/client.js',
-  watch: false,
+  watch: true,
   cache: true,
   debug: true,
   map: true,

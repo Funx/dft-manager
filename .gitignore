@@ -7,3 +7,4 @@ public
 .sass-cache
 *.old
 dist/*
+.env

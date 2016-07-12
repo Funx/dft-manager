@@ -46,9 +46,8 @@ function readState () {
       db.get('state')
         .then(x => {
           if (!x) return (console.log('initializing db'), initializeDB({fake: false})) // eslint-disable-line no-console
-          else return x
+          else return JSON.parse(x)
         })
-        .then(JSON.parse)
         .catch(x => console.error('error while reading app state', x, x.stack)) // eslint-disable-line no-console
     )
   } else {

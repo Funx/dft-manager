@@ -1,7 +1,7 @@
 import {last, slice} from 'ramda'
 
 import {parseInputPrice} from 'utils/currency'
-import {nameToDofusId} from 'utils/strings'
+import {idFromName} from 'utils/strings'
 
 export function parseLogs (str) {
   return groupSimilarActions(splitLogs(str)
@@ -57,7 +57,7 @@ export function parseLog (str = '') {
       type: 'BUY',
       quantity: parseInt(BUY[1]),
       price: parseInputPrice(BUY[3]),
-      target: nameToDofusId(name),
+      target: idFromName(name),
     }
   }
   // SELL
@@ -69,7 +69,7 @@ export function parseLog (str = '') {
       type: 'SELL',
       price: parseInputPrice(SELL[1]),
       quantity: parseInt(SELL[2]),
-      target: nameToDofusId(name),
+      target: idFromName(name),
     }
   }
   // CRAFT
@@ -80,7 +80,7 @@ export function parseLog (str = '') {
     return {
       type: 'CRAFT',
       quantity: parseInt(CRAFT[1]),
-      target: nameToDofusId(name),
+      target: idFromName(name),
     }
   }
 }

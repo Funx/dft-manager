@@ -22,7 +22,7 @@ function priceInterval (type) {
   switch (type) {
     case 'Trophée': return [50000, 4000000]
     case 'Idole': return [50000, 4000000]
-    default: return [100, 100000]
+    default: return [100, 10000]
   }
 }
 

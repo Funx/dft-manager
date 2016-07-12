@@ -3,7 +3,7 @@ import {createGroup, assert} from 'painless'
 
 const test = createGroup('dashboard/makeSorter')
 test(`makeSorter('benefits') should order by benefits asc`, () => {
-  const sort = makeSorter({propName: 'benefits'})
+  const sort = makeSorter({property: 'benefits'})
   const input = [
     {price: 4, cost: 2}, //benefits = 2
     {price: 1, cost: 2}, //benefits = -1
@@ -18,7 +18,7 @@ test(`makeSorter('benefits') should order by benefits asc`, () => {
   return assert.deepEqual(output, expected)
 })
 test(`makeSorter('benefits') should consider benefits as infinite when price is 0, then order them by cost`, () => {
-  const sort = makeSorter({propName: 'benefits', order: 'descending'})
+  const sort = makeSorter({property: 'benefits', ascending: false})
   const input = [
     {price: 0, cost: 1, recipe: [{}]}, //benefits = Infinite -1
     {price: 102, cost: 2}, //benefits = 100
@@ -35,7 +35,7 @@ test(`makeSorter('benefits') should consider benefits as infinite when price is 
   return assert.deepEqual(output, expected)
 })
 test(`makeSorter('benefitsRate') should order by benefits % asc`, () => {
-  const sort = makeSorter({propName: 'benefitsRate'})
+  const sort = makeSorter({property: 'benefitsRate'})
   const input = [
     {price: 4, cost: 2}, //benefitsRate = x2.0
     {price: 1, cost: 2}, //benefitsRate = x0.5
@@ -50,7 +50,7 @@ test(`makeSorter('benefitsRate') should order by benefits % asc`, () => {
   return assert.deepEqual(output, expected)
 })
 test(`makeSorter('price') should order by price`, () => {
-  const sort = makeSorter({propName: 'price'})
+  const sort = makeSorter({property: 'price'})
   const input = [
     {price: 4},
     {price: 1},
@@ -65,7 +65,7 @@ test(`makeSorter('price') should order by price`, () => {
   return assert.deepEqual(output, expected)
 })
 test(`makeSorter('cost') should order by cost`, () => {
-  const sort = makeSorter({propName: 'cost'})
+  const sort = makeSorter({property: 'cost'})
   const input = [
     {cost: 4},
     {cost: 1},
@@ -80,7 +80,7 @@ test(`makeSorter('cost') should order by cost`, () => {
   return assert.deepEqual(output, expected)
 })
 test(`makeSorter('alphabetical') should order by name, caps and special chars agnostic`, () => {
-  const sort = makeSorter({propName: 'alphabetical'})
+  const sort = makeSorter({property: 'alphabetical'})
   const input = [
     {name: 'B'},
     {name: 'a'},
@@ -103,7 +103,7 @@ test(`makeSorter('alphabetical') should order by name, caps and special chars ag
   return assert.deepEqual(output, expected)
 })
 test('putEmptyRecipesLast', () => {
-  const sort = makeSorter({propName: 'benefits', ascending: true})
+  const sort = makeSorter({property: 'benefits', ascending: true})
   const input = [
     {name: '3', recipe: []},
     {name: '4'},

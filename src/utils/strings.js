@@ -1,6 +1,8 @@
 import {remove} from 'diacritics'
 import slugify from 'slugify'
-export const nameToDofusId = (x = '') => slugify(remove(x))
+
+/* converts an element name to its id, following dofus.com conventions */
+export const idFromName = (x = '') => slugify(remove(x))
   .toLowerCase()
   .replace(/-de-/g, '-')
   .replace(/-des-/g, '-')

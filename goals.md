@@ -1,6 +1,7 @@
 CURRENT GOAL
 ============
 
+deploy on heroku
 
 // --> huge performance problems, fix it before doing this steps
 - [  ] make it possible to undo (skip) actions

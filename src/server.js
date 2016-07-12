@@ -12,13 +12,13 @@ import {stateMachine} from 'dataHandlers/stateMachine'
 import {toMap} from 'utils/iterable'
 
 const {ENVIRONMENT, PORT} = process.env
-const {ENV_DIR} = ENVIRONMENT == 'production' ? 'prod' : 'dev'
 const db = (ENVIRONMENT == 'production') ? createClient() : false
 const app = express()
 const server = http.Server(app)
 const io = socket(server)
 
-app.use('/*', express.storage(`./dist/${ENV_DIR}/index.html`))
+app.use('/', express.static(`./dist`))
+app.use('/*', express.static(`./dist/index.html`))
 io.on('connection', socketHandler)
 server.listen(PORT || 3001,
   () => console.log(`listening to port ${PORT || 3001}`)) // eslint-disable-line no-console

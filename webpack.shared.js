@@ -9,7 +9,7 @@ var webpackConfig = {
 
   output: {
     filename: 'app.js',
-    path: path.resolve('./dist/dev/'),
+    path: path.resolve('./dist/'),
     sourceMapFilename: '[file].map',
   },
 

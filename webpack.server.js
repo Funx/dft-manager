@@ -18,7 +18,7 @@ var webpackConfig = merge(sharedConfig, {
 
   output: {
     filename: 'server.js',
-    path: path.resolve('./dist/dev/'),
+    path: path.resolve('./dist/'),
   },
 
   module: {

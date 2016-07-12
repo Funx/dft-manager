@@ -11,7 +11,7 @@ var webpackConfig = merge(sharedConfig, {
   map: true,
 
   output: merge(sharedConfig.output, {
-    path: path.resolve('./dist/prod/'),
+    path: path.resolve('./dist'),
   }),
 
   module: {

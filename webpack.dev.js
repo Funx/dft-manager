@@ -11,7 +11,7 @@ var webpackConfig = merge(sharedConfig, {
   map: true,
 
   output: merge(sharedConfig.output, {
-    path: path.resolve('./dist/dev/'),
+    path: path.resolve('./dist/'),
   }),
 
   module: {
@@ -27,7 +27,7 @@ var webpackConfig = merge(sharedConfig, {
     host: '0.0.0.0',
     port: 3000,
     historyApiFallback: true,
-    contentBase: 'dist/dev/',
+    contentBase: 'dist/',
     proxy: {
       '/*': {
         target: 'http://localhost:3001',

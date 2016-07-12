@@ -49,7 +49,7 @@ function readState () {
           else return x
         })
         .then(JSON.parse)
-        .catch(x => console.error('error while reading app state', x)) // eslint-disable-line no-console
+        .catch(x => console.error('error while reading app state', x, x.stack)) // eslint-disable-line no-console
     )
   } else {
     return O.fromPromise(

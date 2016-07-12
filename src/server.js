@@ -12,7 +12,7 @@ import {stateMachine} from 'dataHandlers/stateMachine'
 import {toMap} from 'utils/iterable'
 
 const {ENVIRONMENT, PORT} = process.env
-const db = (ENVIRONMENT == 'production') ? createClient() : false
+const db = (ENVIRONMENT == 'production') ? createClient(process.env.REDIS_URL) : false
 const app = express()
 const server = http.Server(app)
 const io = socket(server)

@@ -1,0 +1,32 @@
+.container {
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+
+.inputSearch {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #aaa;
+  line-height: 3.2rem;
+  height: 3rem;
+  font-size: 1.6rem;
+  font-family: consolas;
+}
+
+.inputSearch:focus {
+  outline: none;
+}
+
+.container button {
+  position: absolute;
+  right: 0;
+  height: 3rem;
+  display: block;
+  background: transparent;
+  line-height: 3rem;
+}
+.container button:focus {
+  outline: none;
+}

@@ -1,0 +1,104 @@
+.logger {
+  display: flex;
+  flex-direction: column;
+
+  max-width: 32rem;
+  height: 100vh;
+
+  color: #ddd;
+}
+
+.logs {
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+
+  color: #eee;
+  background: #444;
+
+  flex: 1;
+  justify-content: flex-end;
+}
+.log {
+  display: flex;
+  flex-direction: row;
+
+  min-height: 3rem;
+  max-height: 6rem;
+  padding: 1rem 3rem 1rem .5rem;
+  font-size: 1.2rem;
+
+  flex: 1;
+  align-items: center;
+}
+
+.input {
+  display: block;
+
+  width: 100%;
+  min-height: 5rem;
+  padding: 1.5rem 3rem;
+
+  transition: .2s ease-in-out;
+
+  color: #eee;
+  border: 0;
+  background: #222;
+
+  line-height: 160% ;
+
+  flex: 0;
+}
+.input:focus {
+  outline: 0;
+  background: #333;
+}
+.submit {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  display: none;
+}
+.input:valid ~ .submit {
+  display: block;
+}
+.icon {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0 2rem;
+  color: #444;
+  display: flex;
+  flex: 0 0 2.5rem;
+  align-items: center;
+  justify-content: center;
+  font-family: consolas, monospace;
+}
+.icon > span:not(.quantity), .icon svg {
+  fill: #444;
+  width: 100%;
+  line-height: 0;
+  padding: .25rem;
+}
+.icon .quantity {
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: .25rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  line-height: 1rem;
+  font-size: 1rem;
+  transform: translate(50%, 50%);
+  background: #fff;
+  border-radius: 50%;
+}

@@ -1,0 +1,132 @@
+.stockStatus {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  user-select: none;
+  height: 6rem;
+
+  color: #fff;
+  background: transparent;
+}
+.stockStatus > * {
+  color: #fff;
+  background: transparent;
+  background-color: rgba(0,0,0, .2);
+
+  font-size: 2rem;
+
+  flex: 2;
+}
+.stockStatus:last-child {
+  flex: 1;
+}
+
+.hexagon {
+  color: rgba(0, 0, 0, .2);
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  margin: 0 .6rem;
+
+  transition: color .2s ease-in-out;
+}
+.hexagon.isActive {
+  color: rgba(0, 0, 0, .4);
+}
+.hexagon:focus {
+  outline: 0;
+}
+.hexagon:matches(:focus,:hover).isActive {
+  color: rgba(0, 0, 0, .5);
+}
+.hexagon:matches(:focus,:hover):not(.isActive) {
+  color: rgba(0, 0, 0, .3);
+}
+.hexagon:active, .hexagon:hover:active {
+  color: rgba(0, 0, 0, .7);
+}
+.inner1 {
+  height: 6rem;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  align-items: stretch;
+}
+
+.inner1::after,
+.inner2::before,
+.inner2::after {
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+  position: absolute;
+  border-top: 3rem solid transparent;
+  border-bottom: 3rem solid transparent;
+}
+.inner1::after {
+  border-left: 1rem solid currentColor;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.inner2::before {
+  border-right: 1rem solid currentColor;
+  left: 0;
+  bottom: 0;
+  transform: translateY(50%);
+}
+.inner2::after {
+  border-right: 1rem solid currentColor;
+  left: 0;
+  top: 0;
+  transform: translateY(-50%);
+}
+.inner2 {
+  background-color: currentColor;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  text-align: center;
+  padding: 0 .25rem;
+  line-height: 2rem;
+}
+.content {
+  flex: 1;
+  display: flex;
+  line-height: 2rem;
+  align-items: stretch;
+  justify-content: center;
+}
+.content svg {
+  width: 2rem;
+  fill: currentColor;
+  height: 2rem;
+  margin: 0;
+  line-height: 0;
+  float: left;
+}
+.content * {
+  line-height: 2rem;
+}
+.hexagon:first-child {
+  margin-left: 0;
+}
+.hexagon:first-child .inner2::after,
+.hexagon:first-child .inner2::before {
+  display: none;
+}
+.hexagon:first-child .inner2 > * {
+  left: 0;
+}
+
+.hexagon:last-child {
+  margin-right: 0;
+}
+.hexagon:last-child .inner1::after {
+  display: none;
+}

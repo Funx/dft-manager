@@ -1,0 +1,95 @@
+.mainFrame {
+  overflow-x: hidden;
+  flex-direction: row;
+
+  width: 100%;
+}
+
+.loggerWrapper {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  overflow: hidden;
+
+  width: 30rem;
+
+  transition: transform .5s ease-in-out;
+  transform: translateX(-1rem);
+
+  opacity: 1;
+}
+.loggerWrapper:hover {
+  transform: translateX(0);
+
+  opacity: 1;
+}
+.contentWrapper {
+  position: relative;
+  z-index: 2;
+  left: 6rem;
+
+  max-width: calc(100% - 6rem);
+  min-height: 100vh;
+  margin: 0;
+  padding: 2rem;
+  padding-bottom: 50rem;
+
+  transition: transform .5s cubic-bezier(.65,0,.45,1);
+
+  background: #eee;
+}
+.loggerWrapper:hover ~ .contentWrapper {
+  transform: translateX(24rem);
+}
+.overlay {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  transition: .2s ease-in-out;
+  pointer-events: none;
+
+  opacity: 0;
+  background: #111;
+}
+.loggerWrapper:hover ~ .contentWrapper .overlay {
+  opacity: .2;
+}
+
+.statusBar {
+  position: relative;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  margin-top: 2rem;
+  padding: 1rem 1rem;
+
+  color: #fff;
+  background: #000;
+
+  font-family: consolas, monospace;
+  font-size: 1.2rem;
+  line-height: 100%;;
+}
+.fixedUI {
+  position: fixed;
+  top: 0;
+  left: 6rem;
+  right: 0;
+  z-index: 5;
+  transition: transform .5s cubic-bezier(.65,0,.45,1);
+  transform: translate3d(0,0,0);
+}
+.fixedUIplaceholder {
+  height: 5rem;
+}
+.loggerWrapper:hover ~ .fixedUI {
+  transform: translate3d(24rem,0,0);
+}

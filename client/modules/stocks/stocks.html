@@ -1,8 +1,0 @@
-<div ng-repeat="deckName in stocks.deckNames" class="deck deck--vertical">
-  <div class="deck__head">
-    <button ng-click="stocks.moveToDeck(deckName, -1)"><--</button>
-    <p>{{stocks[deckName].name}} => {{stocks.getDeckBenef(deckName) | currency:'k'}}</p>
-    <button ng-click="stocks.moveToDeck(deckName, +1)">--></button>
-  </div>
-  <div class="deck__card" ng-repeat="card in stocks[deckName].cards" card="card">card</div>
-</div>

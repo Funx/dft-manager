@@ -3,20 +3,23 @@ import socket from 'socket.io'
 
 export function makeSocketDriver (server) {
   const io = socket(server)
-  const connection$ = listen(io, 'connection').map(socket => ({socket, name: 'connection'}))
-  const disconnection$ = listen(io, 'disconnect').map(socket => ({socket, name: 'disconnect'}))
+  const connection$ = listen(io, 'connection')
+    .map(socket => ({socket, name: 'connection'}))
+  const disconnection$ = listen(io, 'disconnect')
+    .map(socket => ({socket, name: 'disconnect'}))
   const subscribers$ = connection$
     .startWith([])
     .scan((acc, {socket}) => [...acc, socket])
-    .combineLatest(disconnection$.startWith(null), (xs, {socket}) => xs.filter(x => x != socket))
+    .combineLatest(
+      disconnection$.startWith(null),
+      (xs, {socket}) => xs.filter(x => x != socket))
     .shareReplay(1)
 
   return function socketDriver (sink$) {
     sink$.subscribe(({socket, broadcast, name, message}) => {
-      console.log(name)
-      if(socket && !broadcast) return (console.log('one'), socket.emit(name, message))
-      if(socket && broadcast) return (console.log('broadcast'), socket.broadcast.emit(name, message))
-      if(!socket && !broadcast) return (console.log('all'), io.emit(name, message))
+      if(socket && !broadcast) return socket.emit(name, message)
+      if(socket && broadcast) return socket.broadcast.emit(name, message)
+      if(!socket && !broadcast) return io.emit(name, message)
     })
 
     return {

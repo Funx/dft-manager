@@ -34,7 +34,7 @@ const decrement = x => min0(rm1(x))
 
 export function setPrice ({price = 0, quantity = 1, timestamp}) {
   return prev => {
-    if(!price) return prev
+    if(isNaN(price)) return prev
     else return {
       ...prev,
       latestUpdate: timestamp,

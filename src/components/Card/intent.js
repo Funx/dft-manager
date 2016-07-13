@@ -20,7 +20,7 @@ export function intent (DOM, M) {
       )
       .pluck('target', 'value')
       .map(parseInputPrice)
-      .filter(x => !!x)
+      .filter(x => !isNaN(x))
       // prevents from saving when nothing has changed
       .merge(M.pluck('price').delay(1))
       .distinctUntilChanged()

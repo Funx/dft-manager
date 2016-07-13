@@ -32,7 +32,7 @@ const add1 = x => (x || 0) + 1
 const rm1 = x => (x || 0) - 1
 const decrement = x => min0(rm1(x))
 
-export function setPrice ({price = 0, quantity = 1, timestamp}) {
+export function setPrice ({price, quantity = 1, timestamp}) {
   return prev => {
     if(isNaN(price)) return prev
     else return {

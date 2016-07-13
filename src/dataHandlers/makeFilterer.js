@@ -1,4 +1,4 @@
-import {allPass, filter} from 'ramda'
+import {allPass, filter, always} from 'ramda'
 import {remove as removeDiacritics_} from 'diacritics'
 function removeDiacritics (str = '') {
   return removeDiacritics_(str)
@@ -12,19 +12,32 @@ export function makeFilterer ({query, currentCategories}) {
 }
 export default makeFilterer
 
-function queryPredicate (queryStr = '') {
-  const regexps = queryStr.trim()
-    .split(' ')
-    .map(removeDiacritics)
-    .map(str => new RegExp(str, 'gi'))
+export function queryPredicate (queryStr = '') {
+  const queries = queryStr.trim().split(' ')
 
-  return (item) => (item.name)
-    && regexps.every(test(item, ['name', 'type']))
+  return allPass([
+    x => x.name,
+    ...queries.map(query => {
+      const chunks = query.split(':').reverse()
+      const word = chunks[0]
+      const props = chunks[1] ? [chunks[1]] : ['name', 'type']
 
-  function test(item, props) {
-    return regexp => props.some(prop =>
-      regexp.test(removeDiacritics(item[prop]))
-    )
+      // "!notThis" "!notThat"
+      if (word.charAt(0) == '!') {
+        return (word.length <= 2)
+          ? always(true)
+          : x => !props.some(matchProp(x, word.replace('!', '')))
+      }
+
+      // "this" "that"
+      return x => props.some(matchProp(x, word))
+    }),
+  ])
+
+
+  function matchProp (x, query) {
+    return prop => regexp(removeDiacritics(query))
+      .test(removeDiacritics(x[prop]))
   }
 }
 
@@ -35,4 +48,8 @@ function categoriesPredicate (cats) {
   return item => cats.all || activeCategories.length
     ? activeCategories.every(key => Boolean(item[key]))
     : false
+}
+
+function regexp (x) {
+  return new RegExp(x, 'gi')
 }

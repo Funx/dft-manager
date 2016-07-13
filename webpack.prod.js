@@ -1,5 +1,7 @@
+var webpack = require('webpack')
 var sharedConfig = require('./webpack.shared')
 var merge = require('ramda').merge
+var concat = require('ramda').concat
 var path = require('path')
 
 var webpackConfig = merge(sharedConfig, {
@@ -15,13 +17,21 @@ var webpackConfig = merge(sharedConfig, {
   }),
 
   module: {
-    loaders: sharedConfig.module.loaders.concat([
+    loaders: concat(sharedConfig.module.loaders || [], [
       {
         test: /\.css$/,
         loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader',
       },
     ]),
   },
+
+  plugins: concat(sharedConfig.plugins || [], [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+    }),
+  ]),
 })
 
 module.exports = webpackConfig

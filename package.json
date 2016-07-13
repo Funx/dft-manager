@@ -13,7 +13,7 @@
     "test:watch": "supervisor -q -n exit -x npm run test",
     "jade:build": "jade src/index.jade -o dist/",
     "webpack:dev": "webpack-dev-server --config webpack.dev.js --content-base dist/ --host 0.0.0.0 --inline --hot --progress --watch",
-    "webpack:prod": "webpack --config webpack.prod.js -p",
+    "webpack:prod": "webpack --config webpack.prod.js -p --no-info",
     "server:prod": "ENVIRONMENT=production NODE_PATH=src babel-node src/server.js",
     "server:dev": "ENVIRONMENT=development NODE_PATH=src nodemon --ignore storage/ --ignore dist/ --ignore src/components/ --exec babel-node src/server.js"
   },

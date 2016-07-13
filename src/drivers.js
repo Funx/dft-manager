@@ -1,4 +1,4 @@
-import {makeSocketDriver} from './drivers/socket.io.js'
+import {makeSocketDriver} from './drivers/socket.io.client.js'
 import {makeScreenDriver} from './drivers/screen'
 import {makeHistoryDriver} from '@cycle/history'
 import {makeHTTPDriver} from '@cycle/http'

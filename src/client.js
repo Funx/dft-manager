@@ -1,16 +1,15 @@
-// import {run} from '@cycle/core'
 import {run} from '@cycle/rx-run'
-
-// import isolate from '@cycle/isolate'
-// import {rerunner, restartable} from 'cycle-restart'
-
 import {drivers} from './drivers'
-
-import './drivers/socket.io.js'
 
 const {main} = require('./main')
 run(main, drivers)
 
+
+// waiting for cycle-restart diversity release !
+
+// import isolate from '@cycle/isolate'
+// import {rerunner, restartable} from 'cycle-restart'
+//
 // const rerun = rerunner(run, isolate)
 // rerun(main, makeRestartable(drivers))
 // if (module.hot) {

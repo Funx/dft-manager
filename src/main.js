@@ -14,10 +14,12 @@ import './reset.css'
 export const main = (responses) => {
   const {M, WS} = responses
   const initialState$ = WS.select('welcome')
+    .pluck('message')
     .map(toMap)
 
   const transaction$ = M.lens('latestActions')
-  const dbChange$ = stateMachine([transaction$], initialState$)
+  const outerTransaction$ = WS.select('transaction').pluck('message')
+  const dbChange$ = stateMachine([transaction$, outerTransaction$], initialState$)
 
   const dashboard = Dashboard(responses)
   const outdated$ = M.lens('db')

@@ -16,13 +16,27 @@ const db = (ENVIRONMENT == 'production') ? createClient(REDIS_URL) : {}
 
 const app = express()
 const server = http.Server(app)
-const io = socket(server)
 
 app.use('/', express.static(`./dist`))
 app.use('/*', express.static(`./dist/index.html`))
-io.on('connection', socketHandler)
 server.listen(PORT || 3001,
   () => console.log(`listening to port ${PORT || 3001}`)) // eslint-disable-line no-console
+makeSocketDriver(server)
+function makeSocketDriver (server) {
+  const io = socket(server)
+  const connection$ = listen(io, 'connection')
+  const subscribers$ = connection$
+    .startWith([])
+    .scan((acc, x) => [...acc, x])
+    .subscribe(x => console.log('subscribers:', x.length))
+  const transaction$ = connection$
+    .flatMap(socket =>
+      listen(socket, 'transaction')
+        .takeUntil(listen(socket, 'disconnect'))
+        .map(x => ({socket: 'socket', message: x}))
+    )
+    .subscribe(x => console.log('transaction', x))
+}
 
 function socketHandler (socket) {
   const initialState$ = readState().map(toMap)

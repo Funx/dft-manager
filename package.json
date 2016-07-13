@@ -1,7 +1,7 @@
 {
-  "name": "dft-manager",
+  "name": "dofusian-craftsmans-companion",
   "version": "0.1.0",
-  "description": "Dofus trophy manager (this name sucks)",
+  "description": "The dofusian Craftsman's Companion",
   "engines": {
     "node": "5.3.0"
   },
@@ -13,7 +13,7 @@
     "test:watch": "supervisor -q -n exit -x npm run test",
     "jade:build": "jade src/index.jade -o dist/",
     "webpack:dev": "webpack-dev-server --config webpack.dev.js --content-base dist/ --host 0.0.0.0 --inline --hot --progress --watch",
-    "webpack:prod": "webpack --config webpack.prod.js -p --no-info",
+    "webpack:prod": "webpack --config webpack.prod.js -p",
     "server:prod": "ENVIRONMENT=production NODE_PATH=src babel-node src/server.js",
     "server:dev": "ENVIRONMENT=development NODE_PATH=src nodemon --ignore storage/ --ignore dist/ --ignore src/components/ --exec babel-node src/server.js"
   },

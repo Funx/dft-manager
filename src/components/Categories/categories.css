@@ -1,0 +1,43 @@
+.container {
+  margin-top: -1rem;
+}
+
+.container, .all, .leftSide, .rightSide {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.rightSide {
+  margin-left: auto;
+}
+
+.separator {
+ margin: 0 1rem;
+}
+
+.checkbox:not(:first-child) {
+  margin-left: 1rem;
+}
+.checkbox input[type='checkbox'] {
+    opacity: 0;
+    margin: 0;
+    width: 0;
+    height: 0;
+}
+
+.checkbox input[type='checkbox'] + span {
+  display: inline-block;
+  padding: .5rem 1.5rem;
+  line-height: 2rem;
+  border-radius: 2rem;
+  font-size: 1.2rem;
+  background: #aaa;
+  user-select: none;
+  cursor: pointer;
+  color: #fff;
+}
+
+.checkbox input[type='checkbox']:checked + span {
+  background: #333;
+  color: #fff;
+}

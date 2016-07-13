@@ -1,3 +1,0 @@
-{
-  "ignore": ["build/*", "client/*", "bower_components/*", "gulpfile.js"]
-}

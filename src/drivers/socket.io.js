@@ -6,7 +6,7 @@ export function makeSocketDriver (url) {
   return (output$) => {
     output$.subscribe(
       ({name, message}) => socket.emit(name, message),
-      err => console.error(err),
+      err => console.error(err, err.stack),
     )
 
     return {

@@ -11,8 +11,9 @@ import {prepareDatabase} from 'tools/prepareDatabase'
 import {stateMachine} from 'dataHandlers/stateMachine'
 import {toMap} from 'utils/iterable'
 
-const {ENVIRONMENT, PORT} = process.env
-const db = (ENVIRONMENT == 'production') ? createClient(process.env.REDIS_URL) : false
+const {ENVIRONMENT, PORT, REDIS_URL} = process.env
+const db = (ENVIRONMENT == 'production') ? createClient(REDIS_URL) : {}
+console.log(db.server_info)
 const app = express()
 const server = http.Server(app)
 const io = socket(server)
@@ -65,10 +66,14 @@ function readState () {
 function writeState (x) {
   if (ENVIRONMENT == 'production') {
     db.set('state', JSON.stringify(x))
+      .then((x) => {
+        if (x) console.log('successfully written state to redis')
+        else console.log('error while writing state to redis', x)
+      }) // eslint-disable-line no-console
       .catch(x => console.error('error while writing state to redis:', x)) // eslint-disable-line no-console
   } else {
     fs.writeFile('./storage/db.json', JSON.stringify(x))
-      .then(() => console.log('successfully wrote state to file')) // eslint-disable-line no-console
+      .then(() => console.log('successfully written state to file')) // eslint-disable-line no-console
       .catch(x => console.error('error while writing state to file:', x)) // eslint-disable-line no-console
   }
 }

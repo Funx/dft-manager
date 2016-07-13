@@ -5,7 +5,7 @@ import {toggleBenefitsPrintMode} from './actions'
 import intent from './intent'
 import view from './view'
 
-export const Card = ({M, updates$, viewParam$, DOM}) => {
+export const Card = ({M, updates$, viewParam$, DOM, Window}) => {
   const state$ = O.combineLatest(
     M.distinctUntilChanged(), viewParam$.distinctUntilChanged(),
     (card = {}, params) => ({
@@ -23,7 +23,7 @@ export const Card = ({M, updates$, viewParam$, DOM}) => {
   )
 
   const vtree$ = view(state$)
-  const intents = intent(DOM, M)
+  const intents = intent({DOM, M, Window})
   const update$ = O.merge(
       intents.save$.map(price => ({
         type: 'SET_PRICE',
@@ -79,11 +79,9 @@ export const Card = ({M, updates$, viewParam$, DOM}) => {
   return {
     DOM: vtree$,
     M: mod$,
-    sink$: O.merge(
-        intents.startEdit$,
-        intents.endEdit$.map(() => false),
-      )
-      .map(x => ({editing: x})),
+    sink$: O.combineLatest(
+      O.merge(intents.editing$),
+      (editing) => ({editing})),
   }
 }
 

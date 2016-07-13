@@ -15,18 +15,18 @@ export const Dashboard = ({DOM, M, Screen}) => {
   const logger = Logger({DOM, M: M.lens(loggerLens)})
   const collection = VirtualList({
     DOM, Screen,
+    Window: Object.assign(Object.create(DOM), {isolateSource: x => x}),
     M: M.lens(virtualListLens),
     viewParam$: M.lens('display'),
     updates$: M.lens('latestActions'),
   })
-
   const categories = isolate(Categories)
     ({DOM, M: M.lens(currentCategoriesLens)})
 
-  const editing$ = collection.sink$.pluck('editing')
-    .debounce(100) // -true---false-true- => -true-----true =)
-
-  const mod$ = M.lens(L.compose('display', 'editing')).set(editing$)
+  const editing$ = collection.sink$
+    .pluck('editing')
+    .debounce(50)
+  const mod$ = M.lens('display').lens('editing').set(editing$)
 
   return {
     DOM: view(

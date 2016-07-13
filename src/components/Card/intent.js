@@ -2,7 +2,7 @@ import {Observable as O} from 'rx'
 import {parseInputPrice} from 'utils/currency'
 
 export default intent
-export function intent (DOM, M) {
+export function intent ({DOM, M, Window}) {
   const $mainInfo = DOM.select('.mainInfo')
   const $mPrice = DOM.select('.m-price')
   const click$ = $mainInfo.events('click').share()
@@ -11,6 +11,18 @@ export function intent (DOM, M) {
     .buffer(() => click$.debounce(300))
     .map(x => x.length)
     .share()
+
+  const clickOutside$ = clickOutside($mPrice, Window)
+  const startEdit$ = O.merge(
+      clicks$.filter(count => count >= 2),
+      $mPrice.events('focus'))
+    .withLatestFrom(M.pluck('id'), (_, id) => id)
+    .delay(100)
+
+  const endEdit$ = O.merge(
+    $mPrice.events('keyup').filter(x => x.key == 'Escape'),
+    clickOutside$,
+  )
 
   return {
     toggleBenefitsPrintMode$: clicks$.filter(count => count == 1),
@@ -25,18 +37,7 @@ export function intent (DOM, M) {
       .merge(M.pluck('price').delay(1))
       .distinctUntilChanged()
       .skip(1),
-    focus$: O.merge(
-      $mPrice.events('focus').withLatestFrom(M.pluck('id'), (_, id) => id),
-      $mPrice.events('blur').map(false),
-    ),
-    startEdit$: O.merge(
-        clicks$.filter(count => count >= 2),
-        $mPrice.events('focus').delay(17))
-      .withLatestFrom(M.pluck('id'), (_, id) => id),
-    endEdit$: O.merge(
-      $mPrice.events('keyup').filter(x => x.key == 'Escape'),
-      $mPrice.events('blur'),
-    ),
+    editing$: O.merge(startEdit$, endEdit$.map(false)),
     toggleFavorites$: DOM.select('.m-favorites')
       .events('change')
       .pluck('target', 'checked'),
@@ -77,4 +78,18 @@ function btnIntent (DOM, className) {
       longClick$,
     ),
   }
+}
+
+function clickOutside ($elm, Window) {
+  const event$ = O.merge(
+    $elm.events('blur').map('blur'),
+    Window.events('mousedown').map('mousedown')
+  )
+
+  return event$.buffer(() => event$.debounce(50))
+    .filter(xs =>
+      xs.length == 2
+      && xs.some(x => x == 'blur')
+      && xs.some(x => x == 'mousedown')
+    )
 }

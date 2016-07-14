@@ -126,16 +126,16 @@ test('sort by level', () => {
   const input = [
     {level: '3', name: 'B'},
     {level: '3', name: 'A'},
-    {level: '1'},
-    {level: '2'},
-    {level: '4'},
+    {level: '1', name: 'B'},
+    {level: '2', name: 'A'},
+    {level: '14', name: 'A'},
   ]
   const expected = [
-    {level: '1'},
-    {level: '2'},
+    {level: '1', name: 'B'},
+    {level: '2', name: 'A'},
     {level: '3', name: 'A'},
     {level: '3', name: 'B'},
-    {level: '4'},
+    {level: '14', name: 'A'},
   ]
   const output = sort(input)
   return assert.deepEqual(output, expected)

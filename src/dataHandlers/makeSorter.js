@@ -13,7 +13,7 @@ export function makeSorter ({property = 'alphabetical', ascending = true}) {
     cost: sortBy(prop('cost')),
     alphabetical: sort(firstBy(alphabetical, {direction})),
     level: sort(
-      firstBy('level', {direction})
+      firstBy(({level}) => parseInt(level), {direction})
       .thenBy(alphabetical, {direction})
     ),
     benefits: sort(

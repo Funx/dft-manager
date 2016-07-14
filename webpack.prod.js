@@ -5,12 +5,10 @@ var concat = require('ramda').concat
 var path = require('path')
 
 var webpackConfig = merge(sharedConfig, {
-  devtool: 'source-map',
   entry: './src/client.js',
   watch: false,
   cache: true,
   debug: false,
-  map: true,
 
   output: merge(sharedConfig.output, {
     path: path.resolve('./dist'),

@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "nf start",
-    "start:prod": "npm run jade:build & npm run webpack:prod & npm run server:prod",
+    "start:prod": "npm run jade:build & npm run webpack:prod && npm run server:prod",
     "start:dev": "npm run jade:build  & npm run webpack:dev & npm run server:dev",
     "test": "babel-node node_modules/.bin/painless src/{**,**/**,**/**/**,**/**/**/**}/*.test.js",
     "test:watch": "supervisor -q -n exit -x npm run test",

@@ -17,6 +17,7 @@ export const OptionsBar = ({DOM, M}) => {
     'price': 'Prix de vente',
     'cost': 'Coût de revient',
     'alphabetical': 'Alphabétique',
+    'level': 'Par niveau',
   }
   const sortPropLens = L.compose('sortOptions', 'property')
   const SortPropInput = isolate(Dropdown(sortProps), 'property')

@@ -121,3 +121,22 @@ test('putEmptyRecipesLast', () => {
   const output = sort(input)
   return assert.deepEqual(output, expected)
 })
+test('sort by level', () => {
+  const sort = makeSorter({property: 'level', ascending: true})
+  const input = [
+    {level: '3', name: 'B'},
+    {level: '3', name: 'A'},
+    {level: '1'},
+    {level: '2'},
+    {level: '4'},
+  ]
+  const expected = [
+    {level: '1'},
+    {level: '2'},
+    {level: '3', name: 'A'},
+    {level: '3', name: 'B'},
+    {level: '4'},
+  ]
+  const output = sort(input)
+  return assert.deepEqual(output, expected)
+})

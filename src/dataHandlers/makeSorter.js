@@ -11,7 +11,11 @@ export function makeSorter ({property = 'alphabetical', ascending = true}) {
       .thenBy('price', {direction})
     ),
     cost: sortBy(prop('cost')),
-    alphabetical: sortBy(compose(removeDiacritics, toLower, prop('name'))),
+    alphabetical: sort(firstBy(alphabetical, {direction})),
+    level: sort(
+      firstBy('level', {direction})
+      .thenBy(alphabetical, {direction})
+    ),
     benefits: sort(
       firstBy(emptyRecipesLast)
       .thenBy(emptyPriceTop, {direction})
@@ -36,3 +40,4 @@ const emptyPriceTop = ({price, recipe, cost}) =>
   : (price == 0 && recipe.length) ? 1
   : 0
 const emptyRecipesLast = ({recipe}) => (recipe && recipe.length) ? 0 : 1
+const alphabetical = compose(removeDiacritics, toLower, prop('name'))

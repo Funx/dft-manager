@@ -49,7 +49,7 @@ export function splitLogs (str = '') {
 
 export function parseLog (str = '') {
   // BUY
-  const BUYregexp = /(\d+) x \[(.*)\] \(([\d ]*\d)/
+  const BUYregexp = /(\d+) x \[(.*)\] \(([\d\s ]*\d)/
   const BUY = str.match(BUYregexp)
   if (BUY) {
     const name = BUY[2]
@@ -61,7 +61,7 @@ export function parseLog (str = '') {
     }
   }
   // SELL
-  const SELLregexp = /\+ ([\d ]*\d).* (\d+) \[(.*)\]/
+  const SELLregexp = /\+ ([\d\s ]*\d).* (\d+) \[(.*)\]/
   const SELL = str.match(SELLregexp)
   if (SELL) {
     const name = SELL[3]

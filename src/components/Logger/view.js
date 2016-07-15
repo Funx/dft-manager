@@ -30,8 +30,8 @@ function makeLogRenderer (db) {
     const sigle = getSigle(log.type)
     const phrase = getPhrase(log, target.name)
     const unitPrice = `${k(log.price / log.quantity)}/u`
-    const priceInfos = (log.price)
-      ? [` ${k(log.price)}`, small(` (${unitPrice})`)]
+    const priceInfos = k(log.price)
+      ? [small(` (${unitPrice})`)]
       : ['']
     const color = `hsl(${target.hue}, 75%, 60%)`
     const attributes = {style: {'background-color': color}}
